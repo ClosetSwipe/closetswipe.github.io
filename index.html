@@ -1,130 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ClosetSwipe - Coming Soon</title>
-<style>
-  /* Reset & base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    background: #F4DEDD; /* light pink */
-    color: #222; /* rich charcoal */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    padding: 1.5rem;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    animation: fadeIn 1.2s ease forwards;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClosetSwipe - Coming Soon</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(20px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #F4DEDD;
+      color: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 1.5rem;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      animation: fadeIn 1.2s ease forwards;
+    }
 
-  .container {
-    max-width: 460px;
-    width: 100%;
-    text-align: center;
-  }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  /* Headline */
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1.1;
-    margin-bottom: 0.4em;
-    color: #799567; /* green accent */
-  }
+    .container {
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+    }
 
-  /* Subheadline */
-  p.subheadline {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: clamp(1.15rem, 3vw, 1.6rem);
-    margin-bottom: 2em;
-    color: #222;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
-  }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 0.4em;
+      color: #799567;
+    }
 
-  /* Email form */
-  form {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+    p.subheadline {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.15rem, 3vw, 1.6rem);
+      margin-bottom: 2em;
+      color: #222;
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+    }
 
-  input[type="email"] {
-    flex: 1 1 60%;
-    padding: 0.85rem 1.2rem;
-    font-size: 1rem;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    outline-offset: 4px;
-    transition: border-color 0.3s ease;
-    font-family: 'Montserrat', sans-serif;
-  }
-
-  input[type="email"]:focus {
-    border-color: #799567;
-  }
-
-  button {
-    flex: 1 1 35%;
-    background-color: #799567;
-    border: none;
-    color: white;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.25s ease, box-shadow 0.25s ease;
-    font-family: 'Montserrat', sans-serif;
-    padding: 0.9rem 0;
-  }
-
-  button:hover,
-  button:focus {
-    background-color: #5B744B;
-    box-shadow: 0 0 8px rgba(255, 45, 149, 0.6);
-  }
-
-  /* Microcopy below form */
-  .microcopy {
-    margin-top: 1.4rem;
-    font-size: 0.875rem;
-    font-style: italic;
-    color: #b7a6b5; /* subtle pastel lavender */
-    font-family: 'Montserrat', sans-serif;
-  }
-
-  /* Responsive tweaks */
-  @media (max-width: 480px) {
     form {
-      flex-direction: column;
-      gap: 1rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
-    input[type="email"],
+
+    input[type="email"] {
+      flex: 1 1 60%;
+      padding: 0.85rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-bottom: 2px solid #ccc;
+      outline-offset: 4px;
+      transition: border-color 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    input[type="email"]:focus {
+      border-color: #799567;
+    }
+
     button {
-      flex: 1 1 100%;
+      flex: 1 1 35%;
+      background-color: #799567;
+      border: none;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.1s ease;
+      font-family: 'Montserrat', sans-serif;
+      padding: 0.9rem 0;
     }
-  }
-</style>
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    button:hover,
+    button:focus {
+      background-color: #5B744B;
+      box-shadow: 0 0 8px #A7B59E;
+    }
 
+    button:active {
+      background-color: #4B5F3B;
+      transform: scale(0.98);
+      box-shadow: 0 0 6px #A7B59E;
+    }
+
+    .microcopy {
+      margin-top: 1.4rem;
+      font-size: 1rem; /* 1 step bigger */
+      font-style: normal; /* not italic */
+      font-family: Georgia, serif; /* new font */
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .microcopy.success {
+      color: #355E3B;
+    }
+
+    .microcopy.error {
+      color: #8B3A3A;
+    }
+
+    @media (max-width: 480px) {
+      form {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      input[type="email"],
+      button {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 </head>
 <body>
   <main class="container" role="main" aria-label="ClosetSwipe Coming Soon Landing Page">
@@ -140,48 +150,45 @@
         placeholder="Enter your email to get early access"
         required
         autocomplete="email"
-        />
+      />
       <button type="submit">Count Me In!</button>
     </form>
 
     <p class="microcopy" id="form-message" aria-live="polite" role="status"></p>
-
   </main>
 
-<script>
-  function handleSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const emailInput = form.email;
-    const formMessage = document.getElementById('form-message');
-    const email = emailInput.value.trim();
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const emailInput = form.email;
+      const formMessage = document.getElementById('form-message');
+      const email = emailInput.value.trim();
 
-    // Simple email validation regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      formMessage.textContent = 'Please enter a valid email address :(.';
-      formMessage.style.color = '#OOOOOO'; // red for error
-      emailInput.focus();
+      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      if (!emailRegex.test(email)) {
+        formMessage.textContent = 'Please enter a valid email address :(';
+        formMessage.className = 'microcopy error';
+        emailInput.focus();
+        return false;
+      }
+
+      fetch(form.action, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ email }),
+      }).then(() => {
+        formMessage.textContent = 'Thanks! You’re on the list <3';
+        formMessage.className = 'microcopy success';
+        emailInput.value = '';
+      }).catch(() => {
+        formMessage.textContent = 'Oops, something went wrong :( Please try again.';
+        formMessage.className = 'microcopy error';
+      });
+
       return false;
     }
-
-    // Send POST request
-    fetch(form.action, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ email }),
-    }).then(() => {
-      formMessage.textContent = 'Thanks! You’re on the list <3';
-      formMessage.style.color = '#FFFFF'; //  success
-      emailInput.value = '';
-    }).catch(() => {
-      formMessage.textContent = 'Oops, something went wrong :( Please try again.';
-      formMessage.style.color = '#OOOOOO';
-    });
-
-    return false;
-  }
-</script>
+  </script>
 </body>
 </html>
