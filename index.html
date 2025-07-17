@@ -12,7 +12,7 @@
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, #F3E8E6 0%, #F9F6F5 100%);
+    background: #F4DEDD; /* original light pink */
     color: #222;
     display: flex;
     align-items: center;
@@ -42,7 +42,7 @@
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     line-height: 1.1;
     margin-bottom: 0.4em;
-    color: #5B744B; /* deeper olive green */
+    color: #799567; /* original green */
   }
 
   p.subheadline {
@@ -74,12 +74,12 @@
   }
 
   input[type="email"]:focus {
-    border-color: #5B744B; /* match new green */
+    border-color: #799567; /* original green */
   }
 
   button {
     flex: 1 1 35%;
-    background-color: #5B744B; /* deeper olive green */
+    background-color: #799567; /* original green */
     border: none;
     color: white;
     font-weight: 700;
@@ -93,8 +93,8 @@
 
   button:hover,
   button:focus {
-    background-color: #476138; /* slightly darker on hover */
-    box-shadow: 0 0 8px #A7B59E; /* custom shadow */
+    background-color: #5B744B; /* darker green on hover */
+    box-shadow: 0 0 8px #A7B59E; /* custom shadow you wanted */
   }
 
   .microcopy {
@@ -163,12 +163,12 @@
 
     fetch(form.action, {
       method: 'POST',
-      mode: 'no-cors',
+      mode: 'no-cors', // <== here lies the CORS issue
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ email }),
     }).then(() => {
       formMessage.textContent = 'Thanks! You’re on the list <3';
-      formMessage.style.color = '#5B744B';
+      formMessage.style.color = '#799567';
       formMessage.style.fontFamily = 'Georgia, serif';
       formMessage.style.fontSize = '1rem';
       formMessage.style.fontStyle = 'normal';
