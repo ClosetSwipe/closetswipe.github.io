@@ -12,7 +12,7 @@
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background: #F9DDD8; /* light pink */
+    background: #F4DEDD; /* light pink */
     color: #222; /* rich charcoal */
     display: flex;
     align-items: center;
@@ -159,8 +159,8 @@
     // Simple email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      formMessage.textContent = 'Please enter a valid email address.';
-      formMessage.style.color = '#ED4337'; // red for error
+      formMessage.textContent = 'Please enter a valid email address :(.';
+      formMessage.style.color = '#OOOOOO'; // red for error
       emailInput.focus();
       return false;
     }
@@ -172,12 +172,12 @@
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ email }),
     }).then(() => {
-      formMessage.textContent = 'Thanks! You’re on the list.';
-      formMessage.style.color = '#98DF8E'; // green success
+      formMessage.textContent = 'Thanks! You’re on the list <3';
+      formMessage.style.color = '#FFFFF'; //  success
       emailInput.value = '';
     }).catch(() => {
-      formMessage.textContent = 'Oops, something went wrong. Please try again.';
-      formMessage.style.color = '#d9534f';
+      formMessage.textContent = 'Oops, something went wrong :( Please try again.';
+      formMessage.style.color = '#OOOOOO';
     });
 
     return false;
