@@ -12,7 +12,7 @@
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background: #EEE8E4; /* grey */
+    background: #F9DDD8; /* light pink */
     color: #222; /* rich charcoal */
     display: flex;
     align-items: center;
@@ -43,7 +43,7 @@
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     line-height: 1.1;
     margin-bottom: 0.4em;
-    color: #6CDDF1; /* blue accent */
+    color: #799567; /* green accent */
   }
 
   /* Subheadline */
@@ -77,12 +77,12 @@
   }
 
   input[type="email"]:focus {
-    border-color: #6CDDF1;
+    border-color: #799567;
   }
 
   button {
     flex: 1 1 35%;
-    background-color: #6CDDF1;
+    background-color: #799567;
     border: none;
     color: white;
     font-weight: 700;
@@ -96,7 +96,7 @@
 
   button:hover,
   button:focus {
-    background-color: #ff55b8;
+    background-color: #5B744B;
     box-shadow: 0 0 8px rgba(255, 45, 149, 0.6);
   }
 
@@ -160,7 +160,7 @@
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       formMessage.textContent = 'Please enter a valid email address.';
-      formMessage.style.color = '#d9534f'; // red for error
+      formMessage.style.color = '#ED4337'; // red for error
       emailInput.focus();
       return false;
     }
@@ -173,7 +173,7 @@
       body: new URLSearchParams({ email }),
     }).then(() => {
       formMessage.textContent = 'Thanks! You’re on the list.';
-      formMessage.style.color = '#4BB543'; // green success
+      formMessage.style.color = '#98DF8E'; // green success
       emailInput.value = '';
     }).catch(() => {
       formMessage.textContent = 'Oops, something went wrong. Please try again.';
