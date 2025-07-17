@@ -1,312 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ClosetSwipe - Coming Soon</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Arial&display=swap');
-
-  /* Reset */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Arial', sans-serif;
-    background: #f2efe9; /* light greige/beige */
-    color: #000;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
-  }
-
-  .header-container {
-    width: 90vw;
-    max-width: 1200px;
-    margin-top: 60px;
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    color: #000;
-    user-select: none;
-  }
-
-  #closet {
-    will-change: transform;
-  }
-
-  #swipe {
-    will-change: transform;
-  }
-
-  .mission-bubble {
-    margin: 40px auto 20px;
-    max-width: 600px;
-    background: #d7f0e7; /* muted sage green bubble */
-    padding: 14px 28px;
-    border-radius: 40px;
-    font-weight: 600;
-    font-size: 1.3rem;
-    color: #0b3a2d; /* dark sage for text */
-    text-align: center;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .mission-bubble.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .our-aim-container {
-    max-width: 700px;
-    margin: 40px auto 60px;
-    padding: 0 10px;
-  }
-
-  .our-aim-title {
-    display: inline-block;
-    position: relative;
-    font-family: 'Arial', sans-serif;
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    color: #000;
-    line-height: 1.1;
-  }
-
-  /* Realistic yellow highlight behind "Our Aim" */
-  .our-aim-title::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0.18em;
-    width: 100%;
-    height: 0.6em;
-    background: #ffe066; /* warm pastel yellow */
-    z-index: -1;
-    transform: rotate(-3deg);
-    border-radius: 4px;
-  }
-
-  .our-aim-text {
-    font-family: 'Arial', sans-serif;
-    font-weight: 400;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    color: #222;
-    max-width: 600px;
-  }
-
-  /* Scroll down arrow */
-  .scroll-arrow {
-    display: block;
-    margin: 50px auto 0;
-    width: 28px;
-    height: 28px;
-    border-bottom: 3px solid #000;
-    border-right: 3px solid #000;
-    transform: rotate(45deg);
-    animation: bounce 2s infinite;
-    cursor: default;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: rotate(45deg) translateY(0); }
-    50% { transform: rotate(45deg) translateY(8px); }
-  }
-
-  hr.partition {
-    margin: 60px auto 50px;
-    width: 70%;
-    border: none;
-    border-top: 1.8px solid #ccc;
-  }
-
-  /* Email form container */
-  .email-container {
-    max-width: 400px;
-    width: 90vw;
-    text-align: center;
-    margin-bottom: 80px;
-  }
-
-  .email-container h2 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: #000;
-    margin-bottom: 20px;
-  }
-
-  form {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-  }
-
-  input[type="email"] {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: 2px solid #0b3a2d; /* sage green border */
-    border-radius: 40px;
-    font-size: 1rem;
-    outline-offset: 2px;
-    transition: border-color 0.3s ease;
-    font-family: 'Arial', sans-serif;
-  }
-
-  input[type="email"]:focus {
-    border-color: #ffe066; /* yellow */
-  }
-
-  button {
-    background: #0b3a2d; /* sage green */
-    color: white;
-    font-weight: 700;
-    font-family: 'Poppins', sans-serif;
-    border: none;
-    border-radius: 40px;
-    padding: 12px 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover,
-  button:focus {
-    background: #143f33; /* slightly darker sage green */
-  }
-
-  /* Thank you message */
-  .thank-you-message {
-    margin-top: 20px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    color: #0b3a2d;
-    font-size: 1.1rem;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-  }
-
-  .thank-you-message.visible {
-    opacity: 1;
-  }
-
-  /* Responsive */
-  @media (max-width: 640px) {
-    .header-container {
-      font-size: clamp(2rem, 10vw, 5rem);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClosetSwipe | Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
     }
-    .our-aim-text {
-      font-size: 1rem;
-    }
-    form {
+    body {
+      margin: 0;
+      background: #f5f2eb; /* light greige/beige */
+      font-family: 'Arial', sans-serif;
+      color: #000;
+      min-height: 100vh;
+      display: flex;
       flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
     }
+
+    /* Header container */
+    .header-container {
+      position: relative;
+      width: 90vw;
+      max-width: 1200px;
+      user-select: none;
+      text-align: center;
+      margin-top: 80px;
+      margin-bottom: 60px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #closet, #swipe {
+      font-weight: 900;
+      font-size: clamp(7rem, 20vw, 14rem);
+      line-height: 1;
+      position: relative;
+      transition: transform 0.4s ease;
+      color: #000;
+    }
+
+    #closet {
+      z-index: 2;
+      margin-bottom: -1.3em; /* overlap vertically */
+    }
+
+    #swipe {
+      z-index: 1;
+      margin-top: -1.3em; /* overlap vertically */
+    }
+
+    /* Our Aim section */
+    .our-aim-section {
+      max-width: 66vw; /* ~2/3 of screen width */
+      margin: 0 auto 100px auto;
+      text-align: left;
+      font-family: Arial, sans-serif;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #000;
+      position: relative;
+      /* invisible box for shape */
+    }
+
+    .our-aim-section h2 {
+      font-weight: 700;
+      margin-bottom: 0.5em;
+    }
+
+    .highlight {
+      background-color: #fcdc4d; /* yellow highlight */
+      padding: 0 6px;
+      border-radius: 2px;
+      box-decoration-break: clone;
+    }
+
+    /* Email sign up section */
+    .signup-section {
+      width: 90vw;
+      max-width: 480px;
+      background: #d6e6db; /* muted sage green background */
+      border-radius: 12px;
+      padding: 30px 25px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 60px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .signup-section h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+      color: #000;
+      text-align: center;
+    }
+
+    form {
+      width: 100%;
+      display: flex;
+      gap: 12px;
+    }
+
     input[type="email"] {
-      width: 100%;
+      flex-grow: 1;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 2px solid #9dc6b6; /* sage green border */
+      font-size: 1rem;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
     }
+
+    input[type="email"]:focus {
+      border-color: #fcdc4d; /* yellow highlight on focus */
+      outline: none;
+    }
+
     button {
-      width: 100%;
-      padding: 14px 0;
+      background: #fcdc4d; /* yellow */
+      border: none;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      color: #000;
+      box-shadow: 0 2px 6px rgba(252, 220, 77, 0.6);
     }
-  }
-</style>
+
+    button:hover {
+      background-color: #e6cb3c;
+    }
+
+    /* Thank you message */
+    .thank-you {
+      margin-top: 20px;
+      font-weight: 600;
+      color: #447744; /* muted green */
+      text-align: center;
+      font-size: 1.1rem;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .thank-you.visible {
+      opacity: 1;
+    }
+
+    /* Scroll arrow */
+    .scroll-arrow {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.5rem;
+      color: #9dc6b6;
+      animation: bounce 2.5s infinite;
+      user-select: none;
+      z-index: 10;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(12px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .our-aim-section {
+        max-width: 95vw;
+        font-size: 1rem;
+      }
+      .header-container {
+        margin-top: 60px;
+        margin-bottom: 40px;
+      }
+      #closet, #swipe {
+        font-size: clamp(5rem, 18vw, 10rem);
+      }
+      .signup-section {
+        max-width: 95vw;
+        padding: 20px 15px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header class="header-container">
-  <div id="closet">Closet</div>
-  <div id="swipe">Swipe</div>
-</header>
+  <header class="header-container">
+    <div id="closet">Closet</div>
+    <div id="swipe">Swipe</div>
+  </header>
 
-<div class="mission-bubble" id="missionBubble">circular fashion made simple</div>
+  <section class="our-aim-section">
+    <h2><span class="highlight">Our Aim</span></h2>
+    <p>To reduce fast fashion waste and make reselling easy. No more clunky interfaces—simply swipe and sell.</p>
+  </section>
 
-<div class="our-aim-container">
-  <h2 class="our-aim-title">Our Aim</h2>
-  <p class="our-aim-text">
-    To reduce fast fashion waste and make reselling easy. No more clunky interfaces—simply swipe and sell.
-  </p>
-</div>
+  <section class="signup-section" aria-label="Join the movement email signup">
+    <h3>Be the first to find out when we launch, join the community</h3>
+    <form id="emailForm">
+      <input type="email" name="email" id="emailInput" placeholder="Enter your email" required autocomplete="email" />
+      <button type="submit" aria-label="Submit email">Join</button>
+    </form>
+    <div id="thankYou" class="thank-you" role="alert" aria-live="polite"></div>
+  </section>
 
-<div class="scroll-arrow" aria-hidden="true"></div>
+  <div class="scroll-arrow" aria-hidden="true">⬇️</div>
 
-<hr class="partition" />
+  <script>
+    // Scroll animation for breaking apart words
+    const closet = document.getElementById('closet');
+    const swipe = document.getElementById('swipe');
 
-<section class="email-container">
-  <h2>Join the movement</h2>
-  <form id="emailForm">
-    <input type="email" name="email" id="emailInput" placeholder="Your email address" required autocomplete="email" />
-    <button type="submit">Sign Up</button>
-  </form>
-  <div class="thank-you-message" id="thankYouMessage">Thanks for joining us!</div>
-</section>
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const maxMove = 150; // max horizontal movement px
+      let movement = Math.min(scrollTop, maxMove);
 
-<script>
-  // Scroll animation for "Closet" and "Swipe"
-  const closet = document.getElementById('closet');
-  const swipe = document.getElementById('swipe');
-  const missionBubble = document.getElementById('missionBubble');
-  let lastScrollTop = 0;
-
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    // Calculate horizontal movement max ~40px
-    const maxMove = 40;
-
-    // Scroll down moves words outward, scroll up moves inward
-    let movement = Math.min(scrollTop, maxMove);
-
-    closet.style.transform = `translateX(${-movement}px)`;
-    swipe.style.transform = `translateX(${movement}px)`;
-
-    // Show mission bubble after scrolling 60px
-    if (scrollTop > 60) {
-      missionBubble.classList.add('visible');
-    } else {
-      missionBubble.classList.remove('visible');
-    }
-
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // reset on negative
-  });
-
-  // Email form submission to Google Script
-  const form = document.getElementById('emailForm');
-  const thankYouMessage = document.getElementById('thankYouMessage');
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const emailInput = document.getElementById('emailInput');
-    const email = emailInput.value.trim();
-
-    if (!email) return; // basic check
-
-    fetch('https://script.google.com/macros/s/AKfycbzOCr7J_VjmK9Cv59I8EYU0FAsO0u0oTKQzoMZY0iGnAGtXw-ftBZ5ke3Y-uoRPrefe/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ email })
-    }).then(() => {
-      thankYouMessage.classList.add('visible');
-      emailInput.value = '';
-      emailInput.disabled = true;
-      form.querySelector('button').disabled = true;
-    }).catch(() => {
-      alert('Oops! Something went wrong. Please try again.');
+      closet.style.transform = `translateX(${-movement}px)`;
+      swipe.style.transform = `translateX(${movement}px)`;
     });
-  });
-</script>
+
+    // Email form submit with fetch to Google Script
+    const form = document.getElementById('emailForm');
+    const emailInput = document.getElementById('emailInput');
+    const thankYou = document.getElementById('thankYou');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      fetch('https://script.google.com/macros/s/AKfycbzOCr7J_VjmK9Cv59I8EYU0FAsO0u0oTKQzoMZY0iGnAGtXw-ftBZ5ke3Y-uoRPrefe/exec?email=' + encodeURIComponent(email), {
+        method: 'GET',
+        mode: 'no-cors'
+      }).then(() => {
+        thankYou.textContent = "Thanks for joining the movement!";
+        thankYou.classList.add('visible');
+        emailInput.value = '';
+        emailInput.disabled = true;
+        form.querySelector('button').disabled = true;
+      }).catch(() => {
+        thankYou.textContent = "Oops, something went wrong. Please try again.";
+        thankYou.classList.add('visible');
+      });
+    });
+  </script>
 
 </body>
 </html>
