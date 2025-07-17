@@ -2,81 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClosetSwipe | Coming Soon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClosetSwipe — Coming Soon</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #f8f9fa, #e0eafc);
-      color: #333;
+      background: #fafafa;
+      margin: 0; padding: 0;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
       height: 100vh;
+      color: #333;
       text-align: center;
-      padding: 20px;
+      padding: 0 1rem;
     }
-
-    .container {
-      max-width: 500px;
-      width: 100%;
-    }
-
     h1 {
-      font-size: 2.8em;
-      margin-bottom: 0.3em;
+      font-size: 2.5rem;
+      margin-bottom: 0.2rem;
     }
-
     p {
-      font-size: 1.2em;
-      margin-bottom: 1.5em;
-    }
-
-    input[type="email"] {
-      padding: 12px;
-      width: 70%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #0070f3;
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-      cursor: pointer;
-      text-decoration: none;
-      margin-left: 10px;
-    }
-
-    .btn:hover {
-      background: #005bb5;
-    }
-
-    footer {
-      margin-top: 2em;
-      font-size: 0.8em;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
       color: #666;
+    }
+    form {
+      display: flex;
+      max-width: 320px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    input[type="email"] {
+      flex-grow: 1;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input[type="email"]:focus {
+      border-color: #0077cc;
+    }
+    button {
+      padding: 0 1.5rem;
+      font-size: 1rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #005fa3;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ClosetSwipe</h1>
-    <p>Coming soon. Be the first to know when we launch!</p>
-    <form>
-      <input type="email" placeholder="Enter your email" required />
-      <button class="btn" type="submit">Notify Me</button>
-    </form>
-    <footer>
-      <p>&copy; 2025 ClosetSwipe</p>
-    </footer>
-  </div>
+  <h1>ClosetSwipe</h1>
+  <p>Coming Soon</p>
+  <form id="emailForm" action="https://script.google.com/macros/s/AKfycbwwb3DG8s9SyR-NOyBCKg8yp05tEfAOwvA4Z60P0LXU3CcbU_sy6Y9mOpP8z5WOBtkQ/exec" method="POST" onsubmit="submitForm(event)">
+    <input type="email" name="email" placeholder="Enter your email" required autocomplete="email" />
+    <button type="submit">Notify Me</button>
+  </form>
+
+  <script>
+    function submitForm(e) {
+      e.preventDefault();
+      const form = e.target;
+      fetch(form.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(form))
+      }).then(() => {
+        alert('Thanks for signing up!');
+        form.reset();
+      }).catch(() => {
+        alert('Oops! Try again.');
+      });
+    }
+  </script>
 </body>
 </html>
