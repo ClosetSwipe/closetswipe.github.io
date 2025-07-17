@@ -6,7 +6,7 @@
     <title>ClosetSwipe - Keeping Fashion Circular</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Shrikhand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Shrikhand&family=Montserrat:wght@300;400;600;700;800;900&family=EB+Garamond:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         /* Reset & Base Styles */
@@ -44,7 +44,7 @@
         
         /* Landing Page Styles */
         .landing-page {
-            background: linear-gradient(135deg, #469DF8 0%, #4FA9CC 35%, #E8A7BF 70%, #C66E9E 100%);
+            background: #191919;
             position: relative;
             padding: 2rem;
             display: flex;
@@ -169,6 +169,7 @@
             padding: 1.5rem 3rem;
             font-size: 1.2rem;
             font-weight: 600;
+            font-family: 'Montserrat', 'EB Garamond', sans-serif;
             text-decoration: none;
             border-radius: 50px;
             transition: all 0.3s ease;
@@ -220,8 +221,10 @@
             color: #333;
             padding: 2rem;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            min-height: 100vh;
+            padding-top: 5vh;
         }
         
         .email-container {
@@ -287,6 +290,7 @@
             padding: 1.5rem 4rem;
             font-size: 1.3rem;
             font-weight: 600;
+            font-family: 'Montserrat', 'EB Garamond', sans-serif;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -303,7 +307,7 @@
             font-family: 'Playfair Display', serif;
             font-style: italic;
             color: #666;
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-top: 1.5rem;
         }
         
@@ -420,13 +424,15 @@
         
         <!-- Hero Content -->
         <div class="hero-container">
-            <div class="closet-stack">
+            <!-- LOGO PLACEHOLDER: Replace this section with your logo image -->
+            <!-- <img src="your-logo.png" alt="ClosetSwipe Logo" class="logo" style="max-width: 400px; height: auto;"> -->
+            <div class="closet-stack" style="/* Remove this div when adding logo */">
                 <div class="closet-text closet-outline">Closet</div>
                 <div class="closet-text closet-outline second">Closet</div>
                 <div class="closet-text closet-filled">Closet</div>
             </div>
             
-            <div class="swipe-text">Swipe</div>
+            <div class="swipe-text" style="/* Remove this div when adding logo */">Swipe</div>
             
             <div class="tagline">
                 Keeping fashion circular
