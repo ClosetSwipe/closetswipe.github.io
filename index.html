@@ -12,7 +12,7 @@
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background: #F4DEDD;
+    background: linear-gradient(135deg, #F3E8E6 0%, #F9F6F5 100%);
     color: #222;
     display: flex;
     align-items: center;
@@ -42,7 +42,7 @@
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     line-height: 1.1;
     margin-bottom: 0.4em;
-    color: #799567;
+    color: #5B744B; /* deeper olive green */
   }
 
   p.subheadline {
@@ -74,12 +74,12 @@
   }
 
   input[type="email"]:focus {
-    border-color: #799567;
+    border-color: #5B744B; /* match new green */
   }
 
   button {
     flex: 1 1 35%;
-    background-color: #799567;
+    background-color: #5B744B; /* deeper olive green */
     border: none;
     color: white;
     font-weight: 700;
@@ -93,16 +93,16 @@
 
   button:hover,
   button:focus {
-    background-color: #5B744B;
-    box-shadow: 0 0 8px #A7B59E;
+    background-color: #476138; /* slightly darker on hover */
+    box-shadow: 0 0 8px #A7B59E; /* custom shadow */
   }
 
   .microcopy {
     margin-top: 1.4rem;
-    font-size: 1rem; /* bumped up size */
-    font-style: normal; /* removed italics */
-    color: #000000; /* default black */
-    font-family: Georgia, serif; /* updated font */
+    font-size: 1rem;
+    font-style: normal;
+    color: #000000;
+    font-family: Georgia, serif;
   }
 
   @media (max-width: 480px) {
@@ -168,7 +168,7 @@
       body: new URLSearchParams({ email }),
     }).then(() => {
       formMessage.textContent = 'Thanks! You’re on the list <3';
-      formMessage.style.color = '#799567';
+      formMessage.style.color = '#5B744B';
       formMessage.style.fontFamily = 'Georgia, serif';
       formMessage.style.fontSize = '1rem';
       formMessage.style.fontStyle = 'normal';
