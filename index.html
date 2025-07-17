@@ -1,122 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ClosetSwipe | Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0;
-      background: #c1d9c6; /* soft sage green */
-      font-family: 'Poppins', sans-serif;
-      color: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      padding: 0 20px;
-      text-align: center;
-    }
-    h1 {
-      font-weight: 900;
-      font-size: clamp(4rem, 15vw, 9rem);
-      margin: 0 0 1rem 0;
-      color: #52734d; /* darker sage green for text */
-      line-height: 1;
-    }
-    h2 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      margin: 0 0 2rem 0;
-      color: #000;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ClosetSwipe - Coming Soon</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: #f9f4ef; /* warm ivory */
+    color: #222; /* rich charcoal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 1.5rem;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    animation: fadeIn 1.2s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  .container {
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Headline */
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 0.4em;
+    color: #FF2D95; /* pink accent */
+  }
+
+  /* Subheadline */
+  p.subheadline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.15rem, 3vw, 1.6rem);
+    margin-bottom: 2em;
+    color: #222;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+
+  /* Email form */
+  form {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  input[type="email"] {
+    flex: 1 1 60%;
+    padding: 0.85rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline-offset: 4px;
+    transition: border-color 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  input[type="email"]:focus {
+    border-color: #FF2D95;
+  }
+
+  button {
+    flex: 1 1 35%;
+    background-color: #FF2D95;
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0.9rem 0;
+  }
+
+  button:hover,
+  button:focus {
+    background-color: #ff55b8;
+    box-shadow: 0 0 8px rgba(255, 45, 149, 0.6);
+  }
+
+  /* Microcopy below form */
+  .microcopy {
+    margin-top: 1.4rem;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: #b7a6b5; /* subtle pastel lavender */
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
     form {
-      display: flex;
-      max-width: 400px;
-      width: 100%;
-      gap: 12px;
-      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
     }
-    input[type="email"] {
-      flex-grow: 1;
-      padding: 14px 16px;
-      border-radius: 30px;
-      border: 2px solid #52734d;
-      font-size: 1rem;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease;
-    }
-    input[type="email"]:focus {
-      border-color: #3b5234;
-      outline: none;
-    }
+    input[type="email"],
     button {
-      background: #52734d;
-      border: none;
-      border-radius: 30px;
-      padding: 14px 24px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      color: #fff;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 4px 12px rgba(82, 115, 77, 0.5);
+      flex: 1 1 100%;
     }
-    button:hover {
-      background-color: #3b5234;
-    }
-    #thankYou {
-      margin-top: 20px;
-      font-weight: 600;
-      color: #2e2e2e;
-      font-size: 1.1rem;
-      min-height: 24px;
-      transition: opacity 0.5s ease;
-      opacity: 0;
-    }
-    #thankYou.visible {
-      opacity: 1;
-    }
-  </style>
+  }
+</style>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
 </head>
 <body>
+  <main class="container" role="main" aria-label="ClosetSwipe Coming Soon Landing Page">
 
-  <h1>ClosetSwipe</h1>
-  <h2>Be the first to find out when we launch, join the community</h2>
+    <h1>ClosetSwipe — Coming Soon</h1>
+    <p class="subheadline">Be the first to find out when we launch, join the community.</p>
 
-  <form id="emailForm" aria-label="Email sign up form">
-    <input type="email" id="emailInput" name="email" placeholder="Enter your email" required autocomplete="email" />
-    <button type="submit" aria-label="Submit email">Join</button>
-  </form>
-  <div id="thankYou" role="alert" aria-live="polite"></div>
+    <form id="signup-form" action="https://script.google.com/macros/s/AKfycbzOCr7J_VjmK9Cv59I8EYU0FAsO0u0oTKQzoMZY0iGnAGtXw-ftBZ5ke3Y-uoRPrefe/exec" method="POST" onsubmit="return handleSubmit(event)" novalidate>
+      <input
+        type="email"
+        name="email"
+        aria-label="Email address"
+        placeholder="Enter your email to get early access"
+        required
+        autocomplete="email"
+        />
+      <button type="submit">Count Me In!</button>
+    </form>
 
-  <script>
-    const form = document.getElementById('emailForm');
-    const emailInput = document.getElementById('emailInput');
-    const thankYou = document.getElementById('thankYou');
+    <p class="microcopy" id="form-message" aria-live="polite" role="status"></p>
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = emailInput.value.trim();
-      if (!email) return;
+  </main>
 
-      fetch('https://script.google.com/macros/s/AKfycbzOCr7J_VjmK9Cv59I8EYU0FAsO0u0oTKQzoMZY0iGnAGtXw-ftBZ5ke3Y-uoRPrefe/exec?email=' + encodeURIComponent(email), {
-        method: 'GET',
-        mode: 'no-cors'
-      }).then(() => {
-        thankYou.textContent = "Thanks for joining the movement!";
-        thankYou.classList.add('visible');
-        emailInput.value = '';
-        emailInput.disabled = true;
-        form.querySelector('button').disabled = true;
-      }).catch(() => {
-        thankYou.textContent = "Oops, something went wrong. Please try again.";
-        thankYou.classList.add('visible');
-      });
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const emailInput = form.email;
+    const formMessage = document.getElementById('form-message');
+    const email = emailInput.value.trim();
+
+    // Simple email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      formMessage.textContent = 'Please enter a valid email address.';
+      formMessage.style.color = '#d9534f'; // red for error
+      emailInput.focus();
+      return false;
+    }
+
+    // Send POST request
+    fetch(form.action, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ email }),
+    }).then(() => {
+      formMessage.textContent = 'Thanks! You’re on the list.';
+      formMessage.style.color = '#4BB543'; // green success
+      emailInput.value = '';
+    }).catch(() => {
+      formMessage.textContent = 'Oops, something went wrong. Please try again.';
+      formMessage.style.color = '#d9534f';
     });
-  </script>
+
+    return false;
+  }
+</script>
 
 </body>
 </html>
