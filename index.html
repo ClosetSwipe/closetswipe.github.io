@@ -1,221 +1,119 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ClosetSwipe • Join the Waitlist</title>
-  <meta name="description" content="ClosetSwipe is the swipe-first fashion resale app. Join the waitlist for early access." />
-
-  <!-- Inter font -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg: #9DCCAA;           /* your muted primary green */
-      --card: #ffffff;
-      --text: #1f2a24;
-      --subtle: #2f3a35;
-      --accent: #3E5F47;
-      --accent-press: #2f4a38;
-      --ring: rgba(62,95,71,0.35);
-      --ok: #1f9d5a;
-      --err: #b23a48;
-    }
-    *{box-sizing:border-box}
-    html,body{
-      height:100%;
-      margin:0;
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:var(--bg);
-    }
-    .wrap{
-      min-height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
-    .card{
-      width:100%;
-      max-width:720px;
-      background:var(--card);
-      border-radius:24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.10);
-      padding: clamp(20px, 6vw, 48px);
-      position:relative;
-      overflow:hidden;
-    }
-    .badge{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      font-weight:600;
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:var(--subtle);
-      background: #eef7f0;
-      padding:8px 12px;
-      border-radius:999px;
-    }
-    h1{
-      margin:16px 0 8px;
-      font-weight:800;
-      line-height:1.05;
-      font-size: clamp(28px, 6vw, 48px);
-      letter-spacing:-0.02em;
-    }
-    p.lede{
-      margin:0 0 28px;
-      font-size: clamp(16px, 2.6vw, 18px);
-      color:#4a5a52;
-    }
-    form{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .field{
-      flex:1 1 260px;
-      display:flex;
-      align-items:center;
-      background:#f6fbf7;
-      border:1.5px solid transparent;
-      border-radius:14px;
-      padding:6px 10px 6px 14px;
-      transition:border .2s, box-shadow .2s, background .2s;
-    }
-    .field:focus-within{
-      border-color:var(--accent);
-      box-shadow:0 0 0 6px var(--ring);
-      background:#fff;
-    }
-    input[type="email"]{
-      appearance:none;
-      border:0;
-      outline:0;
-      width:100%;
-      font-size:16px;
-      background:transparent;
-      padding:10px 6px;
-      color:var(--text);
-    }
-    input::placeholder{ color:#7b8d84; }
-    button{
-      flex:0 0 auto;
-      border:0;
-      cursor:pointer;
-      border-radius:14px;
-      padding:12px 18px;
-      font-weight:700;
-      font-size:16px;
-      color:#fff;
-      background:var(--accent);
-      transition:transform .04s ease, background .2s ease, box-shadow .2s ease;
-      box-shadow:0 6px 18px rgba(62,95,71,0.35);
-    }
-    button:hover{ background: #375642; }
-    button:active{ transform:translateY(1px); background: var(--accent-press);}
-    button[disabled]{
-      opacity:.6;
-      cursor:not-allowed;
-      transform:none;
-      box-shadow:none;
-    }
-    .note{
-      margin-top:10px;
-      font-size:13px;
-      color:#6a7a72;
-    }
-    .msg{
-      margin-top:16px;
-      font-weight:600;
-      font-size:14px;
-    }
-    .ok{ color:var(--ok); }
-    .err{ color:var(--err); }
-    .footer{
-      margin-top:28px;
-      font-size:13px;
-      color:#5b6a63;
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .dot{opacity:.5}
-    .bubble{
-      position:absolute; inset:auto auto -40px -40px;
-      width:180px; height:180px; border-radius:50%;
-      background: radial-gradient(120px 120px at 60% 40%, rgba(62,95,71,.20), rgba(62,95,71,0));
-      filter: blur(1px);
-      animation: float 9s ease-in-out infinite;
-    }
-    .bubble.b2{ inset: -50px -60px auto auto; width:220px; height:220px; animation-duration: 12s;}
-    @keyframes float{
-      0%,100%{ transform: translateY(0) }
-      50%{ transform: translateY(-12px) }
-    }
-    @media (prefers-reduced-motion: reduce){
-      .bubble{ animation:none }
-      button, .field{ transition:none }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ClosetSwipe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Shrikhand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #9dccaa;
+    --text: #1f2a24;
+    --accent: #3E5F47;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden; /* no scroll */
+    background: var(--bg);
+    color: var(--text);
+  }
+  .page {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: absolute; inset: 0;
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .hidden { opacity: 0; pointer-events: none; transform: translateX(-100%); }
+  h1 {
+    font-size: clamp(42px, 12vw, 100px);
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h1 span.swipe {
+    font-family: 'Shrikhand', cursive;
+    display: block;
+    font-size: 0.7em;
+    color: var(--accent);
+  }
+  p {
+    font-size: clamp(16px, 2vw, 22px);
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  button {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+  }
+  form {
+    display: flex; flex-direction: column; gap: 15px;
+    width: 90%; max-width: 400px;
+  }
+  input {
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+  }
+  .note { font-size: 14px; text-align: center; }
+</style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="card" aria-labelledby="title">
-      <div class="bubble"></div>
-      <div class="bubble b2"></div>
 
-      <span class="badge" aria-hidden="true">ClosetSwipe • Early Access</span>
-      <h1 id="title">Swipe. Style. Sell.</h1>
-      <p class="lede">
-        ClosetSwipe is the swipe-first fashion resale app. Join the waitlist to get early access, launch perks, and exclusive drops.
-      </p>
+<!-- Page 1: Hero -->
+<section id="page1" class="page">
+  <h1>Closet<span class="swipe">Swipe</span></h1>
+  <p>Keeping fashion circular. Be the first to know when we launch.</p>
+  <button onclick="goToPage2()">Join the Waitlist</button>
+</section>
 
-      <form id="waitlist-form" novalidate>
-        <label class="field" for="email">
-          <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
-                 placeholder="your@email.com"
-                 aria-label="Email address" required />
-        </label>
-        <button id="submitBtn" type="submit">Join the Waitlist</button>
-        <div class="note">No spam. Unsubscribe anytime.</div>
-        <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
-      </form>
+<!-- Page 2: Email -->
+<section id="page2" class="page hidden">
+  <h1>Join the Waitlist</h1>
+  <form id="waitlist-form">
+    <input type="email" id="email" placeholder="your@email.com" required>
+    <button type="submit">Sign Up</button>
+    <p class="note">Get exclusive discounts. No spam ever.</p>
+    <div id="msg"></div>
+  </form>
+</section>
 
-      <div class="footer">
-        <span>Instagram</span><span class="dot">•</span>
-        <span>TikTok</span><span class="dot">•</span>
-        <span>YouTube</span>
-      </div>
-    </section>
-  </main>
+<script>
+  const page1 = document.getElementById('page1');
+  const page2 = document.getElementById('page2');
+  function goToPage2(){
+    page1.classList.add('hidden');
+    setTimeout(()=> page2.classList.remove('hidden'), 600);
+  }
 
-  <script>
-    // Replace this with your real Formspree endpoint
-    const FORMSPREE_ENDPOINT = "https://closetswipe.co.uk/f/yourformid";
+  // Email form (Formspree example)
+  const form = document.getElementById("waitlist-form");
+  const msg = document.getElementById("msg");
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    if(!email) return;
+    try {
+      const res = await fetch("https://closetswipe.co.uk/f/yourformid", {
+        method:"POST",
+        headers: {"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify({email})
+      });
+      if(res.ok){ msg.textContent = "You're in! Check your inbox."; form.reset(); }
+      else { msg.textContent = "Something went wrong."; }
+    } catch { msg.textContent = "Network error."; }
+  });
+</script>
 
-    const form = document.getElementById("waitlist-form");
-    const emailEl = document.getElementById("email");
-    const msgEl = document.getElementById("formMsg");
-    const btn = document.getElementById("submitBtn");
-
-    function showMsg(text, ok=false){
-      msgEl.textContent = text;
-      msgEl.className = "msg " + (ok ? "ok" : "err");
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      msgEl.textContent = "";
-      const email = emailEl.value.trim();
-
-      if (!email) {
-        showMsg("Please enter your email.");
-        emailEl.focus();
-        return;
-      }
-      const okEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+</body>
+</html>
