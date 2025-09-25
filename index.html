@@ -1,623 +1,221 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClosetSwipe - Keeping Fashion Circular</title>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Shrikhand&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: #fff;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background: #333333;
-        }
-        
-        /* Page Container */
-        .page {
-            min-height: 100vh;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.6s ease-in-out;
-        }
-        
-        .page.active {
-            display: block;
-            opacity: 1;
-        }
-        
-        /* Landing Page Styles */
-        .landing-page {
-            position: relative;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100vh;
-            background: linear-gradient(to bottom, 
-                linear-gradient(135deg, #3B8CE6 0%, #3E96BA 35%, #D395AB 70%, #B4588C 100%) 0% 33.33%,
-                #333333 33.33% 100%
-            );
-        }
-        
-        /* Gradient accent areas */
-        .gradient-accent {
-            position: absolute;
-            background: linear-gradient(135deg, #3B8CE6 0%, #3E96BA 35%, #D395AB 70%, #B4588C 100%);
-            border-radius: 20px;
-            opacity: 0.6;
-            z-index: 1;
-        }
-        
-        .gradient-accent.accent-1 {
-            top: 60%;
-            right: 5%;
-            width: 200px;
-            height: 100px;
-            transform: rotate(15deg);
-        }
-        
-        .gradient-accent.accent-2 {
-            bottom: 20%;
-            left: 10%;
-            width: 150px;
-            height: 80px;
-            transform: rotate(-10deg);
-        }
-        
-        /* Floating Animation */
-        .floating-element {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            animation: float 8s ease-in-out infinite;
-            z-index: 1;
-        }
-        
-        .floating-element:nth-child(1) {
-            top: 20%;
-            right: 10%;
-            animation-delay: 0s;
-        }
-        
-        .floating-element:nth-child(2) {
-            bottom: 30%;
-            left: 5%;
-            animation-delay: 4s;
-            width: 150px;
-            height: 150px;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        /* Hero Text Container */
-        .hero-container {
-            position: relative;
-            z-index: 2;
-            margin-top: 5vh;
-            margin-left: 5vw;
-            max-width: 90vw;
-        }
-        
-        /* Closet Text Stack */
-        .closet-stack {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-        
-        .closet-text {
-            font-family: 'Inter', sans-serif;
-            font-weight: 900;
-            font-size: clamp(4rem, 15vw, 12rem);
-            line-height: 0.85;
-            letter-spacing: -0.02em;
-            position: relative;
-            text-transform: uppercase;
-        }
-        
-        .closet-filled {
-            color: #fff;
-            position: relative;
-            z-index: 3;
-        }
-        
-        /* Swipe Text */
-        .swipe-text {
-            font-family: 'Shrikhand', cursive;
-            font-size: clamp(3rem, 12vw, 9rem);
-            color: #fff;
-            margin-left: 2rem;
-            margin-top: -1rem;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 1s ease 0.5s both;
-        }
-        
-        /* Tagline */
-        .tagline {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            margin-top: 3rem;
-            margin-left: 3rem;
-            max-width: 600px;
-            animation: fadeInUp 1s ease 1s both;
-        }
-        
-        /* CTA Button */
-        .cta-container {
-            margin-top: 4rem;
-            margin-left: 3rem;
-            animation: fadeInUp 1s ease 1.5s both;
-        }
-        
-        .cta-button {
-            background: #fff;
-            border: 2px solid #fff;
-            color: #000;
-            padding: 1.5rem 3rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            display: inline-block;
-            cursor: pointer;
-            text-transform: lowercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .cta-button:hover {
-            background: #f8f8f8;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* Social Media */
-        .social-container {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 1rem;
-            z-index: 10;
-        }
-        
-        .social-link {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            overflow: hidden;
-        }
-        
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-        }
-        
-        .social-link svg {
-            width: 24px;
-            height: 24px;
-            fill: #fff;
-        }
-        
-        /* Email Page Styles */
-        .email-page {
-            background: linear-gradient(145deg, #fff 0%, #faf8f8 50%, #f5f0f5 100%);
-            color: #333;
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .email-container {
-            max-width: 600px;
-            width: 100%;
-            text-align: left;
-            margin-left: 5vw;
-        }
-        
-        .back-button {
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 1.5rem;
-            cursor: pointer;
-            margin-bottom: 3rem;
-            transition: color 0.3s ease;
-        }
-        
-        .back-button:hover {
-            color: #B4588C;
-        }
-        
-        .email-title {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            color: #B4588C;
-            margin-bottom: 2rem;
-            line-height: 1.1;
-        }
-        
-        .email-form {
-            margin-bottom: 2rem;
-        }
-        
-        .email-input {
-            width: 100%;
-            padding: 1.5rem 0;
-            font-size: 1.5rem;
-            border: none;
-            border-bottom: 3px solid #ddd;
-            background: transparent;
-            color: #333;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s ease;
-            margin-bottom: 2rem;
-        }
-        
-        .email-input:focus {
-            outline: none;
-            border-bottom-color: #B4588C;
-        }
-        
-        .email-input::placeholder {
-            color: #999;
-        }
-        
-        .submit-button {
-            background: linear-gradient(135deg, #B4588C, #D395AB);
-            border: none;
-            color: #fff;
-            padding: 1.5rem 4rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: lowercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .submit-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(180, 88, 140, 0.3);
-        }
-        
-        .email-microcopy {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: #666;
-            font-size: 1.1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .success-message {
-            background: rgba(76, 175, 80, 0.1);
-            color: #4CAF50;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            display: none;
-            font-weight: 500;
-        }
-        
-        .error-message {
-            background: rgba(244, 67, 54, 0.1);
-            color: #F44336;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            display: none;
-            font-weight: 500;
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .fade-in {
-            animation: fadeInUp 0.8s ease both;
-        }
-        
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .hero-container {
-                margin-left: 2vw;
-                margin-top: 10vh;
-            }
-            
-            .tagline {
-                margin-left: 1rem;
-                margin-top: 2rem;
-            }
-            
-            .cta-container {
-                margin-left: 1rem;
-                margin-top: 3rem;
-            }
-            
-            .cta-button {
-                padding: 1.2rem 2rem;
-                font-size: 1rem;
-            }
-            
-            .social-container {
-                bottom: 1rem;
-                right: 1rem;
-                gap: 0.5rem;
-            }
-            
-            .social-link {
-                width: 45px;
-                height: 45px;
-                font-size: 0.9rem;
-            }
-            
-            .email-container {
-                margin-left: 2vw;
-            }
-            
-            .email-input {
-                font-size: 1.2rem;
-                padding: 1.2rem 0;
-            }
-            
-            .submit-button {
-                padding: 1.2rem 3rem;
-                font-size: 1.1rem;
-            }
-            
-            .gradient-accent {
-                opacity: 0.3;
-            }
-            
-            .gradient-accent.accent-1 {
-                width: 120px;
-                height: 60px;
-            }
-            
-            .gradient-accent.accent-2 {
-                width: 100px;
-                height: 50px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .landing-page {
-                padding: 1rem;
-            }
-            
-            .swipe-text {
-                margin-left: 1rem;
-            }
-            
-            .tagline {
-                margin-left: 0.5rem;
-            }
-            
-            .cta-container {
-                margin-left: 0.5rem;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClosetSwipe • Join the Waitlist</title>
+  <meta name="description" content="ClosetSwipe is the swipe-first fashion resale app. Join the waitlist for early access." />
+
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #9DCCAA;           /* your muted primary green */
+      --card: #ffffff;
+      --text: #1f2a24;
+      --subtle: #2f3a35;
+      --accent: #3E5F47;
+      --accent-press: #2f4a38;
+      --ring: rgba(62,95,71,0.35);
+      --ok: #1f9d5a;
+      --err: #b23a48;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+    }
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:720px;
+      background:var(--card);
+      border-radius:24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+      padding: clamp(20px, 6vw, 48px);
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-weight:600;
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--subtle);
+      background: #eef7f0;
+      padding:8px 12px;
+      border-radius:999px;
+    }
+    h1{
+      margin:16px 0 8px;
+      font-weight:800;
+      line-height:1.05;
+      font-size: clamp(28px, 6vw, 48px);
+      letter-spacing:-0.02em;
+    }
+    p.lede{
+      margin:0 0 28px;
+      font-size: clamp(16px, 2.6vw, 18px);
+      color:#4a5a52;
+    }
+    form{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .field{
+      flex:1 1 260px;
+      display:flex;
+      align-items:center;
+      background:#f6fbf7;
+      border:1.5px solid transparent;
+      border-radius:14px;
+      padding:6px 10px 6px 14px;
+      transition:border .2s, box-shadow .2s, background .2s;
+    }
+    .field:focus-within{
+      border-color:var(--accent);
+      box-shadow:0 0 0 6px var(--ring);
+      background:#fff;
+    }
+    input[type="email"]{
+      appearance:none;
+      border:0;
+      outline:0;
+      width:100%;
+      font-size:16px;
+      background:transparent;
+      padding:10px 6px;
+      color:var(--text);
+    }
+    input::placeholder{ color:#7b8d84; }
+    button{
+      flex:0 0 auto;
+      border:0;
+      cursor:pointer;
+      border-radius:14px;
+      padding:12px 18px;
+      font-weight:700;
+      font-size:16px;
+      color:#fff;
+      background:var(--accent);
+      transition:transform .04s ease, background .2s ease, box-shadow .2s ease;
+      box-shadow:0 6px 18px rgba(62,95,71,0.35);
+    }
+    button:hover{ background: #375642; }
+    button:active{ transform:translateY(1px); background: var(--accent-press);}
+    button[disabled]{
+      opacity:.6;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+    .note{
+      margin-top:10px;
+      font-size:13px;
+      color:#6a7a72;
+    }
+    .msg{
+      margin-top:16px;
+      font-weight:600;
+      font-size:14px;
+    }
+    .ok{ color:var(--ok); }
+    .err{ color:var(--err); }
+    .footer{
+      margin-top:28px;
+      font-size:13px;
+      color:#5b6a63;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .dot{opacity:.5}
+    .bubble{
+      position:absolute; inset:auto auto -40px -40px;
+      width:180px; height:180px; border-radius:50%;
+      background: radial-gradient(120px 120px at 60% 40%, rgba(62,95,71,.20), rgba(62,95,71,0));
+      filter: blur(1px);
+      animation: float 9s ease-in-out infinite;
+    }
+    .bubble.b2{ inset: -50px -60px auto auto; width:220px; height:220px; animation-duration: 12s;}
+    @keyframes float{
+      0%,100%{ transform: translateY(0) }
+      50%{ transform: translateY(-12px) }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .bubble{ animation:none }
+      button, .field{ transition:none }
+    }
+  </style>
 </head>
 <body>
-    <!-- Landing Page -->
-    <div id="landing" class="page landing-page active">
-        <!-- Floating Elements -->
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        
-        <!-- Gradient Accents -->
-        <div class="gradient-accent accent-1"></div>
-        <div class="gradient-accent accent-2"></div>
-        
-        <!-- Hero Content -->
-        <div class="hero-container">
-            <div class="closet-stack">
-                <div class="closet-text closet-filled">Closet</div>
-            </div>
-            
-            <div class="swipe-text">Swipe</div>
-            
-            <div class="tagline">
-                Keeping fashion circular
-            </div>
-            
-            <div class="cta-container">
-                <a href="#" class="cta-button" onclick="showEmailPage()">be the first to know</a>
-            </div>
-        </div>
-        
-        <!-- Social Media Links -->
-        <div class="social-container">
-            <a href="https://www.instagram.com/closetswipe.app" target="_blank" class="social-link" aria-label="Instagram">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-            </a>
-            <a href="https://www.tiktok.com/@closetswipe?_t=ZN-8y75AF005n4&_r=1" target="_blank" class="social-link" aria-label="TikTok">
-                <svg viewBox="0 0 24 24">
-                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-.88-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
-                </svg>
-            </a>
-            <a href="https://youtube.com/@closetswipe?si=EMYgLI7eO6hiIpyZ" target="_blank" class="social-link" aria-label="YouTube">
-                <svg viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-            </a>
-        </div>
-    </div>
-    
-    <!-- Email Collection Page -->
-    <div id="email" class="page email-page">
-        <div class="email-container">
-            <button class="back-button" onclick="showLandingPage()" aria-label="Go back">← back</button>
-            
-            <h1 class="email-title fade-in">Join the wait list</h1>
-            
-            <form class="email-form fade-in" id="signup-form" onsubmit="handleEmailSubmit(event)">
-                <input 
-                    type="email" 
-                    class="email-input" 
-                    name="email"
-                    placeholder="your.email@domain.com" 
-                    required
-                    autocomplete="email"
-                >
-                <br>
-                <button type="submit" class="submit-button">submit</button>
-            </form>
-            
-            <p class="email-microcopy fade-in">get exclusive discounts. no spam ever.</p>
-            
-            <div class="success-message" id="success-message">
-                Thanks! You're on the list ✨
-            </div>
-            
-            <div class="error-message" id="error-message">
-                Something went wrong. Please try again.
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        // Page Navigation
-        function showEmailPage() {
-            const landing = document.getElementById('landing');
-            const email = document.getElementById('email');
-            
-            landing.style.opacity = '0';
-            setTimeout(() => {
-                landing.classList.remove('active');
-                email.classList.add('active');
-                
-                // Trigger fade-in animations
-                const fadeElements = email.querySelectorAll('.fade-in');
-                fadeElements.forEach((el, index) => {
-                    setTimeout(() => {
-                        el.style.animation = `fadeInUp 0.8s ease ${index * 0.2}s both`;
-                    }, 100);
-                });
-            }, 300);
-        }
-        
-        function showLandingPage() {
-            const landing = document.getElementById('landing');
-            const email = document.getElementById('email');
-            
-            email.style.opacity = '0';
-            setTimeout(() => {
-                email.classList.remove('active');
-                landing.classList.add('active');
-            }, 300);
-        }
-        
-        // Email Form Handler
-        async function handleEmailSubmit(e) {
-            e.preventDefault();
-            
-            const form = e.target;
-            const emailInput = form.email;
-            const email = emailInput.value.trim();
-            const successMessage = document.getElementById('success-message');
-            const errorMessage = document.getElementById('error-message');
-            
-            // Hide previous messages
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                errorMessage.textContent = 'Please enter a valid email address.';
-                errorMessage.style.display = 'block';
-                emailInput.focus();
-                return;
-            }
-            
-            // Submit to Google Sheets (keeping your existing endpoint)
-            try {
-                await fetch('https://script.google.com/macros/s/AKfycbzqsXwvhQMSeEmlq9N8ApUZ0dyt1A-Pva-lMadINwL56HFmNDx7f_XTSo3iqzm-MYlN/exec', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({ email }),
-                });
-                
-                successMessage.style.display = 'block';
-                emailInput.value = '';
-                
-                // Auto-hide success message after 5 seconds
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 5000);
-                
-            } catch (error) {
-                errorMessage.textContent = 'Something went wrong. Please try again.';
-                errorMessage.style.display = 'block';
-            }
-        }
-        
-        // Initialize animations on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Trigger initial animations
-            const heroElements = document.querySelectorAll('.hero-container > *');
-            heroElements.forEach((el, index) => {
-                el.style.animationDelay = `${index * 0.3}s`;
-            });
-        });
-        
-        // Smooth scroll behavior
-        document.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.floating-element');
-            if (parallax) {
-                const speed = scrolled * 0.5;
-                parallax.style.transform = `translateY(${speed}px)`;
-            }
-        });
-    </script>
-</body>
-</html>
+  <main class="wrap">
+    <section class="card" aria-labelledby="title">
+      <div class="bubble"></div>
+      <div class="bubble b2"></div>
+
+      <span class="badge" aria-hidden="true">ClosetSwipe • Early Access</span>
+      <h1 id="title">Swipe. Style. Sell.</h1>
+      <p class="lede">
+        ClosetSwipe is the swipe-first fashion resale app. Join the waitlist to get early access, launch perks, and exclusive drops.
+      </p>
+
+      <form id="waitlist-form" novalidate>
+        <label class="field" for="email">
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+                 placeholder="your@email.com"
+                 aria-label="Email address" required />
+        </label>
+        <button id="submitBtn" type="submit">Join the Waitlist</button>
+        <div class="note">No spam. Unsubscribe anytime.</div>
+        <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="footer">
+        <span>Instagram</span><span class="dot">•</span>
+        <span>TikTok</span><span class="dot">•</span>
+        <span>YouTube</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Replace this with your real Formspree endpoint
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/yourformid";
+
+    const form = document.getElementById("waitlist-form");
+    const emailEl = document.getElementById("email");
+    const msgEl = document.getElementById("formMsg");
+    const btn = document.getElementById("submitBtn");
+
+    function showMsg(text, ok=false){
+      msgEl.textContent = text;
+      msgEl.className = "msg " + (ok ? "ok" : "err");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msgEl.textContent = "";
+      const email = emailEl.value.trim();
+
+      if (!email) {
+        showMsg("Please enter your email.");
+        emailEl.focus();
+        return;
+      }
+      const okEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
