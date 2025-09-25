@@ -1,147 +1,264 @@
-# ClosetSwipe Landing Page
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClosetSwipe • Join the Waitlist</title>
+  <meta name="description" content="ClosetSwipe is the swipe-first fashion resale app. Join the waitlist for early access." />
 
-A beautiful, editorial-style pre-launch landing page for the ClosetSwipe fashion app. Features typography-led design with no images, clean animations, and a two-page flow.
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-## 🎨 Design Features
+  <style>
+    :root{
+      --bg: #9DCCAA;           /* your muted primary green */
+      --card: #ffffff;
+      --text: #1f2a24;         /* deep greenish charcoal for legibility */
+      --subtle: #2f3a35;
+      --accent: #3E5F47;       /* forest accent for buttons */
+      --accent-press: #2f4a38;
+      --ring: rgba(62,95,71,0.35);
+      --ok: #1f9d5a;
+      --err: #b23a48;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+    }
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:720px;
+      background:var(--card);
+      border-radius:24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+      padding: clamp(20px, 6vw, 48px);
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-weight:600;
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--subtle);
+      background: #eef7f0;
+      padding:8px 12px;
+      border-radius:999px;
+    }
+    h1{
+      margin:16px 0 8px;
+      font-weight:800;
+      line-height:1.05;
+      font-size: clamp(28px, 6vw, 48px);
+      letter-spacing:-0.02em;
+    }
+    p.lede{
+      margin:0 0 28px;
+      font-size: clamp(16px, 2.6vw, 18px);
+      color:#4a5a52;
+    }
+    form{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .field{
+      flex:1 1 260px;
+      display:flex;
+      align-items:center;
+      background:#f6fbf7;
+      border:1.5px solid transparent;
+      border-radius:14px;
+      padding:6px 10px 6px 14px;
+      transition:border .2s, box-shadow .2s, background .2s;
+    }
+    .field:focus-within{
+      border-color:var(--accent);
+      box-shadow:0 0 0 6px var(--ring);
+      background:#fff;
+    }
+    input[type="email"]{
+      appearance:none;
+      border:0;
+      outline:0;
+      width:100%;
+      font-size:16px;
+      background:transparent;
+      padding:10px 6px;
+      color:var(--text);
+    }
+    input::placeholder{ color:#7b8d84; }
+    button{
+      flex:0 0 auto;
+      border:0;
+      cursor:pointer;
+      border-radius:14px;
+      padding:12px 18px;
+      font-weight:700;
+      font-size:16px;
+      color:#fff;
+      background:var(--accent);
+      transition:transform .04s ease, background .2s ease, box-shadow .2s ease;
+      box-shadow:0 6px 18px rgba(62,95,71,0.35);
+    }
+    button:hover{ background: #375642; }
+    button:active{ transform:translateY(1px); background: var(--accent-press);}
+    button[disabled]{
+      opacity:.6;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+    .note{
+      margin-top:10px;
+      font-size:13px;
+      color:#6a7a72;
+    }
+    .msg{
+      margin-top:16px;
+      font-weight:600;
+      font-size:14px;
+    }
+    .ok{ color:var(--ok); }
+    .err{ color:var(--err); }
+    .footer{
+      margin-top:28px;
+      font-size:13px;
+      color:#5b6a63;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .dot{opacity:.5}
+    /* Simple floating decor */
+    .bubble{
+      position:absolute; inset:auto auto -40px -40px;
+      width:180px; height:180px; border-radius:50%;
+      background: radial-gradient(120px 120px at 60% 40%, rgba(62,95,71,.20), rgba(62,95,71,0));
+      filter: blur(1px);
+      animation: float 9s ease-in-out infinite;
+    }
+    .bubble.b2{ inset: -50px -60px auto auto; width:220px; height:220px; animation-duration: 12s;}
+    @keyframes float{
+      0%,100%{ transform: translateY(0) }
+      50%{ transform: translateY(-12px) }
+    }
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .bubble{ animation:none }
+      button, .field{ transition:none }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" aria-labelledby="title">
+      <div class="bubble"></div>
+      <div class="bubble b2"></div>
 
-### Page 1: Hero Landing
-- **Gradient Background**: Soft blend of brand colors (#469DF8, #4FA9CC, #E8A7BF, #C66E9E)
-- **Layered Typography**: 
-  - 3 stacked "Closet" text elements (2 outlined, 1 filled) using bold Inter font
-  - "Swipe" in decorative Shrikhand font
-- **Editorial Layout**: Off-center, large text with strong whitespace usage
-- **Floating Animation**: Gentle floating circles for dynamic feel
-- **Social Links**: Instagram, TikTok, YouTube (bottom-right corner)
-- **Smooth Transitions**: Fade-in animations and hover effects
+      <span class="badge" aria-hidden="true">ClosetSwipe • Early Access</span>
+      <h1 id="title">Swipe. Style. Sell.</h1>
+      <p class="lede">
+        ClosetSwipe is the swipe-first fashion resale app. Join the waitlist to get early access, launch perks, and exclusive drops.
+      </p>
 
-### Page 2: Email Collection
-- **Clean Design**: Soft pink gradient background
-- **Large Input Field**: Stylish email input with elegant styling
-- **Working Integration**: Connected to existing Google Sheets backend
-- **Success/Error States**: Clean feedback without popups
-- **Responsive**: Mobile-first design
+      <form id="waitlist-form" novalidate>
+        <label class="field" for="email">
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+                 placeholder="your@email.com"
+                 aria-label="Email address" required />
+        </label>
+        <button id="submitBtn" type="submit">Join the Waitlist</button>
+        <div class="note">No spam. Unsubscribe anytime.</div>
+        <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
+      </form>
 
-## 🛠 Technical Stack
+      <div class="footer">
+        <span>Instagram</span><span class="dot">•</span>
+        <span>TikTok</span><span class="dot">•</span>
+        <span>YouTube</span>
+      </div>
+    </section>
+  </main>
 
-- **Pure HTML/CSS/JavaScript** - No external frameworks
-- **Google Fonts**: Inter, Playfair Display, Shrikhand
-- **Responsive Design**: Mobile-first approach
-- **Cross-browser Compatible**: Modern browser support
-- **GitHub Pages Ready**: Optimized for easy deployment
+  <script>
+    // ---- CONFIG: paste your Formspree endpoint here ----
+    // After creating your form (steps below), replace with your endpoint, e.g.:
+    // const FORMSPREE_ENDPOINT = "https://formspree.io/f/abcdxyz";
+    const FORMSPREE_ENDPOINT = ""; // ← ADD YOUR ENDPOINT
 
-## 🚀 Deployment Instructions
+    const form = document.getElementById("waitlist-form");
+    const emailEl = document.getElementById("email");
+    const msgEl = document.getElementById("formMsg");
+    const btn = document.getElementById("submitBtn");
 
-### Current Setup
-Your site is already configured with:
-- Domain: `closetswipe.co.uk` (via CNAME file)
-- Google Sheets integration for email collection
-- GitHub Pages deployment
+    function showMsg(text, ok=false){
+      msgEl.textContent = text;
+      msgEl.className = "msg " + (ok ? "ok" : "err");
+    }
 
-### To Update Live Site
-1. **Push to GitHub**:
-   ```bash
-   git add .
-   git commit -m "New editorial landing page design"
-   git push origin main
-   ```
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msgEl.textContent = "";
+      const email = emailEl.value.trim();
 
-2. **GitHub Pages**: Your site will automatically deploy to `https://closetswipe.co.uk`
+      if (!email) {
+        showMsg("Please enter your email.");
+        emailEl.focus();
+        return;
+      }
+      // Basic email pattern check
+      const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!okEmail){
+        showMsg("Please enter a valid email address.");
+        emailEl.focus();
+        return;
+      }
 
-### Domain Connection (Already Set Up)
-Your `CNAME` file is already configured for `closetswipe.co.uk`. If you need to change domains:
+      // If no endpoint configured, gently warn but don't block local testing
+      if (!FORMSPREE_ENDPOINT) {
+        showMsg("Form endpoint not set yet. Add your Formspree URL in the JS (FORMSPREE_ENDPOINT).");
+        return;
+      }
 
-1. Update the `CNAME` file with your new domain
-2. Configure DNS settings with your domain provider:
-   ```
-   Type: CNAME
-   Name: @ (or www)
-   Value: [your-username].github.io
-   ```
+      btn.disabled = true;
 
-## 📱 Features
+      try {
+        const res = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          headers: { "Accept": "application/json", "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
 
-### Landing Page
-- ✅ Layered "Closet" typography with outline effects
-- ✅ Decorative "Swipe" text
-- ✅ "Keeping fashion circular" tagline
-- ✅ "be the first to know" CTA button
-- ✅ Social media links (IG, TikTok, YouTube)
-- ✅ Floating animation elements
-- ✅ Gradient background using brand colors
-
-### Email Collection Page
-- ✅ Clean, minimal design
-- ✅ Large email input field
-- ✅ "get exclusive discounts. no spam ever." message
-- ✅ Working Google Sheets integration
-- ✅ Success/error feedback
-- ✅ Smooth page transitions
-
-### Animations & Interactions
-- ✅ Fade-in on scroll animations
-- ✅ Gentle hover effects
-- ✅ Floating background elements
-- ✅ Smooth page transitions
-- ✅ Luxury feel with subtle animations
-
-### Responsive Design
-- ✅ Mobile-first approach
-- ✅ Optimized for all screen sizes
-- ✅ Touch-friendly interface
-- ✅ Scalable typography
-
-## 🎯 Brand Colors Used
-
-- `#469DF8` - Primary Blue
-- `#4FA9CC` - Light Blue  
-- `#E8A7BF` - Light Pink
-- `#C66E9E` - Rose Pink
-
-## 📧 Email Collection
-
-The email form integrates with your existing Google Sheets setup:
-- **Endpoint**: Already configured
-- **Validation**: Client-side email validation
-- **Feedback**: Clean success/error messages
-- **No Spam**: Privacy-focused messaging
-
-## 🔧 Customization
-
-### Typography
-- **Headlines**: Inter (bold, sans-serif)
-- **Decorative**: Shrikhand (curvy)
-- **Body**: Playfair Display (serif, italic)
-
-### Colors
-Update the CSS custom properties to change the color scheme:
-```css
-/* In the gradient background */
-background: linear-gradient(135deg, #YOUR_COLOR1, #YOUR_COLOR2, #YOUR_COLOR3, #YOUR_COLOR4);
-```
-
-### Social Links
-Update the social media URLs in the HTML:
-```html
-<a href="https://www.instagram.com/your_handle">
-<a href="https://www.tiktok.com/your_handle">
-<a href="https://www.youtube.com/your_channel">
-```
-
-## 📊 Performance
-
-- **Lightweight**: No external frameworks or heavy dependencies
-- **Fast Loading**: Optimized CSS and minimal JavaScript
-- **SEO Friendly**: Proper HTML structure and meta tags
-- **Accessibility**: ARIA labels and keyboard navigation support
-
-## 🔄 Future Enhancements
-
-- Add more sophisticated animations
-- Implement A/B testing for CTAs
-- Add analytics tracking
-- Create additional landing page variants
-- Integrate with email marketing platforms
-
----
-
-**Ready to launch!** 🚀 Your editorial, fashion-forward landing page is now live and collecting emails for ClosetSwipe's launch.
+        if (res.ok) {
+          form.reset();
+          showMsg("You're in! Check your inbox for a confirmation.", true);
+        } else {
+          const data = await res.json().catch(()=> ({}));
+          const fallback = data?.errors?.[0]?.message || "Something went wrong. Please try again.";
+          showMsg(fallback);
+        }
+      } catch (err) {
+        showMsg("Network error. Please try again.");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
