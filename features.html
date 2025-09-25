@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ClosetSwipe • Features</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Shrikhand&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#9dccaa; --text:#1f2a24; --accent:#3E5F47; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}
+  .topbar{position:fixed; top:14px; left:16px; right:16px; display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .brand{font-weight:900; letter-spacing:-.02em; text-transform:uppercase}
+  .nav{display:flex; gap:14px; flex-wrap:wrap}
+  .nav a{ text-decoration:none; color:var(--text); font-weight:700; padding:8px 10px; border-radius:10px }
+  .nav a:hover{ background:rgba(255,255,255,.35) }
+  .page{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:80px 16px 16px; text-align:center}
+  h1{font-weight:900; font-size:clamp(32px,8vw,64px); text-transform:uppercase; letter-spacing:-.02em}
+  ul{list-style:none; max-width:700px; font-size:clamp(16px,2.4vw,20px)}
+  li{margin:8px 0}
+  .home{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); text-decoration:none; font-weight:700; color:#fff; background:var(--accent); padding:10px 14px; border-radius:10px}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">ClosetSwipe</div>
+    <nav class="nav">
+      <a href="/features.html">Features</a>
+      <a href="/what-is.html">What is ClosetSwipe</a>
+      <a href="/contact.html">Contact Us</a>
+    </nav>
+  </div>
+
+  <section class="page">
+    <h1>Features</h1>
+    <ul>
+      <li>Swipe to discover unique second-hand pieces</li>
+      <li>List items in seconds — snap, price, publish</li>
+      <li>Curate your closet & share boards</li>
+      <li>Seller tools & simple payouts</li>
+      <li>Sustainable & circular by design</li>
+    </ul>
+    <a class="home" href="/index.html">← Back to Landing</a>
+  </section>
+</body>
+</html>
