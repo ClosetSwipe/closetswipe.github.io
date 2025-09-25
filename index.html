@@ -6,7 +6,7 @@
 <title>ClosetSwipe • Landing</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Shrikhand&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#9dccaa; --text:#1f2a24; --accent:#3E5F47; --panel:#ffffff; }
+  :root { --bg:#9dccaa; --text:#1f2a24; --accent:#3E5F47; }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
 
@@ -14,23 +14,25 @@
   .topbar{
     position:fixed; top:14px; left:16px; right:16px;
     display:flex; align-items:center; justify-content:space-between; gap:12px;
+    z-index: 10; /* <— keeps buttons clickable above pages */
   }
-  .brand{
-    font-weight:900; letter-spacing:-.02em; text-transform:uppercase;
-  }
-  .nav{
-    display:flex; gap:14px; flex-wrap:wrap;
-  }
+  .brand{font-weight:900; letter-spacing:-.02em; text-transform:uppercase}
+  .nav{display:flex; gap:14px; flex-wrap:wrap}
   .nav a, .back-btn{
     text-decoration:none; border:0; background:transparent; color:var(--text);
-    font-weight:700; padding:8px 10px; border-radius:10px; cursor:pointer;
+    font-weight:700; padding:8px 10px; border-radius:10px; cursor:pointer
   }
   .nav a:hover, .back-btn:hover{ background:rgba(255,255,255,.35) }
-  .back-btn{ display:none } /* only show on page2 */
+  .back-btn{ display:none }              /* only show on page2 */
   .on-page2 .back-btn{ display:inline-block }
 
   /* Pages */
-  .page{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:80px 16px 16px; transition:opacity .6s,transform .6s}
+  .page{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:16px; padding:80px 16px 16px;
+    transition: opacity .45s ease, transform .45s ease;
+  }
   .hidden{opacity:0; pointer-events:none; transform:translateX(-100%)}
 
   h1{font-weight:900; font-size:clamp(42px,12vw,100px); text-transform:uppercase; letter-spacing:-.02em; text-align:center}
@@ -49,20 +51,21 @@
 
 <!-- Top bar -->
 <div class="topbar">
-  <button class="back-btn" id="backBtn" type="button">← Back</button>
+  <button class="back-btn" id="backBtn" type="button" aria-label="Go back to first screen">← Back</button>
   <div class="brand">ClosetSwipe</div>
-  <nav class="nav">
-    <a href="/features.html">Features</a>
-    <a href="/what-is.html">What is ClosetSwipe</a>
-    <a href="/contact.html">Contact Us</a>
+  <nav class="nav" aria-label="Primary">
+    <!-- RELATIVE links (no leading slash) -->
+    <a href="features.html">Features</a>
+    <a href="what-is.html">What is ClosetSwipe</a>
+    <a href="contact.html">Contact Us</a>
   </nav>
 </div>
 
 <!-- Page 1: Hero -->
-<section id="page1" class="page">
-  <h1>Closet<span class="swipe">Swipe</span></h1>
+<section id="page1" class="page" aria-labelledby="home-title">
+  <h1 id="home-title">Closet<span class="swipe">Swipe</span></h1>
   <p>Keeping fashion circular. Be the first to know when we launch.</p>
-  <button class="cta" onclick="goToPage2()">Join the Waitlist</button>
+  <button class="cta" id="joinBtn" type="button">Join the Waitlist</button>
 </section>
 
 <!-- Page 2: Email -->
@@ -77,35 +80,57 @@
 </section>
 
 <script>
-  // Page switching
-  const body = document.body;
-  const p1 = document.getElementById('page1');
-  const p2 = document.getElementById('page2');
-  function goToPage2(){ p1.classList.add('hidden'); body.classList.add('on-page2'); setTimeout(()=>p2.classList.remove('hidden'),600); }
-  function goToPage1(){ p2.classList.add('hidden'); setTimeout(()=>{ p1.classList.remove('hidden'); body.classList.remove('on-page2'); },600); }
-  document.getElementById('backBtn').addEventListener('click', goToPage1);
+  // Grab elements safely
+  const body   = document.body;
+  const p1     = document.getElementById('page1');
+  const p2     = document.getElementById('page2');
+  const joinBtn= document.getElementById('joinBtn');
+  const backBtn= document.getElementById('backBtn');
+
+  // Page transitions
+  function goToPage2(){
+    if (!p1 || !p2) return;
+    p1.classList.add('hidden');
+    body.classList.add('on-page2');
+    // show p2 after transition
+    setTimeout(()=> p2.classList.remove('hidden'), 450);
+  }
+  function goToPage1(){
+    if (!p1 || !p2) return;
+    p2.classList.add('hidden');
+    // reveal p1 after p2 slides away
+    setTimeout(()=>{
+      p1.classList.remove('hidden');
+      body.classList.remove('on-page2');
+    }, 450);
+  }
+
+  // Bind buttons
+  if (joinBtn) joinBtn.addEventListener('click', goToPage2);
+  if (backBtn) backBtn.addEventListener('click', goToPage1);
 
   // Formspree (replace with your endpoint)
   const ENDPOINT = "https://closetswipe.co.uk/f/yourformid";
   const form = document.getElementById('waitlist-form');
   const msg  = document.getElementById('msg');
 
-  form.addEventListener('submit', async e=>{
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    if(!email){ msg.textContent="Please enter your email."; return; }
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent="Enter a valid email."; return; }
-    try{
-      const res = await fetch(ENDPOINT,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({email})
-      });
-      if(res.ok){ form.reset(); msg.textContent="You're in! Check your inbox."; }
-      else { msg.textContent="Something went wrong. Try again."; }
-    }catch{ msg.textContent="Network error. Try again."; }
-  });
+  if (form) {
+    form.addEventListener('submit', async e=>{
+      e.preventDefault();
+      const email = (document.getElementById('email')?.value || '').trim();
+      if(!email){ msg.textContent="Please enter your email."; return; }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent="Enter a valid email."; return; }
+      try{
+        const res = await fetch(ENDPOINT,{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({email})
+        });
+        if(res.ok){ form.reset(); msg.textContent="You're in! Check your inbox."; }
+        else { msg.textContent="Something went wrong. Try again."; }
+      }catch{ msg.textContent="Network error. Try again."; }
+    });
+  }
 </script>
-
 </body>
 </html>
