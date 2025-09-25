@@ -6,11 +6,16 @@
 <title>ClosetSwipe • Landing</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Shrikhand&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#9dccaa; --text:#1f2a24; --accent:#3E5F47; }
+  :root {
+    --bg:#9dccaa;       /* pastel green background */
+    --text:#1f2a24;     /* dark text */
+    --accent:#FFD1D9;   /* soft pastel pink for buttons */
+    --accent-hover:#F7B8C7; /* slightly deeper pink on hover */
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
 
-  /* Top bar (only Back button + brand) */
+  /* Top bar (brand + back button) */
   .topbar{
     position:fixed; top:14px; left:16px; right:16px;
     display:flex; align-items:center; justify-content:space-between;
@@ -19,10 +24,11 @@
   .brand{font-weight:900; letter-spacing:-.02em; text-transform:uppercase}
   .back-btn{
     display:none;
-    border:0; background:var(--accent); color:#fff; cursor:pointer;
+    border:0; background:var(--accent); color:var(--text); cursor:pointer;
     font-weight:700; font-size:14px; padding:8px 12px; border-radius:8px;
+    transition: background .2s ease;
   }
-  .back-btn:hover{ background:#2f4a38 }
+  .back-btn:hover{ background:var(--accent-hover) }
   .on-page2 .back-btn{ display:inline-block }
 
   /* Pages */
@@ -35,10 +41,16 @@
   .hidden{opacity:0; pointer-events:none; transform:translateX(-100%)}
 
   h1{font-weight:900; font-size:clamp(42px,12vw,100px); text-transform:uppercase; letter-spacing:-.02em; text-align:center}
-  h1 .swipe{font-family:Shrikhand,cursive; display:block; font-size:.7em; color:var(--accent)}
+  h1 .swipe{font-family:Shrikhand,cursive; display:block; font-size:.7em; color:var(--text)}
   p{font-size:clamp(16px,2.4vw,20px); text-align:center; max-width:640px; opacity:.9}
 
-  .cta{border:0; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; font-size:16px; padding:12px 18px; cursor:pointer}
+  .cta{
+    border:0; border-radius:10px;
+    background:var(--accent); color:var(--text);
+    font-weight:700; font-size:16px; padding:12px 18px;
+    cursor:pointer; transition: background .2s ease;
+  }
+  .cta:hover{ background:var(--accent-hover) }
 
   form{display:flex; flex-direction:column; gap:12px; width:90%; max-width:420px}
   input{padding:14px; border-radius:10px; border:0; font-size:16px; background:#fff}
