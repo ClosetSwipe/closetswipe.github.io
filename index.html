@@ -7,11 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream: #F8F7F4;     /* background */
-    --text: #000000;      /* black text */
-    --mint:  #9DCCAA;     /* pastel green for blobs */
-    --pink:  #FFD1D9;     /* soft accent for buttons/shapes */
-    --pink-2:#F7B8C7;     /* hover */
+    --cream:#F8F7F4; --text:#000; --mint:#9DCCAA; --pink:#FFD1D9; --pink-2:#F7B8C7;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:var(--cream);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
@@ -26,16 +22,14 @@
 
   /* Layout */
   .wrap{min-height:100vh;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:24px;padding:100px 28px 28px;position:relative;overflow:hidden}
-
-  /* Left hero */
   .hero{max-width:680px}
   h1{margin:0 0 10px;font-size:clamp(32px,6vw,64px);font-weight:800;letter-spacing:-.02em;line-height:1.05}
   .lede{margin:0 0 22px;font-size:clamp(16px,2.4vw,20px);opacity:.9}
-  .cta{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:12px;cursor:pointer;background:var(--pink);color:#233229;font-weight:700;font-size:16px;padding:12px 18px;box-shadow:0 8px 22px rgba(255,209,217,.45);transition:background .2s ease,transform .04s ease,box-shadow .2s ease}
+  .cta{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:12px;cursor:pointer;background:var(--pink);color:#000;font-weight:700;font-size:16px;padding:12px 18px;box-shadow:0 8px 22px rgba(255,209,217,.45);transition:background .2s ease,transform .04s ease,box-shadow .2s ease}
   .cta:hover{background:var(--pink-2);box-shadow:0 10px 26px rgba(247,184,199,.5)}
   .cta:active{transform:translateY(1px)}
 
-  /* Right decorative area */
+  /* Decorative blobs */
   .art{position:relative;height:60vh;min-height:320px}
   .blob{position:absolute;border-radius:50%;filter:blur(1px);opacity:.65;animation:float 9s ease-in-out infinite}
   .b1{width:280px;height:280px;right:-60px;top:-40px;background:radial-gradient(60% 60% at 40% 40%, var(--mint), rgba(157,204,170,0))}
@@ -53,24 +47,22 @@
   .close:hover{background:#f3f5f4}
   form{display:flex;flex-direction:column;gap:12px;margin-top:4px}
   input[type="email"]{padding:14px;border-radius:10px;border:1.5px solid #e5ebe7;font-size:16px}
-  .submit{border:0;border-radius:10px;cursor:pointer;background:var(--pink);color:#233229;font-weight:800;padding:12px 16px;transition:background .2s ease}
+  .submit{border:0;border-radius:10px;cursor:pointer;background:var(--pink);color:#000;font-weight:800;padding:12px 16px;transition:background .2s ease}
   .submit:hover{background:var(--pink-2)}
   .note{font-size:13px;color:#666}
   #msg{font-weight:700;margin-top:2px}
 
-  /* Mobile */
   @media (max-width:860px){
     .wrap{grid-template-columns:1fr;padding-top:92px}
     .art{order:-1;height:28vh;min-height:200px}
-    .b1{right:-80px;top:-80px}
-    .b2{left:-40px;bottom:-60px}
+    .b1{right:-80px;top:-80px}.b2{left:-40px;bottom:-60px}
   }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <div class="brand">ClosetSwipe</div>
+  <a class="brand" href="index.html">ClosetSwipe</a>
   <nav class="nav">
     <a href="what-is.html">About</a>
     <a href="features.html">Features</a>
@@ -85,9 +77,7 @@
     <button class="cta" id="openWaitlist" type="button">Join the waitlist</button>
   </section>
   <section class="art" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
   </section>
 </main>
 
@@ -104,35 +94,33 @@
 </aside>
 
 <script>
+  // Open/close panel
   const openBtn = document.getElementById('openWaitlist');
   const overlay = document.getElementById('overlay');
   const panel   = document.getElementById('panel');
   const closeBtn= document.getElementById('closePanel');
-
   function openPanel(){ panel.classList.add('show'); overlay.classList.add('show'); }
   function closePanel(){ panel.classList.remove('show'); overlay.classList.remove('show'); }
-
   openBtn.addEventListener('click', openPanel);
   closeBtn.addEventListener('click', closePanel);
   overlay.addEventListener('click', closePanel);
   window.addEventListener('keydown', e=>{ if(e.key==='Escape') closePanel(); });
 
-  const ENDPOINT = "https://closetswipe.co.uk/f/yourformid"; // replace with yours
+  // Formspree
+  const ENDPOINT = "https://closetswipe.co.uk/f/yourformid";
   const form = document.getElementById('waitlist-form');
   const msg  = document.getElementById('msg');
-
   form.addEventListener('submit', async e=>{
     e.preventDefault();
     const email = (document.getElementById('email')?.value || '').trim();
     if(!email){ msg.textContent="Please enter your email."; return; }
-    if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){ msg.textContent="Enter a valid email."; return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent="Enter a valid email."; return; }
     try{
       const res = await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email})});
-      if(res.ok){ form.reset(); msg.textContent="You're in! Check your inbox."; }
-      else{ msg.textContent="Something went wrong. Try again."; }
-    }catch{ msg.textContent="Network error. Try again."; }
+      msg.textContent = res.ok ? "You're in! Check your inbox." : "Something went wrong. Please try again.";
+      if(res.ok) form.reset();
+    }catch{ msg.textContent="Network error. Please try again."; }
   });
 </script>
 </body>
 </html>
-
