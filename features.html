@@ -4,24 +4,29 @@
 <title>ClosetSwipe • Features</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  .brand, .brand:visited, .brand:hover, .brand:active {
-  color: #000;           /* always black */
-  text-decoration: none; /* remove underline */
-  cursor: pointer;       /* still acts like a button */
-}
   :root{ --cream:#F8F7F4; --text:#000; --mint:#9DCCAA; }
-  html,body{height:100%;margin:0;background:var(--cream);color:var(--text);font-family:Inter,sans-serif}
-  .top{display:flex;justify-content:space-between;align-items:center;padding:18px 22px}
-  .brand{font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
-  .nav a{color:inherit;text-decoration:none;font-weight:600;margin-left:16px;padding:8px 10px;border-radius:10px}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--cream);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  /* Shared header + nav */
+  .topbar{
+    position:fixed; top:16px; left:20px; right:20px; z-index:10;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .brand{font-weight:800; letter-spacing:-.02em; text-transform:uppercase}
+  .brand, .brand:visited, .brand:hover, .brand:active{ color:#000; text-decoration:none; cursor:pointer }
+  .nav{display:flex; gap:18px; flex-wrap:wrap; align-items:center}
+  .nav a{font-weight:600; padding:8px 10px; border-radius:10px}
   .nav a:hover{background:rgba(0,0,0,.05)}
 
-  main{min-height:calc(100vh - 72px);display:flex;justify-content:center;padding:110px 24px 40px}
-  .wrap{max-width:1000px;width:100%;text-align:center}
-  h1{font-size:clamp(28px,6vw,48px);margin:0 0 24px;font-weight:800}
+  /* Layout */
+  main{min-height:100vh; display:flex; justify-content:center; padding:120px 24px 40px}
+  .wrap{max-width:1000px; width:100%; text-align:center}
+  h1{font-size:clamp(28px,6vw,48px); margin:0 0 24px; font-weight:800}
 
   .grid{
-    display:grid;gap:18px;
+    display:grid; gap:18px;
     grid-template-columns: repeat(5, minmax(120px,1fr));
   }
   @media (max-width:1000px){ .grid{grid-template-columns: repeat(3, minmax(120px,1fr)); } }
@@ -30,19 +35,28 @@
   .card{
     background:#fff; border:1px solid #ececeb; border-radius:16px; padding:16px 12px;
     box-shadow:0 6px 18px rgba(0,0,0,.06);
-    display:flex;flex-direction:column;align-items:center;gap:10px;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
   }
   .icon{
-    width:48px;height:48px;border-radius:12px;
+    width:48px; height:48px; border-radius:12px;
     background: radial-gradient(60% 60% at 40% 40%, var(--mint), rgba(157,204,170,0));
-    display:grid;place-items:center;
+    display:grid; place-items:center;
   }
-  .icon svg{width:26px;height:26px;stroke:#000;fill:none;stroke-width:2}
+  .icon svg{width:26px; height:26px; stroke:#000; fill:none; stroke-width:2}
   .title{font-weight:800}
-  .desc{font-size:14px;opacity:.85}
+  .desc{font-size:14px; opacity:.85}
+
+  /* Mobile header */
+  @media (max-width:860px){
+    .topbar{flex-direction:column; align-items:flex-start; gap:8px}
+    .brand{font-size:18px}
+    .nav{gap:12px}
+    .nav a{padding:6px 8px; font-size:14px}
+  }
 </style>
-</head><body>
-<header class="top">
+</head>
+<body>
+<header class="topbar">
   <a class="brand" href="index.html">ClosetSwipe</a>
   <nav class="nav">
     <a href="what-is.html">About</a>
