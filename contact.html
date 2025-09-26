@@ -1,1 +1,68 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ClosetSwipe • Contact</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#F8F7F4;--green:#3E5F47;--pink:#FFD1D9;--pink2:#F7B8C7}
+  html,body{height:100%;margin:0;background:var(--cream);color:var(--green);font-family:Inter,sans-serif}
+  .top{display:flex;justify-content:space-between;align-items:center;padding:18px 22px}
+  .nav a{color:inherit;text-decoration:none;font-weight:600;margin-left:16px}
+  .nav a:hover{background:rgba(62,95,71,.08);padding:6px 8px;border-radius:10px}
+  main{min-height:calc(100vh - 72px);display:flex;align-items:center;justify-content:center;padding:24px}
+  .wrap{width:min(90vw,520px)}
+  h1{font-size:clamp(28px,6vw,48px);margin:0 0 12px;font-weight:800;text-align:center}
+  form{display:flex;flex-direction:column;gap:12px}
+  input,textarea{padding:14px;border-radius:10px;border:1.5px solid #e5ebe7;font-size:16px;background:#fff}
+  textarea{min-height:140px;resize:vertical}
+  button{border:0;border-radius:10px;background:var(--pink);color:#233229;font-weight:800;padding:12px 16px;cursor:pointer}
+  button:hover{background:var(--pink2)}
+  #status{font-weight:700;text-align:center}
+</style>
+</head><body>
+<header class="top">
+  <div class="brand" style="font-weight:800;letter-spacing:-.02em;text-transform:uppercase">ClosetSwipe</div>
+  <nav class="nav">
+    <a href="what-is.html">About</a>
+    <a href="features.html">Features</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+</header>
+<main>
+  <div class="wrap">
+    <h1>Contact Us</h1>
+    <form id="contact-form" novalidate>
+      <input id="c-email" type="email" placeholder="you@example.com" required aria-label="Your email">
+      <textarea id="c-msg" placeholder="How can we help?" required aria-label="Your message"></textarea>
+      <button type="submit">Send</button>
+      <div id="status" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</main>
+
+<script>
+  // Replace with your Formspree endpoint (or a separate one)
+  const CONTACT_ENDPOINT = "https://closetswipe.co.uk/f/yourformid";
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('status');
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const email = (document.getElementById('c-email')?.value || '').trim();
+    const message = (document.getElementById('c-msg')?.value || '').trim();
+    if(!email || !message){ status.textContent="Please complete all fields."; return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ status.textContent="Enter a valid email."; return; }
+
+    try{
+      const res = await fetch(CONTACT_ENDPOINT,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify({ email, message })
+      });
+      if(res.ok){ form.reset(); status.textContent="Message sent! We'll get back to you."; }
+      else{ status.textContent="Something went wrong. Please try again."; }
+    }catch{ status.textContent="Network error. Please try again."; }
+  });
+</script>
+</body></html>
 
