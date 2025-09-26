@@ -1,131 +1,212 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ClosetSwipe • Landing</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Shrikhand&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ClosetSwipe • One swipe closer to your next look</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#9dccaa;       /* pastel green background */
-    --text:#1f2a24;     /* dark text */
-    --accent:#FFD1D9;   /* soft pastel pink for buttons */
-    --accent-hover:#F7B8C7; /* slightly deeper pink on hover */
+  :root{
+    --cream: #F8F7F4;     /* background */
+    --green: #3E5F47;     /* readable green for text */
+    --mint:  #9DCCAA;     /* brand pastel green (accents) */
+    --pink:  #FFD1D9;     /* soft accent for shapes/button */
+    --pink-2:#F7B8C7;     /* hover */
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--cream);color:var(--green);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  a{color:inherit;text-decoration:none}
 
-  /* Top bar (brand + back button) */
+  /* Top nav */
   .topbar{
-    position:fixed; top:14px; left:16px; right:16px;
-    display:flex; align-items:center; justify-content:space-between;
-    z-index:10;
+    position:fixed; top:16px; left:20px; right:20px; z-index:10;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
   }
-  .brand{font-weight:900; letter-spacing:-.02em; text-transform:uppercase}
-  .back-btn{
-    display:none;
-    border:0; background:var(--accent); color:var(--text); cursor:pointer;
-    font-weight:700; font-size:14px; padding:8px 12px; border-radius:8px;
+  .brand{
+    font-weight:800; letter-spacing:-.02em; text-transform:uppercase;
+  }
+  .nav{display:flex; gap:18px; flex-wrap:wrap}
+  .nav a{
+    font-weight:600; padding:8px 10px; border-radius:10px;
+  }
+  .nav a:hover{ background:rgba(62,95,71,.08) }
+
+  /* Layout */
+  .wrap{
+    min-height:100vh; display:grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items:center; gap:24px;
+    padding:100px 28px 28px;
+    position:relative; overflow:hidden;
+  }
+
+  /* Left hero */
+  .hero{
+    max-width:680px;
+  }
+  h1{
+    margin:0 0 10px;
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight:800; letter-spacing:-.02em; line-height:1.05;
+  }
+  .lede{
+    margin:0 0 22px; font-size: clamp(16px, 2.4vw, 20px); opacity:.9;
+  }
+  .cta{
+    display:inline-flex; align-items:center; gap:10px;
+    border:0; border-radius:12px; cursor:pointer;
+    background:var(--pink); color:#233229; /* darker text for contrast */
+    font-weight:700; font-size:16px; padding:12px 18px;
+    box-shadow: 0 8px 22px rgba(255,209,217,.45);
+    transition: background .2s ease, transform .04s ease, box-shadow .2s ease;
+  }
+  .cta:hover{ background:var(--pink-2); box-shadow:0 10px 26px rgba(247,184,199,.5) }
+  .cta:active{ transform:translateY(1px) }
+
+  /* Right decorative area */
+  .art{
+    position:relative; height:60vh; min-height:320px;
+  }
+  .blob{
+    position:absolute; border-radius:50%; filter:blur(1px);
+    opacity:.65; animation: float 9s ease-in-out infinite;
+  }
+  .b1{ width:280px; height:280px; right:-60px; top:-40px; background:radial-gradient(60% 60% at 40% 40%, var(--mint), rgba(157,204,170,0)); }
+  .b2{ width:240px; height:240px; left:40px; bottom:-60px; background:radial-gradient(60% 60% at 60% 40%, var(--pink), rgba(255,209,217,0)); animation-duration: 12s; }
+  .b3{ width:160px; height:160px; right:120px; bottom:40px; background:radial-gradient(60% 60% at 50% 50%, rgba(62,95,71,.18), rgba(62,95,71,0)); animation-duration: 10s; }
+  @keyframes float{
+    0%,100%{ transform:translateY(0) }
+    50%{ transform:translateY(-10px) }
+  }
+
+  /* Slide-in waitlist panel */
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.3);
+    opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:20;
+  }
+  .overlay.show{ opacity:1; pointer-events:auto }
+  .panel{
+    position:fixed; top:0; right:0; height:100%; width:min(90vw, 420px);
+    background:#fff; color:#26352e; z-index:21;
+    transform:translateX(100%); transition: transform .25s ease;
+    box-shadow:-14px 0 36px rgba(0,0,0,.15); padding:24px 20px 28px;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .panel.show{ transform:translateX(0) }
+  .panel h2{ margin:0; font-size:28px; font-weight:800; letter-spacing:-.01em }
+  .close{
+    align-self:flex-end; border:0; background:transparent; cursor:pointer;
+    font-weight:800; color:#66756e; padding:6px 8px; border-radius:8px;
+  }
+  .close:hover{ background:#f3f5f4 }
+  form{ display:flex; flex-direction:column; gap:12px; margin-top:4px }
+  input[type="email"]{
+    padding:14px; border-radius:10px; border:1.5px solid #e5ebe7; font-size:16px;
+  }
+  .submit{
+    border:0; border-radius:10px; cursor:pointer;
+    background:var(--pink); color:#233229; font-weight:800; padding:12px 16px;
     transition: background .2s ease;
   }
-  .back-btn:hover{ background:var(--accent-hover) }
-  .on-page2 .back-btn{ display:inline-block }
-
-  /* Pages */
-  .page{
-    position:absolute; inset:0;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:16px; padding:80px 16px 16px;
-    transition: opacity .45s ease, transform .45s ease;
+  .submit:hover{ background:var(--pink-2) }
+  .note{ font-size:13px; color:#6a7a72 }
+  #msg{ font-weight:700; margin-top:2px }
+  /* Mobile */
+  @media (max-width: 860px){
+    .wrap{ grid-template-columns: 1fr; padding-top:92px }
+    .art{ order:-1; height:28vh; min-height:200px }
+    .b1{ right:-80px; top:-80px }
+    .b2{ left:-40px; bottom:-60px }
   }
-  .hidden{opacity:0; pointer-events:none; transform:translateX(-100%)}
-
-  h1{font-weight:900; font-size:clamp(42px,12vw,100px); text-transform:uppercase; letter-spacing:-.02em; text-align:center}
-  h1 .swipe{font-family:Shrikhand,cursive; display:block; font-size:.7em; color:var(--text)}
-  p{font-size:clamp(16px,2.4vw,20px); text-align:center; max-width:640px; opacity:.9}
-
-  .cta{
-    border:0; border-radius:10px;
-    background:var(--accent); color:var(--text);
-    font-weight:700; font-size:16px; padding:12px 18px;
-    cursor:pointer; transition: background .2s ease;
-  }
-  .cta:hover{ background:var(--accent-hover) }
-
-  form{display:flex; flex-direction:column; gap:12px; width:90%; max-width:420px}
-  input{padding:14px; border-radius:10px; border:0; font-size:16px; background:#fff}
-  .note{font-size:13px; opacity:.85}
-  #msg{font-weight:700}
 </style>
 </head>
 <body>
 
-<!-- Top bar -->
-<div class="topbar">
-  <button class="back-btn" id="backBtn" type="button">← Back</button>
+<!-- Top navigation -->
+<header class="topbar" role="navigation" aria-label="Primary">
   <div class="brand">ClosetSwipe</div>
-</div>
+  <nav class="nav">
+    <a href="what-is.html">About</a>
+    <a href="features.html">Features</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+</header>
 
-<!-- Page 1: Hero -->
-<section id="page1" class="page" aria-labelledby="home-title">
-  <h1 id="home-title">Closet<span class="swipe">Swipe</span></h1>
-  <p>Keeping fashion circular. Be the first to know when we launch.</p>
-  <button class="cta" id="joinBtn" type="button">Join the Waitlist</button>
-</section>
+<main class="wrap" role="main">
+  <!-- Left: slogan + CTA -->
+  <section class="hero" aria-labelledby="hero-title">
+    <h1 id="hero-title">One swipe closer<br>to your next look</h1>
+    <p class="lede">Join the waitlist for early access, launch perks, and exclusive drops.</p>
+    <button class="cta" id="openWaitlist" type="button">Join the waitlist</button>
+  </section>
 
-<!-- Page 2: Email -->
-<section id="page2" class="page hidden" aria-labelledby="join-title">
-  <h1 id="join-title">Join the Waitlist</h1>
+  <!-- Right: soft shapes -->
+  <section class="art" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </section>
+</main>
+
+<!-- Waitlist slide-in panel -->
+<div id="overlay" class="overlay" tabindex="-1" aria-hidden="true"></div>
+<aside id="panel" class="panel" role="dialog" aria-modal="true" aria-label="Join the waitlist">
+  <button id="closePanel" class="close" type="button" aria-label="Close">✕</button>
+  <h2>Join the waitlist</h2>
+  <p class="note">Get exclusive discounts. No spam ever.</p>
   <form id="waitlist-form" novalidate>
-    <input id="email" type="email" placeholder="you@example.com" required aria-label="Email address">
-    <button class="cta" type="submit">Sign Up</button>
-    <div class="note">Get exclusive discounts. No spam ever.</div>
+    <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-label="Email address" required />
+    <button class="submit" type="submit">Sign up</button>
     <div id="msg" role="status" aria-live="polite"></div>
   </form>
-</section>
+</aside>
 
 <script>
-  const body   = document.body;
-  const p1     = document.getElementById('page1');
-  const p2     = document.getElementById('page2');
-  const joinBtn= document.getElementById('joinBtn');
-  const backBtn= document.getElementById('backBtn');
+  // Open/close panel
+  const openBtn = document.getElementById('openWaitlist');
+  const overlay = document.getElementById('overlay');
+  const panel   = document.getElementById('panel');
+  const closeBtn= document.getElementById('closePanel');
 
-  function goToPage2(){
-    p1.classList.add('hidden');
-    body.classList.add('on-page2');
-    setTimeout(()=> p2.classList.remove('hidden'), 450);
+  function openPanel(){
+    panel.classList.add('show');
+    overlay.classList.add('show');
   }
-  function goToPage1(){
-    p2.classList.add('hidden');
-    setTimeout(()=>{
-      p1.classList.remove('hidden');
-      body.classList.remove('on-page2');
-    }, 450);
+  function closePanel(){
+    panel.classList.remove('show');
+    overlay.classList.remove('show');
   }
-
-  joinBtn.addEventListener('click', goToPage2);
-  backBtn.addEventListener('click', goToPage1);
+  openBtn.addEventListener('click', openPanel);
+  closeBtn.addEventListener('click', closePanel);
+  overlay.addEventListener('click', closePanel);
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closePanel(); });
 
   // Formspree (replace with your endpoint)
-  const ENDPOINT = "https://closetswipe.co.uk/f/yourformid";
+  const ENDPOINT = "https://closetswipe.co.uk/f/yourformid"; // ← put your real Formspree URL here
   const form = document.getElementById('waitlist-form');
   const msg  = document.getElementById('msg');
 
-  form.addEventListener('submit', async e=>{
+  form.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const email = (document.getElementById('email')?.value || '').trim();
-    if(!email){ msg.textContent="Please enter your email."; return; }
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent="Enter a valid email."; return; }
+    if(!email){ msg.textContent = "Please enter your email."; return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent = "Enter a valid email."; return; }
+
     try{
-      const res = await fetch(ENDPOINT,{
+      const res = await fetch(ENDPOINT, {
         method:'POST',
         headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({email})
+        body: JSON.stringify({ email })
       });
-      if(res.ok){ form.reset(); msg.textContent="You're in! Check your inbox."; }
-      else { msg.textContent="Something went wrong. Try again."; }
-    }catch{ msg.textContent="Network error. Try again."; }
+      if(res.ok){
+        form.reset();
+        msg.textContent = "You're in! Check your inbox.";
+      }else{
+        msg.textContent = "Something went wrong. Please try again.";
+      }
+    }catch{
+      msg.textContent = "Network error. Please try again.";
+    }
   });
 </script>
 </body>
