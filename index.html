@@ -147,7 +147,7 @@
 </aside>
 
 <script>
-  // Open/close slide-in panel (same behavior)
+  // Open/close panel (leave as-is if you already have it higher up)
   const openBtn  = document.getElementById('openWaitlist');
   const overlay  = document.getElementById('overlay');
   const panel    = document.getElementById('panel');
@@ -156,55 +156,77 @@
   function openPanel(){ panel.classList.add('show'); overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); }
   function closePanel(){ panel.classList.remove('show'); overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
 
-  openBtn.addEventListener('click', openPanel);
-  closeBtn.addEventListener('click', closePanel);
-  overlay.addEventListener('click', closePanel);
+  openBtn?.addEventListener('click', openPanel);
+  closeBtn?.addEventListener('click', closePanel);
+  overlay?.addEventListener('click', closePanel);
   window.addEventListener('keydown', e=>{ if(e.key==='Escape') closePanel(); });
 
   // 🔗 Your Google Apps Script Web App URL (must end with /exec)
-  const ENDPOINT = "https://script.google.com/macros/s/AKfycbzcA2UOu-h2UjISjLmylY8WTSuWPx0qeUf8FLHcMAKafdR989tklJNRuPSDvVQM5lua/exec";
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbwORDO1c7oHuWaDuI7s5O7ixWC_SOI3gH7bY87EfK_-yzvMoMtxUbwpMkZ56r52w9NLsw/exec";
 
-  // Submit as x-www-form-urlencoded to avoid CORS preflight
-  const form       = document.getElementById('waitlist-form');
-  const msg        = document.getElementById('msg');
-  const emailInput = document.getElementById('email');
+  const form        = document.getElementById('waitlist-form');
+  const msg         = document.getElementById('msg');
+  const emailInput  = document.getElementById('email');
+  const submitBtn   = form.querySelector('button[type="submit"]');
 
   form.addEventListener('submit', async (e)=>{
     e.preventDefault();
 
-    if (!emailInput.checkValidity()
-        || !document.getElementById('fname').value.trim()
-        || !document.getElementById('lname').value.trim()) {
+    const fname    = document.getElementById('fname').value.trim();
+    const lname    = document.getElementById('lname').value.trim();
+    const email    = emailInput.value.trim();
+    const referral = (document.getElementById('referral')?.value || '').trim();
+
+    if (!fname || !lname || !emailInput.checkValidity()) {
       msg.textContent = "Please fill in first name, last name, and a valid email.";
       return;
     }
 
-    const fname    = document.getElementById('fname').value.trim();
-    const lname    = document.getElementById('lname').value.trim();
-    const email    = emailInput.value.trim();
-    const referral = document.getElementById('referral').value.trim();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting…";
+    msg.textContent = "";
 
     const body = new URLSearchParams({ fname, lname, email, referral });
 
-    try{
+    try {
       const res = await fetch(ENDPOINT, {
         method:'POST',
         headers:{ 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
         body
       });
 
-      if(res.ok){
+      // Read TEXT first (works even if CORS blocks JSON parsing),
+      // then *try* to parse JSON from that text.
+      let text = "";
+      let data = null;
+      try {
+        text = await res.text();
+        try { data = JSON.parse(text); } catch { /* not JSON, ignore */ }
+      } catch { /* network/text read issue */ }
+
+      const status = (data && data.status) || (text.includes('"exists"') ? 'exists' : (text.includes('"success"') ? 'success' : null));
+
+      if (status === 'exists') {
+        msg.textContent = "You're already on the list 👍";
         form.reset();
+        // Optional: close panel after a moment
+        // setTimeout(()=> closePanel?.(), 1200);
+      } else if (status === 'success' || res.ok) {
         msg.textContent = "You're in! Check your inbox.";
+        form.reset();
+        // Optional: close panel after a moment
+        // setTimeout(()=> closePanel?.(), 1200);
       } else {
         msg.textContent = "Submitted. If you don’t get an email, try again shortly.";
-        console.warn('Submit response:', res.status, await res.text().catch(()=> ''));
+        console.warn('Submit response (unexpected):', res.status, text);
       }
-    }catch(err){
+    } catch (err) {
       msg.textContent = "Network error. Check endpoint & permissions.";
-      console.error('Network error:', err);
+      console.error(err);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Sign up";
     }
   });
 </script>
-</body>
-</html>
+
