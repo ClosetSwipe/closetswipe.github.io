@@ -4,40 +4,77 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ClosetSwipe • One swipe closer to your next look</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
 <style>
   :root{
-    --cream:#F8F7F4; --text:#000; --mint:#9DCCAA; --pink:#FFD1D9; --pink-2:#F7B8C7;
+    --bg:#FFFFFF;
+    --text:#000;
+    --pink:#FFD1D9;
+    --pink-2:#F7B8C7;
+    --pink-3:#FFE4EA;
   }
+
   *{box-sizing:border-box}
   html,body{height:100%;margin:0}
+
   body{
-    background:var(--cream); color:var(--text);
+    background:var(--bg);
+    color:var(--text);
     font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    overflow:hidden; /* 🔒 no page scroll (like before) */
+    overflow:hidden;
   }
+
   a{color:inherit;text-decoration:none}
 
-  /* Header / Nav (same layout as before) */
+  /* Header / Nav */
   .topbar{
     position:fixed; top:16px; left:20px; right:20px; z-index:10;
     display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
   }
-  .brand{font-weight:800; letter-spacing:-.02em; text-transform:uppercase}
-  .brand, .brand:visited, .brand:hover, .brand:active{ color:#000; text-decoration:none; cursor:pointer }
+
+  .brand{
+    font-family:"Playfair Display", Georgia, serif;
+    font-weight:800;
+    letter-spacing:-.02em;
+    font-size:22px;
+  }
+  .swipe{ color:var(--pink); }
+
   .nav{display:flex; gap:18px; flex-wrap:wrap; align-items:center}
   .nav a{font-weight:600; padding:8px 10px; border-radius:10px}
   .nav a:hover{background:rgba(0,0,0,.05)}
 
   /* Main layout */
   .wrap{
-    height:100vh; display:grid; grid-template-columns:1.2fr 1fr;
-    align-items:center; gap:24px; padding:100px 28px 28px;
-    position:relative; overflow:hidden;
+    height:100vh;
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    align-items:center;
+    gap:24px;
+    padding:100px 28px 28px;
+    position:relative;
+    overflow:hidden;
   }
+
   .hero{max-width:680px}
-  h1{margin:0 0 10px; font-size:clamp(32px,6vw,64px); font-weight:800; letter-spacing:-.02em; line-height:1.05}
-  .lede{margin:0 0 22px; font-size:clamp(16px,2.4vw,20px); opacity:.9}
+
+  h1{
+    margin:0 0 10px;
+    font-size:clamp(32px,6vw,64px);
+    font-weight:800;
+    letter-spacing:-.02em;
+    line-height:1.05;
+  }
+
+  .lede{
+    margin:0 0 22px;
+    font-size:clamp(16px,2.4vw,20px);
+    opacity:.9;
+  }
+
   .cta{
     display:inline-flex; align-items:center; gap:10px;
     border:0; border-radius:12px; cursor:pointer;
@@ -49,78 +86,129 @@
   .cta:hover{background:var(--pink-2); box-shadow:0 10px 26px rgba(247,184,199,.5)}
   .cta:active{transform:translateY(1px)}
 
-  /* Decorative blobs (same vibe) */
+  /* Pink blobs only */
   .art{position:relative; height:60vh; min-height:320px}
-  .blob{position:absolute; border-radius:50%; filter:blur(1px); opacity:.65; animation:float 9s ease-in-out infinite}
-  .b1{width:280px; height:280px; right:-60px; top:-40px; background:radial-gradient(60% 60% at 40% 40%, var(--mint), transparent)}
-  .b2{width:240px; height:240px; left:40px; bottom:-60px; background:radial-gradient(60% 60% at 60% 40%, var(--pink), transparent); animation-duration:12s}
-  .b3{width:160px; height:160px; right:120px; bottom:40px; background:radial-gradient(60% 60% at 50% 50%, rgba(157,204,170,.25), transparent); animation-duration:10s}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(1px);
+    opacity:.65;
+    animation:float 9s ease-in-out infinite;
+  }
 
-  /* Slide-in waitlist panel (like before) */
+  .b1{
+    width:280px; height:280px;
+    right:-60px; top:-40px;
+    background:radial-gradient(60% 60% at 40% 40%, var(--pink), transparent);
+  }
+  .b2{
+    width:240px; height:240px;
+    left:40px; bottom:-60px;
+    background:radial-gradient(60% 60% at 60% 40%, var(--pink-2), transparent);
+    animation-duration:12s;
+  }
+  .b3{
+    width:160px; height:160px;
+    right:120px; bottom:40px;
+    background:radial-gradient(60% 60% at 50% 50%, var(--pink-3), transparent);
+    animation-duration:10s;
+  }
+
+  @keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+  }
+
+  /* Waitlist panel */
   .overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.3); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:20;
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.3);
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease;
+    z-index:20;
   }
   .overlay.show{opacity:1; pointer-events:auto}
+
   .panel{
-    position:fixed; top:0; right:0; height:100%; width:min(90vw,420px);
-    background:#fff; color:#000; z-index:21;
-    transform:translateX(100%); transition:transform .25s ease;
-    box-shadow:-14px 0 36px rgba(0,0,0,.15); padding:24px 20px 28px;
-    display:flex; flex-direction:column; gap:16px; overflow:auto; -webkit-overflow-scrolling:touch;
+    position:fixed; top:0; right:0;
+    height:100%; width:min(90vw,420px);
+    background:#fff; color:#000;
+    z-index:21;
+    transform:translateX(100%);
+    transition:transform .25s ease;
+    box-shadow:-14px 0 36px rgba(0,0,0,.15);
+    padding:24px 20px 28px;
+    display:flex; flex-direction:column; gap:16px;
+    overflow:auto;
   }
   .panel.show{transform:translateX(0)}
-  .panel h2{margin:0; font-size:28px; font-weight:800; letter-spacing:-.01em}
-  .close{align-self:flex-end; border:0; background:transparent; cursor:pointer; font-weight:800; color:#666; padding:6px 8px; border-radius:8px}
-  .close:hover{background:#f3f5f4}
-  form{display:flex; flex-direction:column; gap:12px; margin-top:4px}
-  input[type="text"], input[type="email"]{
-    padding:14px; border-radius:10px; border:1.5px solid #e5ebe7; font-size:16px;
+
+  .panel h2{
+    margin:0;
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:-.01em;
   }
+
+  .close{
+    align-self:flex-end;
+    border:0; background:transparent;
+    cursor:pointer;
+    font-weight:800; color:#666;
+    padding:6px 8px;
+    border-radius:8px;
+  }
+  .close:hover{background:#f3f5f4}
+
+  form{display:flex; flex-direction:column; gap:12px}
+
+  input{
+    padding:14px;
+    border-radius:10px;
+    border:1.5px solid #e5e5e5;
+    font-size:16px;
+  }
+
   .submit{
-    border:0; border-radius:10px; cursor:pointer; background:var(--pink); color:#000;
-    font-weight:800; padding:12px 16px; transition:background .2s ease;
+    border:0; border-radius:10px;
+    cursor:pointer;
+    background:var(--pink);
+    font-weight:800;
+    padding:12px 16px;
     box-shadow:0 8px 20px rgba(255,209,217,.35);
   }
   .submit:hover{background:var(--pink-2)}
+
   .note{font-size:13px; color:#666}
   #msg{font-weight:700; min-height:1.2em}
 
-  /* Mobile tweaks (same as before) */
-  @media (max-width: 860px){
-    .topbar{flex-direction:column; align-items:flex-start; gap:8px; left:16px; right:16px; top:12px}
-    .brand{font-size:18px}
-    .nav{gap:12px}
-    .nav a{padding:6px 8px; font-size:14px}
+  /* Mobile */
+  @media (max-width:860px){
+    .topbar{flex-direction:column; align-items:flex-start; gap:8px}
     .wrap{grid-template-columns:1fr; text-align:center; padding:120px 20px 40px}
-    .hero{max-width:100%; margin:0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center;}
-    h1{font-size:clamp(28px,8vw,48px); line-height:1.15}
-    .lede{font-size:clamp(14px,4.5vw,18px); margin-bottom:20px}
-    .cta{width:100%; max-width:360px; justify-content:center}
-    .art{order:1; height:200px; min-height:180px}
-    .b1{width:180px; height:180px; right:-40px; top:-60px}
-    .b2{width:160px; height:160px; left:-30px; bottom:-50px}
-    .b3{width:120px; height:120px; right:60px; bottom:20px}
+    .hero{margin:0 auto}
+    .art{height:200px}
   }
 </style>
 </head>
+
 <body>
 
 <header class="topbar">
-  <a class="brand" href="index.html">ClosetSwipe</a>
+  <a class="brand" href="index.html">Closet<span class="swipe">Swipe</span></a>
   <nav class="nav">
     <a href="what-is.html">About</a>
-    <a href="features.html">Features</a>
     <a href="contact.html">Contact Us</a>
   </nav>
 </header>
 
-<main class="wrap" role="main">
+<main class="wrap">
   <section class="hero">
     <h1>One swipe closer<br>to your next look</h1>
     <p class="lede">Join the waitlist for early access, launch perks, and exclusive drops.</p>
-    <button class="cta" id="openWaitlist" type="button">Join the waitlist</button>
+    <button class="cta" id="openWaitlist">Join the waitlist</button>
   </section>
+
   <section class="art" aria-hidden="true">
     <div class="blob b1"></div>
     <div class="blob b2"></div>
@@ -128,105 +216,35 @@
   </section>
 </main>
 
-<!-- Slide-in Waitlist Panel -->
-<div id="overlay" class="overlay" aria-hidden="true"></div>
-<aside id="panel" class="panel" role="dialog" aria-modal="true" aria-label="Join the waitlist">
-  <button id="closePanel" class="close" type="button" aria-label="Close">✕</button>
+<div id="overlay" class="overlay"></div>
+
+<aside id="panel" class="panel" role="dialog" aria-modal="true">
+  <button id="closePanel" class="close">✕</button>
   <h2>Join the waitlist</h2>
   <p class="note">Get exclusive discounts. No spam ever.</p>
 
-  <!-- ✅ Added optional Referral Code field; rest unchanged -->
-  <form id="waitlist-form" novalidate>
-    <input id="fname" name="fname" type="text" placeholder="First name" required aria-label="First name">
-    <input id="lname" name="lname" type="text" placeholder="Last name" required aria-label="Last name">
-    <input id="email" name="email" type="email" placeholder="you@example.com" required aria-label="Email address">
-    <input id="referral" name="referral" type="text" placeholder="Referral code (optional)" aria-label="Referral code">
+  <form id="waitlist-form">
+    <input id="fname" placeholder="First name" required>
+    <input id="lname" placeholder="Last name" required>
+    <input id="email" type="email" placeholder="you@example.com" required>
+    <input id="referral" placeholder="Referral code (optional)">
     <button class="submit" type="submit">Sign up</button>
-    <div id="msg" role="status" aria-live="polite"></div>
+    <div id="msg"></div>
   </form>
 </aside>
 
 <script>
-  // Open/close panel (leave as-is if you already have it higher up)
-  const openBtn  = document.getElementById('openWaitlist');
-  const overlay  = document.getElementById('overlay');
-  const panel    = document.getElementById('panel');
+  const openBtn = document.getElementById('openWaitlist');
+  const overlay = document.getElementById('overlay');
+  const panel = document.getElementById('panel');
   const closeBtn = document.getElementById('closePanel');
 
-  function openPanel(){ panel.classList.add('show'); overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); }
-  function closePanel(){ panel.classList.remove('show'); overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }
-
-  openBtn?.addEventListener('click', openPanel);
-  closeBtn?.addEventListener('click', closePanel);
-  overlay?.addEventListener('click', closePanel);
-  window.addEventListener('keydown', e=>{ if(e.key==='Escape') closePanel(); });
-
-  // 🔗 Your Google Apps Script Web App URL (must end with /exec)
-  const ENDPOINT = "https://script.google.com/macros/s/AKfycbwORDO1c7oHuWaDuI7s5O7ixWC_SOI3gH7bY87EfK_-yzvMoMtxUbwpMkZ56r52w9NLsw/exec";
-
-  const form        = document.getElementById('waitlist-form');
-  const msg         = document.getElementById('msg');
-  const emailInput  = document.getElementById('email');
-  const submitBtn   = form.querySelector('button[type="submit"]');
-
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-
-    const fname    = document.getElementById('fname').value.trim();
-    const lname    = document.getElementById('lname').value.trim();
-    const email    = emailInput.value.trim();
-    const referral = (document.getElementById('referral')?.value || '').trim();
-
-    if (!fname || !lname || !emailInput.checkValidity()) {
-      msg.textContent = "Please fill in first name, last name, and a valid email.";
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting…";
-    msg.textContent = "";
-
-    const body = new URLSearchParams({ fname, lname, email, referral });
-
-    try {
-      const res = await fetch(ENDPOINT, {
-        method:'POST',
-        headers:{ 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
-        body
-      });
-
-      // Read TEXT first (works even if CORS blocks JSON parsing),
-      // then *try* to parse JSON from that text.
-      let text = "";
-      let data = null;
-      try {
-        text = await res.text();
-        try { data = JSON.parse(text); } catch { /* not JSON, ignore */ }
-      } catch { /* network/text read issue */ }
-
-      const status = (data && data.status) || (text.includes('"exists"') ? 'exists' : (text.includes('"success"') ? 'success' : null));
-
-      if (status === 'exists') {
-        msg.textContent = "You're already on the list 👍";
-        form.reset();
-        // Optional: close panel after a moment
-        // setTimeout(()=> closePanel?.(), 1200);
-      } else if (status === 'success' || res.ok) {
-        msg.textContent = "You're in! Check your inbox.";
-        form.reset();
-        // Optional: close panel after a moment
-        // setTimeout(()=> closePanel?.(), 1200);
-      } else {
-        msg.textContent = "Submitted. If you don’t get an email, try again shortly.";
-        console.warn('Submit response (unexpected):', res.status, text);
-      }
-    } catch (err) {
-      msg.textContent = "Network error. Check endpoint & permissions.";
-      console.error(err);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Sign up";
-    }
-  });
+  openBtn.onclick = ()=>{ panel.classList.add('show'); overlay.classList.add('show'); }
+  closeBtn.onclick = overlay.onclick = ()=>{
+    panel.classList.remove('show');
+    overlay.classList.remove('show');
+  }
 </script>
 
+</body>
+</html>
