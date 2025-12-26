@@ -61,7 +61,7 @@
   }
   .nav a:hover{background:rgba(0,0,0,.05)}
 
-  /* Layout */
+  /* Main layout */
   .wrap{
     height:100vh;
     display:grid;
@@ -69,6 +69,7 @@
     align-items:center;
     gap:24px;
     padding:100px 28px 28px;
+    overflow:hidden;
   }
 
   .hero{max-width:680px}
@@ -135,65 +136,89 @@
     50%{transform:translateY(-10px)}
   }
 
+  /* Waitlist panel */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.3);
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease;
+    z-index:20;
+  }
+  .overlay.show{opacity:1; pointer-events:auto}
+
+  .panel{
+    position:fixed;
+    top:0; right:0;
+    height:100%;
+    width:min(90vw,420px);
+    background:#fff;
+    z-index:21;
+    transform:translateX(100%);
+    transition:transform .25s ease;
+    box-shadow:-14px 0 36px rgba(0,0,0,.15);
+    padding:24px 20px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    overflow:auto;
+  }
+  .panel.show{transform:translateX(0)}
+
+  .panel h2{margin:0;font-size:28px;font-weight:800}
+
+  .close{
+    align-self:flex-end;
+    border:0;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:800;
+    color:#666;
+  }
+
+  form{display:flex;flex-direction:column;gap:12px}
+
+  input{
+    padding:14px;
+    border-radius:10px;
+    border:1.5px solid #e5e5e5;
+    font-size:16px;
+  }
+
+  .submit{
+    border:0;
+    border-radius:10px;
+    background:var(--pink);
+    font-weight:800;
+    padding:12px;
+    cursor:pointer;
+  }
+  .submit:hover{background:var(--pink-2)}
+
+  #msg{font-weight:700;min-height:1.2em}
+
   /* Mobile */
   @media (max-width:860px){
-    body{overflow:auto;}
+    body{overflow:auto}
 
-    .topbar{
-      top:12px;
-      left:14px;
-      right:14px;
-    }
-
+    .topbar{top:12px;left:14px;right:14px}
     .brand{font-size:20px}
-
-    .nav{
-      gap:10px;
-    }
-    .nav a{
-      padding:6px 8px;
-      font-size:14px;
-    }
+    .nav{gap:10px}
+    .nav a{padding:6px 8px;font-size:14px}
 
     .wrap{
-      min-height:100vh;
-      height:auto;
       grid-template-columns:1fr;
       text-align:center;
       padding:110px 18px 28px;
-      gap:18px;
     }
 
-    .hero{
-      margin:0 auto;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-    }
+    .hero{align-items:center}
+    .cta{width:100%;max-width:360px}
 
-    h1{
-      font-size:clamp(28px,9vw,44px);
-      line-height:1.12;
-    }
-
-    .lede{
-      font-size:clamp(14px,4.5vw,18px);
-      margin-bottom:16px;
-    }
-
-    .cta{
-      width:100%;
-      max-width:360px;
-    }
-
-    .art{
-      height:220px;
-      min-height:220px;
-    }
-
-    .b1{width:180px;height:180px; right:-40px; top:-40px}
-    .b2{width:160px;height:160px; left:-30px; bottom:-40px}
-    .b3{width:120px;height:120px; right:60px; bottom:20px}
+    .art{height:220px;min-height:220px}
+    .b1{width:180px;height:180px;right:-40px;top:-40px}
+    .b2{width:160px;height:160px;left:-30px;bottom:-40px}
+    .b3{width:120px;height:120px;right:60px;bottom:20px}
   }
 </style>
 </head>
@@ -212,7 +237,7 @@
   <section class="hero">
     <h1>One swipe closer<br>to your next look</h1>
     <p class="lede">Join the waitlist for early access, launch perks, and exclusive drops.</p>
-    <button class="cta">Join the waitlist</button>
+    <button class="cta" id="openWaitlist" type="button">Join the waitlist</button>
   </section>
 
   <section class="art" aria-hidden="true">
@@ -221,6 +246,47 @@
     <div class="blob b3"></div>
   </section>
 </main>
+
+<div id="overlay" class="overlay"></div>
+<aside id="panel" class="panel">
+  <button id="closePanel" class="close">✕</button>
+  <h2>Join the waitlist</h2>
+
+  <form id="waitlist-form">
+    <input id="fname" placeholder="First name" required>
+    <input id="lname" placeholder="Last name" required>
+    <input id="email" type="email" placeholder="you@example.com" required>
+    <input id="referral" placeholder="Referral code (optional)">
+    <button class="submit">Sign up</button>
+    <div id="msg"></div>
+  </form>
+</aside>
+
+<script>
+  const openBtn = document.getElementById('openWaitlist');
+  const closeBtn = document.getElementById('closePanel');
+  const overlay = document.getElementById('overlay');
+  const panel = document.getElementById('panel');
+
+  openBtn.onclick = ()=>{panel.classList.add('show');overlay.classList.add('show')};
+  closeBtn.onclick = overlay.onclick = ()=>{panel.classList.remove('show');overlay.classList.remove('show')};
+
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbwORDO1c7oHuWaDuI7s5O7ixWC_SOI3gH7bY87EfK_-yzvMoMtxUbwpMkZ56r52w9NLsw/exec";
+
+  document.getElementById('waitlist-form').onsubmit = async e=>{
+    e.preventDefault();
+    const msg = document.getElementById('msg');
+    msg.textContent = "Submitting…";
+
+    const body = new URLSearchParams({
+      fname:fname.value,lname:lname.value,email:email.value,referral:referral.value
+    });
+
+    const res = await fetch(ENDPOINT,{method:'POST',body});
+    msg.textContent = res.ok ? "You're in! 🎉" : "Try again later.";
+    if(res.ok) e.target.reset();
+  };
+</script>
 
 </body>
 </html>
