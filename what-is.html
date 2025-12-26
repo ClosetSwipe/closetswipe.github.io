@@ -63,7 +63,7 @@
   }
   .nav a:hover{background:rgba(0,0,0,.05)}
 
-  /* DESKTOP: centred card with pink blobs (original vibe) */
+  /* DESKTOP (unchanged) */
   .frame{
     height:100vh;
     padding:100px 24px 28px;
@@ -73,7 +73,6 @@
     overflow:hidden;
   }
 
-  /* Pink blobs */
   .blob{
     position:absolute;
     border-radius:50%;
@@ -169,7 +168,7 @@
     box-shadow:0 10px 20px rgba(255,209,217,.35);
   }
 
-  /* Mobile: keep it clean + scrollable */
+  /* ✅ MOBILE NEATENING ONLY */
   @media (max-width:860px){
     body{overflow:auto;}
 
@@ -178,18 +177,82 @@
       left:14px;
       right:14px;
     }
-    .brand{font-size:20px}
 
+    .brand{font-size:20px}
     .nav{gap:10px}
     .nav a{padding:6px 8px; font-size:14px}
 
+    /* More comfortable padding & spacing */
     .frame{
-      padding:110px 18px 28px;
+      padding:110px 14px 22px;
     }
 
+    /* Blobs smaller + tucked away */
+    .b1{
+      width:170px;height:170px;
+      right:-50px; top:10px;
+      opacity:.28;
+    }
+    .b2{
+      width:150px;height:150px;
+      left:-55px; bottom:10px;
+      opacity:.28;
+    }
+
+    /* Card becomes natural height with nicer spacing */
     .card{
       height:auto;
       border-radius:16px;
+      padding:16px 14px 10px;
+    }
+
+    .card-header{
+      padding:4px 4px 10px;
+    }
+
+    .card-header h1{
+      font-size:clamp(26px, 8.5vw, 40px);
+      line-height:1.12;
+    }
+
+    .lede{
+      font-size:15px;
+      line-height:1.55;
+      margin-top:8px;
+      padding:0 2px;
+    }
+
+    .card-body{
+      padding:12px 2px 14px;
+      overflow:visible; /* let the page scroll naturally */
+    }
+
+    .section{
+      padding:14px 14px;
+      border-radius:14px;
+      margin-bottom:12px;
+    }
+
+    .section h2{
+      font-size:18px;
+      margin-bottom:8px;
+    }
+
+    .section p,
+    .section li{
+      font-size:15px;
+      line-height:1.6;
+    }
+
+    .section ul{
+      padding-left:18px;
+    }
+
+    .tagline{
+      max-width:100%;
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:12px;
     }
   }
 </style>
