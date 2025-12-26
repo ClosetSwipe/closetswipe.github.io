@@ -13,6 +13,9 @@
     --text:#000;
     --pink:#FFD1D9;
     --pink-2:#F7B8C7;
+    --pink-3:#FFE4EA;
+    --line: rgba(0,0,0,.08);
+    --muted: rgba(0,0,0,.65);
   }
 
   *{box-sizing:border-box}
@@ -60,46 +63,87 @@
   }
   .nav a:hover{background:rgba(0,0,0,.05)}
 
-  /* Desktop layout — same style as Contact page */
-  main{
-    min-height:100vh;
+  /* DESKTOP: centred card with pink blobs (original vibe) */
+  .frame{
+    height:100vh;
+    padding:100px 24px 28px;
+    display:grid;
+    place-items:center;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Pink blobs */
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(1px);
+    opacity:.35;
+    pointer-events:none;
+  }
+  .b1{
+    width:240px;height:240px;
+    right:-40px; top:40px;
+    background:radial-gradient(60% 60% at 40% 40%, var(--pink), transparent);
+  }
+  .b2{
+    width:200px;height:200px;
+    left:-40px; bottom:40px;
+    background:radial-gradient(60% 60% at 60% 40%, var(--pink-2), transparent);
+  }
+
+  .card{
+    width:min(920px, 100%);
+    height:calc(100vh - 140px);
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 10px 28px rgba(0,0,0,.08);
+    padding:22px 22px 10px;
     display:flex;
-    justify-content:center;
-    padding:120px 24px 40px;
+    flex-direction:column;
+    overflow:hidden;
   }
 
-  .wrap{
-    width:min(90vw, 720px);
-  }
-
-  h1{
-    font-size:clamp(28px,6vw,48px);
-    margin:0 0 12px;
-    font-weight:800;
+  .card-header{
     text-align:center;
+    padding:6px 6px 12px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .card-header h1{
+    margin:0;
+    font-size:clamp(28px,6vw,48px);
+    font-weight:800;
+    letter-spacing:-.02em;
   }
 
   .lede{
-    text-align:center;
-    margin:0 auto 24px;
+    margin:8px auto 0;
     max-width:60ch;
-    opacity:.9;
+    color:var(--muted);
     font-size:16px;
-    line-height:1.6;
+    line-height:1.5;
+  }
+
+  .card-body{
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:16px 6px 18px;
   }
 
   .section{
+    max-width:820px;
+    margin:0 auto 14px;
+    padding:18px 18px;
+    border-radius:14px;
     background:#fff;
-    border:1px solid rgba(0,0,0,.08);
-    border-radius:16px;
-    padding:18px;
-    margin-bottom:14px;
+    border:1px solid var(--line);
   }
 
   .section h2{
-    margin:0 0 8px;
-    font-size:18px;
+    font-size:20px;
     font-weight:800;
+    margin:0 0 10px;
   }
 
   .section p,
@@ -115,17 +159,17 @@
   }
 
   .tagline{
-    margin:22px auto 0;
+    background:linear-gradient(135deg,var(--pink),var(--pink-2));
+    font-weight:800;
     border-radius:12px;
     padding:12px 16px;
     text-align:center;
-    font-weight:800;
-    background:linear-gradient(135deg,var(--pink),var(--pink-2));
-    box-shadow:0 10px 20px rgba(255,209,217,.35);
+    margin:18px auto 0;
     max-width:360px;
+    box-shadow:0 10px 20px rgba(255,209,217,.35);
   }
 
-  /* Mobile */
+  /* Mobile: keep it clean + scrollable */
   @media (max-width:860px){
     body{overflow:auto;}
 
@@ -134,13 +178,18 @@
       left:14px;
       right:14px;
     }
-
     .brand{font-size:20px}
+
     .nav{gap:10px}
     .nav a{padding:6px 8px; font-size:14px}
 
-    main{
+    .frame{
       padding:110px 18px 28px;
+    }
+
+    .card{
+      height:auto;
+      border-radius:16px;
     }
   }
 </style>
@@ -156,61 +205,64 @@
   </nav>
 </header>
 
-<main role="main">
-  <div class="wrap">
-    <h1>About ClosetSwipe</h1>
-    <p class="lede">
-      A swipe-first second-hand fashion app built to make resale fast, simple,
-      and genuinely fun.
-    </p>
+<div class="frame">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
 
-    <div class="section">
-      <h2>Why it exists</h2>
-      <p>
-        Resale can feel slow and messy — endless scrolling, too many clicks,
-        and not enough discovery. ClosetSwipe makes it quick, visual, and satisfying.
-      </p>
+  <article class="card" role="region" aria-label="About ClosetSwipe">
+    <header class="card-header">
+      <h1>About ClosetSwipe</h1>
+      <p class="lede">A swipe-first second-hand fashion app built to make resale fast, simple, and genuinely fun.</p>
+    </header>
+
+    <div class="card-body">
+
+      <section class="section">
+        <h2>Why it exists</h2>
+        <p>Resale can feel slow and messy — endless scrolling, too many clicks, and not enough discovery. ClosetSwipe makes it quick, visual, and satisfying.</p>
+      </section>
+
+      <section class="section">
+        <h2>What makes it different</h2>
+        <ul>
+          <li><strong>Swipe-first discovery:</strong> browse items like a feed — quick decisions, less friction.</li>
+          <li><strong>Save & curate:</strong> favourite pieces instantly and organise them into custom closets.</li>
+          <li><strong>Style-led filtering:</strong> find your vibe using tags (e.g. baggy, 90s, denim) plus optional brand filtering.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>How it works</h2>
+        <ul>
+          <li>Swipe through second-hand pieces.</li>
+          <li>Skip what you don’t love and save what you do.</li>
+          <li>Build closets by style, mood, or category.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>For buyers & sellers</h2>
+        <ul>
+          <li><strong>Buyers:</strong> discover better pieces faster and save them into closets.</li>
+          <li><strong>Sellers:</strong> list quickly and get seen by people who actually want your style.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Values</h2>
+        <ul>
+          <li><strong>Speed:</strong> less browsing fatigue, more instant discovery.</li>
+          <li><strong>Style:</strong> curated feel, not clutter.</li>
+          <li><strong>Sustainability:</strong> making second-hand the easy default.</li>
+          <li><strong>Trust:</strong> clear listings and clear expectations.</li>
+        </ul>
+      </section>
+
+      <div class="tagline">One swipe closer to your next look</div>
+
     </div>
-
-    <div class="section">
-      <h2>What makes it different</h2>
-      <ul>
-        <li><strong>Swipe-first discovery:</strong> browse items like a feed — quick decisions, less friction.</li>
-        <li><strong>Save & curate:</strong> favourite pieces instantly and organise them into custom closets.</li>
-        <li><strong>Style-led filtering:</strong> find your vibe using tags (e.g. baggy, 90s, denim) plus optional brand filtering.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>How it works</h2>
-      <ul>
-        <li>Swipe through second-hand pieces.</li>
-        <li>Skip what you don’t love and save what you do.</li>
-        <li>Build closets by style, mood, or category.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>For buyers & sellers</h2>
-      <ul>
-        <li><strong>Buyers:</strong> discover better pieces faster and save them into closets.</li>
-        <li><strong>Sellers:</strong> list quickly and get seen by people who actually want your style.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Values</h2>
-      <ul>
-        <li><strong>Speed:</strong> less browsing fatigue, more instant discovery.</li>
-        <li><strong>Style:</strong> curated feel, not clutter.</li>
-        <li><strong>Sustainability:</strong> making second-hand the easy default.</li>
-        <li><strong>Trust:</strong> clear listings and clear expectations.</li>
-      </ul>
-    </div>
-
-    <div class="tagline">One swipe closer to your next look</div>
-  </div>
-</main>
+  </article>
+</div>
 
 </body>
 </html>
