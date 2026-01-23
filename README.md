@@ -171,14 +171,10 @@
       <div class="bubble"></div>
       <div class="bubble b2"></div>
 
-      <!-- ONLY CHANGE: ClosetSwipe colored #f05e86 -->
-      <span class="badge" aria-hidden="true"><span style="color:#f05e86">ClosetSwipe</span> • Early Access</span>
-
+      <span class="badge" aria-hidden="true">ClosetSwipe • Early Access</span>
       <h1 id="title">Swipe. Style. Sell.</h1>
-
-      <!-- ONLY CHANGE: lede text updated -->
       <p class="lede">
-        ClosetSwipe is the swipe-first fashion resale app. Download now to start swiping, saving, and selling in seconds.
+        ClosetSwipe is the swipe-first fashion resale app. Join the waitlist to get early access, launch perks, and exclusive drops.
       </p>
 
       <form id="waitlist-form" novalidate>
@@ -187,10 +183,7 @@
                  placeholder="your@email.com"
                  aria-label="Email address" required />
         </label>
-
-        <!-- ONLY CHANGE: button text -->
-        <button id="submitBtn" type="submit">Download now</button>
-
+        <button id="submitBtn" type="submit">Join the Waitlist</button>
         <div class="note">No spam. Unsubscribe anytime.</div>
         <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
       </form>
