@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ClosetSwipe • Download Now</title>
-  <meta name="description" content="ClosetSwipe is the swipe-first fashion resale app. Download now and start discovering, styling, and selling instantly." />
+  <meta name="description" content="ClosetSwipe is the swipe-first fashion resale app. Download now and start discovering, saving, and selling fashion effortlessly." />
 
   <!-- Inter font -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,8 +68,7 @@
       font-size: clamp(28px, 6vw, 48px);
       letter-spacing:-0.02em;
     }
-    .pink{ color: var(--pink); }
-
+    .pink{ color:#f05e86; }
     p.lede{
       margin:0 0 28px;
       font-size: clamp(16px, 2.6vw, 18px);
@@ -88,6 +87,12 @@
       border:1.5px solid transparent;
       border-radius:14px;
       padding:6px 10px 6px 14px;
+      transition:border .2s, box-shadow .2s, background .2s;
+    }
+    .field:focus-within{
+      border-color:var(--accent);
+      box-shadow:0 0 0 6px var(--ring);
+      background:#fff;
     }
     input[type="email"]{
       border:0;
@@ -96,7 +101,9 @@
       font-size:16px;
       background:transparent;
       padding:10px 6px;
+      color:var(--text);
     }
+    input::placeholder{ color:#7b8d84; }
     button{
       border:0;
       cursor:pointer;
@@ -106,13 +113,56 @@
       font-size:16px;
       color:#fff;
       background:var(--accent);
+      transition:transform .04s ease, background .2s ease, box-shadow .2s ease;
       box-shadow:0 6px 18px rgba(62,95,71,0.35);
+    }
+    button:hover{ background:#375642; }
+    button:active{ transform:translateY(1px); background:var(--accent-press);}
+    button[disabled]{ opacity:.6; cursor:not-allowed; box-shadow:none; }
+    .note{
+      margin-top:10px;
+      font-size:13px;
+      color:#6a7a72;
+    }
+    .msg{
+      margin-top:16px;
+      font-weight:600;
+      font-size:14px;
+    }
+    .ok{ color:var(--ok); }
+    .err{ color:var(--err); }
+    .footer{
+      margin-top:28px;
+      font-size:13px;
+      color:#5b6a63;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .dot{opacity:.5}
+    .bubble{
+      position:absolute; inset:auto auto -40px -40px;
+      width:180px; height:180px; border-radius:50%;
+      background: radial-gradient(120px 120px at 60% 40%, rgba(62,95,71,.20), rgba(62,95,71,0));
+      animation: float 9s ease-in-out infinite;
+    }
+    .bubble.b2{
+      inset:-50px -60px auto auto;
+      width:220px; height:220px;
+      animation-duration:12s;
+    }
+    @keyframes float{
+      0%,100%{ transform:translateY(0) }
+      50%{ transform:translateY(-12px) }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
     <section class="card" aria-labelledby="title">
+      <div class="bubble"></div>
+      <div class="bubble b2"></div>
+
       <span class="badge">ClosetSwipe • Live</span>
 
       <h1 id="title">
@@ -120,18 +170,89 @@
       </h1>
 
       <p class="lede">
-        ClosetSwipe is the swipe-first fashion resale app. Discover pieces you love,
-        save them in seconds, and sell effortlessly — all in one place.
+        ClosetSwipe is the swipe-first fashion resale app.
+        Discover pieces you love, save them instantly, and sell with ease — all in one place.
       </p>
 
       <form id="waitlist-form" novalidate>
         <label class="field" for="email">
-          <input id="email" name="email" type="email"
-                 placeholder="your@email.com" required />
+          <input id="email" name="email" type="email" inputmode="email"
+                 autocomplete="email"
+                 placeholder="your@email.com"
+                 aria-label="Email address" required />
         </label>
         <button id="submitBtn" type="submit">Download now</button>
+        <div class="note">We’ll send you the download link. No spam.</div>
+        <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
       </form>
+
+      <div class="footer">
+        <span>Instagram</span><span class="dot">•</span>
+        <span>TikTok</span><span class="dot">•</span>
+        <span>YouTube</span>
+      </div>
     </section>
   </main>
+
+  <script>
+    const FORMSPREE_ENDPOINT = ""; // add your Formspree endpoint here
+
+    const form = document.getElementById("waitlist-form");
+    const emailEl = document.getElementById("email");
+    const msgEl = document.getElementById("formMsg");
+    const btn = document.getElementById("submitBtn");
+
+    function showMsg(text, ok=false){
+      msgEl.textContent = text;
+      msgEl.className = "msg " + (ok ? "ok" : "err");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msgEl.textContent = "";
+      const email = emailEl.value.trim();
+
+      if (!email) {
+        showMsg("Please enter your email.");
+        emailEl.focus();
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        showMsg("Please enter a valid email address.");
+        emailEl.focus();
+        return;
+      }
+
+      if (!FORMSPREE_ENDPOINT) {
+        showMsg("Download link system not connected yet.");
+        return;
+      }
+
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email })
+        });
+
+        if (res.ok) {
+          form.reset();
+          showMsg("You're in! Check your inbox for the download link.", true);
+        } else {
+          showMsg("Something went wrong. Please try again.");
+        }
+      } catch {
+        showMsg("Network error. Please try again.");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
