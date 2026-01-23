@@ -1,10 +1,3 @@
-<!-- ======================
-     privacy.html (UPDATED)
-     - Nav bar: white + fixed
-     - Tabs: bigger, consistent sizing
-     - ClosetSwipe in nav: Playfair Display (Swipe pink)
-     - Body text: Inter
-     ====================== -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,6 +19,7 @@
       --soft:rgba(240,94,134,.12);
     }
     *{box-sizing:border-box}
+
     html,body{
       margin:0;
       background:#fff;
@@ -33,7 +27,7 @@
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    /* Fixed white nav (matches index) */
+    /* Fixed white nav — EXACT SAME AS INDEX */
     .top-nav{
       position:fixed;
       top:0; left:0; right:0;
@@ -42,36 +36,44 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      background:#ffffff;               /* solid white bar */
+      background:#ffffff;
       border-bottom:1px solid var(--border);
     }
 
-    /* Tabs sizing (shared) */
-    .top-nav a, .top-nav .privacy{
+    .top-nav a{
       font-size:16px;
       font-weight:800;
       letter-spacing:-0.01em;
       line-height:1;
+      text-decoration:none;
     }
 
-    /* Brand in Playfair */
+    /* Brand */
     .brand{
       font-family:'Playfair Display', serif;
       font-weight:800;
-      text-decoration:none;
       color:var(--text);
     }
     .brand .swipe{ color:var(--pink); }
     .brand:hover{ opacity:.75; }
 
-    /* Privacy label (current page) */
+    /* Privacy tab — SAME AS INDEX */
     .privacy{
-      color:var(--pink);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--pink);
+      font-weight:800;
+      cursor:default;
     }
 
     /* Background circles */
-    .circle{position:fixed;border-radius:50%;background:rgba(240,94,134,.14);filter:blur(2px);pointer-events:none;z-index:0;}
+    .circle{
+      position:fixed;
+      border-radius:50%;
+      background:rgba(240,94,134,.14);
+      filter:blur(2px);
+      pointer-events:none;
+      z-index:0;
+    }
     .circle.one{width:420px;height:420px;top:-140px;left:-140px;}
     .circle.two{width:520px;height:520px;bottom:-200px;right:-200px;}
     .circle.three{width:260px;height:260px;top:18%;right:10%;opacity:.10;}
@@ -79,7 +81,7 @@
     .wrap{
       max-width:980px;
       margin:0 auto;
-      padding:120px 24px 72px; /* clears fixed nav */
+      padding:120px 24px 72px;
       position:relative;
       z-index:1;
     }
@@ -119,7 +121,11 @@
       background:#fff;
       box-shadow:0 10px 26px rgba(0,0,0,.04);
     }
-    a.inline{color:var(--pink); text-decoration:none; font-weight:700}
+    a.inline{
+      color:var(--pink);
+      text-decoration:none;
+      font-weight:700;
+    }
     a.inline:hover{opacity:.75}
   </style>
 </head>
@@ -128,7 +134,7 @@
   <!-- Nav -->
   <nav class="top-nav" aria-label="Primary navigation">
     <a class="brand" href="./index.html">Closet<span class="swipe">Swipe</span></a>
-    <span class="privacy">Privacy</span>
+    <a class="privacy" aria-current="page">Privacy</a>
   </nav>
 
   <!-- Background -->
@@ -163,12 +169,6 @@
         <li>Personalise your experience</li>
         <li>Keep the platform safe</li>
       </ul>
-
-      <h2>Sharing</h2>
-      <p>
-        We do not sell your personal information. We may share data with trusted service providers
-        (payments, shipping, hosting) only where needed to run the service.
-      </p>
 
       <h2>Contact</h2>
       <p>
