@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClosetSwipe – Privacy Policy</title>
+
+  <!-- Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink: #f05e86;
+      --text: #1f1f1f;
+      --muted: #666;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: #ffffff;
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      margin-bottom: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      margin-top: 48px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin: 16px 0;
+    }
+
+    a {
+      color: var(--pink);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .brand {
+      margin-bottom: 16px;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 700;
+    }
+
+    .back {
+      margin-top: 64px;
+      display: inline-block;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="wrap">
+    <div class="brand">ClosetSwipe</div>
+
+    <h1>Privacy Policy</h1>
+
+    <p>
+      Your privacy matters to us. This Privacy Policy explains how ClosetSwipe
+      collects, uses, and protects your personal information.
+    </p>
+
+    <h2>Information We Collect</h2>
+    <p>
+      We may collect personal information such as your email address when you
+      choose to provide it (for example, when signing up for updates
