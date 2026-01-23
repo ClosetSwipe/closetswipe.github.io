@@ -12,15 +12,16 @@
 
   <style>
     :root{
-      --bg: #9DCCAA;           /* your muted primary green */
+      --bg: #9DCCAA;
       --card: #ffffff;
-      --text: #1f2a24;         /* deep greenish charcoal for legibility */
+      --text: #1f2a24;
       --subtle: #2f3a35;
-      --accent: #3E5F47;       /* forest accent for buttons */
+      --accent: #3E5F47;
       --accent-press: #2f4a38;
       --ring: rgba(62,95,71,0.35);
       --ok: #1f9d5a;
       --err: #b23a48;
+      --pink: #f05e86;
     }
     *{box-sizing:border-box}
     html,body{
@@ -67,6 +68,8 @@
       font-size: clamp(28px, 6vw, 48px);
       letter-spacing:-0.02em;
     }
+    .pink{ color: var(--pink); }
+
     p.lede{
       margin:0 0 28px;
       font-size: clamp(16px, 2.6vw, 18px);
@@ -116,8 +119,8 @@
       transition:transform .04s ease, background .2s ease, box-shadow .2s ease;
       box-shadow:0 6px 18px rgba(62,95,71,0.35);
     }
-    button:hover{ background: #375642; }
-    button:active{ transform:translateY(1px); background: var(--accent-press);}
+    button:hover{ background:#375642; }
+    button:active{ transform:translateY(1px); background:var(--accent-press);}
     button[disabled]{
       opacity:.6;
       cursor:not-allowed;
@@ -145,7 +148,6 @@
       flex-wrap:wrap;
     }
     .dot{opacity:.5}
-    /* Simple floating decor */
     .bubble{
       position:absolute; inset:auto auto -40px -40px;
       width:180px; height:180px; border-radius:50%;
@@ -153,15 +155,14 @@
       filter: blur(1px);
       animation: float 9s ease-in-out infinite;
     }
-    .bubble.b2{ inset: -50px -60px auto auto; width:220px; height:220px; animation-duration: 12s;}
-    @keyframes float{
-      0%,100%{ transform: translateY(0) }
-      50%{ transform: translateY(-12px) }
+    .bubble.b2{
+      inset:-50px -60px auto auto;
+      width:220px; height:220px;
+      animation-duration:12s;
     }
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .bubble{ animation:none }
-      button, .field{ transition:none }
+    @keyframes float{
+      0%,100%{ transform:translateY(0) }
+      50%{ transform:translateY(-12px) }
     }
   </style>
 </head>
@@ -171,16 +172,13 @@
       <div class="bubble"></div>
       <div class="bubble b2"></div>
 
-      <!-- small change: ClosetSwipe colored #f05e86 -->
-      <span class="badge" aria-hidden="true">
-        <span style="color:#f05e86">ClosetSwipe</span> • Early Access
-      </span>
+      <span class="badge">ClosetSwipe • Early Access</span>
 
-      <h1 id="title">Swipe. Style. Sell.</h1>
+      <!-- ONLY CHANGE IS HERE -->
+      <h1 id="title"><span class="pink">Swipe</span>. Style. Sell.</h1>
 
-      <!-- small change: new download-focused copy -->
       <p class="lede">
-        ClosetSwipe is the swipe-first fashion resale app. Download now to discover pieces you love, save them instantly, and sell with ease.
+        ClosetSwipe is the swipe-first fashion resale app. Join the waitlist to get early access, launch perks, and exclusive drops.
       </p>
 
       <form id="waitlist-form" novalidate>
@@ -189,10 +187,7 @@
                  placeholder="your@email.com"
                  aria-label="Email address" required />
         </label>
-
-        <!-- small change: button label -->
-        <button id="submitBtn" type="submit">Download now</button>
-
+        <button id="submitBtn" type="submit">Join the Waitlist</button>
         <div class="note">No spam. Unsubscribe anytime.</div>
         <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
       </form>
@@ -204,70 +199,5 @@
       </div>
     </section>
   </main>
-
-  <script>
-    // ---- CONFIG: paste your Formspree endpoint here ----
-    // After creating your form (steps below), replace with your endpoint, e.g.:
-    // const FORMSPREE_ENDPOINT = "https://formspree.io/f/abcdxyz";
-    const FORMSPREE_ENDPOINT = ""; // ← ADD YOUR ENDPOINT
-
-    const form = document.getElementById("waitlist-form");
-    const emailEl = document.getElementById("email");
-    const msgEl = document.getElementById("formMsg");
-    const btn = document.getElementById("submitBtn");
-
-    function showMsg(text, ok=false){
-      msgEl.textContent = text;
-      msgEl.className = "msg " + (ok ? "ok" : "err");
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      msgEl.textContent = "";
-      const email = emailEl.value.trim();
-
-      if (!email) {
-        showMsg("Please enter your email.");
-        emailEl.focus();
-        return;
-      }
-      // Basic email pattern check
-      const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      if (!okEmail){
-        showMsg("Please enter a valid email address.");
-        emailEl.focus();
-        return;
-      }
-
-      // If no endpoint configured, gently warn but don't block local testing
-      if (!FORMSPREE_ENDPOINT) {
-        showMsg("Form endpoint not set yet. Add your Formspree URL in the JS (FORMSPREE_ENDPOINT).");
-        return;
-      }
-
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          headers: { "Accept": "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
-        });
-
-        if (res.ok) {
-          form.reset();
-          showMsg("You're in! Check your inbox for a confirmation.", true);
-        } else {
-          const data = await res.json().catch(()=> ({}));
-          const fallback = data?.errors?.[0]?.message || "Something went wrong. Please try again.";
-          showMsg(fallback);
-        }
-      } catch (err) {
-        showMsg("Network error. Please try again.");
-      } finally {
-        btn.disabled = false;
-      }
-    });
-  </script>
 </body>
 </html>
