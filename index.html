@@ -11,69 +11,148 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --pink:#f05e86;
-      --dark:#1f1f1f;
-    }
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      height:100%;
-      font-family:'Playfair Display', serif;
-      background:#fff;
-      overflow:hidden;
+    :root {
+      --pink: #f05e86;
+      --dark: #1f1f1f;
     }
 
-    /* Fixed nav */
-    .top-nav{
-      position:fixed;
-      top:0; left:0; right:0;
-      z-index:20;
-      padding:22px 28px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      pointer-events:none;
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: 'Playfair Display', serif;
+      background: #ffffff;
+      overflow: hidden;
     }
-    .top-nav a{
-      pointer-events:auto;
-      font-size:16px;
-      font-weight:800;
-      text-decoration:none;
-      color:var(--dark);
-      letter-spacing:-0.01em;
+
+    /* Fixed top navigation */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
     }
-    .top-nav a.privacy{ color:var(--pink); }
-    .top-nav a:hover{ opacity:.7 }
+
+    .top-nav a {
+      pointer-events: auto;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+      transition: opacity 0.2s ease;
+    }
+
+    .top-nav a:hover { opacity: 0.7; }
+
+    .top-nav a.privacy { color: var(--pink); }
 
     /* Background circles */
-    .circle{position:absolute;border-radius:50%;background:rgba(240,94,134,0.18);filter:blur(2px)}
-    .circle.one{width:420px;height:420px;top:-120px;left:-120px}
-    .circle.two{width:520px;height:520px;bottom:-180px;right:-180px}
-    .circle.three{width:260px;height:260px;top:15%;right:10%;opacity:.12}
-
-    .wrap{
-      position:relative;
-      z-index:2;
-      height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:24px;
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(240, 94, 134, 0.18);
+      filter: blur(2px);
     }
 
-    h1{
-      font-size:clamp(48px,7vw,84px);
-      margin:0 0 32px;
-      font-weight:800;
-      letter-spacing:-0.02em;
-      color:var(--dark);
+    .circle.one {
+      width: 420px;
+      height: 420px;
+      top: -120px;
+      left: -120px;
     }
-    .pink{color:var(--pink)}
 
-    .btn{
-      display:inline-block;
-      padding:16px 42px;
-      border-radius:999px;
-      back
+    .circle.two {
+      width: 520px;
+      height: 520px;
+      bottom: -180px;
+      right: -180px;
+    }
+
+    .circle.three {
+      width: 260px;
+      height: 260px;
+      top: 15%;
+      right: 10%;
+      opacity: 0.12;
+    }
+
+    /* Center content */
+    .wrap {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 7vw, 84px);
+      margin: 0 0 32px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .pink { color: var(--pink); }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 42px;
+      border-radius: 999px;
+      background: var(--pink);
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 12px 30px rgba(240, 94, 134, 0.35);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(240, 94, 134, 0.45);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 24px rgba(240, 94, 134, 0.35);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed top nav (Privacy top-right in #f05e86) -->
+  <nav class="top-nav" aria-label="Primary navigation">
+    <a href="./index.html" aria-label="ClosetSwipe home">Closet<span class="pink">Swipe</span></a>
+    <a class="privacy" href="./privacy.html">Privacy</a>
+  </nav>
+
+  <!-- Background circles -->
+  <div class="circle one"></div>
+  <div class="circle two"></div>
+  <div class="circle three"></div>
+
+  <!-- Centered content -->
+  <main class="wrap">
+    <div>
+      <h1>
+        Closet<span class="pink">Swipe</span>
+      </h1>
+
+      <a href="#" class="btn">Download now</a>
+    </div>
+  </main>
+
+</body>
+</html>
