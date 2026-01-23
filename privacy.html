@@ -1,3 +1,10 @@
+<!-- ======================
+     privacy.html (UPDATED)
+     - Nav bar: white + fixed
+     - Tabs: bigger, consistent sizing
+     - ClosetSwipe in nav: Playfair Display (Swipe pink)
+     - Body text: Inter
+     ====================== -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,10 +12,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ClosetSwipe – Privacy Policy</title>
 
-  <!-- Inter -->
+  <!-- Fonts: Playfair (brand) + Inter (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -23,10 +30,10 @@
       margin:0;
       background:#fff;
       color:var(--text);
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    /* Fixed nav */
+    /* Fixed white nav (matches index) */
     .top-nav{
       position:fixed;
       top:0; left:0; right:0;
@@ -35,33 +42,44 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      background:rgba(255,255,255,.88);
-      backdrop-filter:blur(8px);
+      background:#ffffff;               /* solid white bar */
       border-bottom:1px solid var(--border);
     }
-    .brand{
+
+    /* Tabs sizing (shared) */
+    .top-nav a, .top-nav .privacy{
       font-size:16px;
+      font-weight:800;
+      letter-spacing:-0.01em;
+      line-height:1;
+    }
+
+    /* Brand in Playfair */
+    .brand{
+      font-family:'Playfair Display', serif;
       font-weight:800;
       text-decoration:none;
       color:var(--text);
     }
-    .brand .swipe{color:var(--pink)}
+    .brand .swipe{ color:var(--pink); }
+    .brand:hover{ opacity:.75; }
+
+    /* Privacy label (current page) */
     .privacy{
-      font-size:16px;
-      font-weight:800;
       color:var(--pink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    /* Background */
-    .circle{position:fixed;border-radius:50%;background:rgba(240,94,134,.14);filter:blur(2px);pointer-events:none}
-    .circle.one{width:420px;height:420px;top:-140px;left:-140px}
-    .circle.two{width:520px;height:520px;bottom:-200px;right:-200px}
-    .circle.three{width:260px;height:260px;top:18%;right:10%;opacity:.1}
+    /* Background circles */
+    .circle{position:fixed;border-radius:50%;background:rgba(240,94,134,.14);filter:blur(2px);pointer-events:none;z-index:0;}
+    .circle.one{width:420px;height:420px;top:-140px;left:-140px;}
+    .circle.two{width:520px;height:520px;bottom:-200px;right:-200px;}
+    .circle.three{width:260px;height:260px;top:18%;right:10%;opacity:.10;}
 
     .wrap{
       max-width:980px;
       margin:0 auto;
-      padding:120px 24px 72px;
+      padding:120px 24px 72px; /* clears fixed nav */
       position:relative;
       z-index:1;
     }
@@ -80,6 +98,7 @@
       font-size:16px;
       line-height:1.7;
       color:var(--muted);
+      font-weight:500;
     }
     ul{padding-left:20px}
     .pill{
@@ -100,12 +119,14 @@
       background:#fff;
       box-shadow:0 10px 26px rgba(0,0,0,.04);
     }
+    a.inline{color:var(--pink); text-decoration:none; font-weight:700}
+    a.inline:hover{opacity:.75}
   </style>
 </head>
 <body>
 
   <!-- Nav -->
-  <nav class="top-nav">
+  <nav class="top-nav" aria-label="Primary navigation">
     <a class="brand" href="./index.html">Closet<span class="swipe">Swipe</span></a>
     <span class="privacy">Privacy</span>
   </nav>
@@ -143,9 +164,15 @@
         <li>Keep the platform safe</li>
       </ul>
 
+      <h2>Sharing</h2>
+      <p>
+        We do not sell your personal information. We may share data with trusted service providers
+        (payments, shipping, hosting) only where needed to run the service.
+      </p>
+
       <h2>Contact</h2>
       <p>
-        Email: <a href="mailto:privacy@closetswipe.com" style="color:var(--pink)">privacy@closetswipe.com</a>
+        Email: <a class="inline" href="mailto:privacy@closetswipe.com">privacy@closetswipe.com</a>
       </p>
     </section>
   </main>
