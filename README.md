@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ClosetSwipe • Join the Waitlist</title>
-  <meta name="description" content="ClosetSwipe is the swipe-first fashion resale app. Join the waitlist for early access." />
+  <title>ClosetSwipe • Download Now</title>
+  <meta name="description" content="ClosetSwipe is the swipe-first fashion resale app. Download now and start discovering, styling, and selling instantly." />
 
   <!-- Inter font -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,15 +12,16 @@
 
   <style>
     :root{
-      --bg: #9DCCAA;           /* your muted primary green */
+      --bg: #9DCCAA;
       --card: #ffffff;
-      --text: #1f2a24;         /* deep greenish charcoal for legibility */
+      --text: #1f2a24;
       --subtle: #2f3a35;
-      --accent: #3E5F47;       /* forest accent for buttons */
+      --accent: #3E5F47;
       --accent-press: #2f4a38;
       --ring: rgba(62,95,71,0.35);
       --ok: #1f9d5a;
       --err: #b23a48;
+      --pink: #f05e86;
     }
     *{box-sizing:border-box}
     html,body{
@@ -67,6 +68,8 @@
       font-size: clamp(28px, 6vw, 48px);
       letter-spacing:-0.02em;
     }
+    .pink{ color: var(--pink); }
+
     p.lede{
       margin:0 0 28px;
       font-size: clamp(16px, 2.6vw, 18px);
@@ -85,26 +88,16 @@
       border:1.5px solid transparent;
       border-radius:14px;
       padding:6px 10px 6px 14px;
-      transition:border .2s, box-shadow .2s, background .2s;
-    }
-    .field:focus-within{
-      border-color:var(--accent);
-      box-shadow:0 0 0 6px var(--ring);
-      background:#fff;
     }
     input[type="email"]{
-      appearance:none;
       border:0;
       outline:0;
       width:100%;
       font-size:16px;
       background:transparent;
       padding:10px 6px;
-      color:var(--text);
     }
-    input::placeholder{ color:#7b8d84; }
     button{
-      flex:0 0 auto;
       border:0;
       cursor:pointer;
       border-radius:14px;
@@ -113,152 +106,32 @@
       font-size:16px;
       color:#fff;
       background:var(--accent);
-      transition:transform .04s ease, background .2s ease, box-shadow .2s ease;
       box-shadow:0 6px 18px rgba(62,95,71,0.35);
-    }
-    button:hover{ background: #375642; }
-    button:active{ transform:translateY(1px); background: var(--accent-press);}
-    button[disabled]{
-      opacity:.6;
-      cursor:not-allowed;
-      transform:none;
-      box-shadow:none;
-    }
-    .note{
-      margin-top:10px;
-      font-size:13px;
-      color:#6a7a72;
-    }
-    .msg{
-      margin-top:16px;
-      font-weight:600;
-      font-size:14px;
-    }
-    .ok{ color:var(--ok); }
-    .err{ color:var(--err); }
-    .footer{
-      margin-top:28px;
-      font-size:13px;
-      color:#5b6a63;
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .dot{opacity:.5}
-    /* Simple floating decor */
-    .bubble{
-      position:absolute; inset:auto auto -40px -40px;
-      width:180px; height:180px; border-radius:50%;
-      background: radial-gradient(120px 120px at 60% 40%, rgba(62,95,71,.20), rgba(62,95,71,0));
-      filter: blur(1px);
-      animation: float 9s ease-in-out infinite;
-    }
-    .bubble.b2{ inset: -50px -60px auto auto; width:220px; height:220px; animation-duration: 12s;}
-    @keyframes float{
-      0%,100%{ transform: translateY(0) }
-      50%{ transform: translateY(-12px) }
-    }
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .bubble{ animation:none }
-      button, .field{ transition:none }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
     <section class="card" aria-labelledby="title">
-      <div class="bubble"></div>
-      <div class="bubble b2"></div>
+      <span class="badge">ClosetSwipe • Live</span>
 
-      <span class="badge" aria-hidden="true">ClosetSwipe • Early Access</span>
-      <h1 id="title">Swipe. Style. Sell.</h1>
+      <h1 id="title">
+        <span class="pink">Swipe</span>. Style. Sell.
+      </h1>
+
       <p class="lede">
-        ClosetSwipe is the swipe-first fashion resale app. Join the waitlist to get early access, launch perks, and exclusive drops.
+        ClosetSwipe is the swipe-first fashion resale app. Discover pieces you love,
+        save them in seconds, and sell effortlessly — all in one place.
       </p>
 
       <form id="waitlist-form" novalidate>
         <label class="field" for="email">
-          <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
-                 placeholder="your@email.com"
-                 aria-label="Email address" required />
+          <input id="email" name="email" type="email"
+                 placeholder="your@email.com" required />
         </label>
-        <button id="submitBtn" type="submit">Join the Waitlist</button>
-        <div class="note">No spam. Unsubscribe anytime.</div>
-        <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
+        <button id="submitBtn" type="submit">Download now</button>
       </form>
-
-      <div class="footer">
-        <span>Instagram</span><span class="dot">•</span>
-        <span>TikTok</span><span class="dot">•</span>
-        <span>YouTube</span>
-      </div>
     </section>
   </main>
-
-  <script>
-    // ---- CONFIG: paste your Formspree endpoint here ----
-    // After creating your form (steps below), replace with your endpoint, e.g.:
-    // const FORMSPREE_ENDPOINT = "https://formspree.io/f/abcdxyz";
-    const FORMSPREE_ENDPOINT = ""; // ← ADD YOUR ENDPOINT
-
-    const form = document.getElementById("waitlist-form");
-    const emailEl = document.getElementById("email");
-    const msgEl = document.getElementById("formMsg");
-    const btn = document.getElementById("submitBtn");
-
-    function showMsg(text, ok=false){
-      msgEl.textContent = text;
-      msgEl.className = "msg " + (ok ? "ok" : "err");
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      msgEl.textContent = "";
-      const email = emailEl.value.trim();
-
-      if (!email) {
-        showMsg("Please enter your email.");
-        emailEl.focus();
-        return;
-      }
-      // Basic email pattern check
-      const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      if (!okEmail){
-        showMsg("Please enter a valid email address.");
-        emailEl.focus();
-        return;
-      }
-
-      // If no endpoint configured, gently warn but don't block local testing
-      if (!FORMSPREE_ENDPOINT) {
-        showMsg("Form endpoint not set yet. Add your Formspree URL in the JS (FORMSPREE_ENDPOINT).");
-        return;
-      }
-
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          headers: { "Accept": "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
-        });
-
-        if (res.ok) {
-          form.reset();
-          showMsg("You're in! Check your inbox for a confirmation.", true);
-        } else {
-          const data = await res.json().catch(()=> ({}));
-          const fallback = data?.errors?.[0]?.message || "Something went wrong. Please try again.";
-          showMsg(fallback);
-        }
-      } catch (err) {
-        showMsg("Network error. Please try again.");
-      } finally {
-        btn.disabled = false;
-      }
-    });
-  </script>
 </body>
 </html>
