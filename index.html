@@ -1,490 +1,284 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ClosetSwipe</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ClosetSwipe</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --pink:#f05e86;
-      --dark:#1f1f1f;
-      --muted:#7d7d7d;
-      --bg:#fbfbfb;
-      --border:rgba(0,0,0,.08);
-      --tag-border:rgba(240,94,134,.18);
-      --tag-bg:rgba(255,255,255,.92);
-      --tag-shadow:0 12px 30px rgba(240,94,134,.10);
-    }
+<style>
 
-    *{box-sizing:border-box}
+:root{
+--pink:#f05e86;
+--dark:#1f1f1f;
+--muted:#7d7d7d;
+--bg:#fbfbfb;
+--border:rgba(0,0,0,.08);
+}
 
-    html,body{
-      margin:0;
-      min-height:100%;
-      background:var(--bg);
-      overflow:hidden;
-    }
+*{box-sizing:border-box}
 
-    body{
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      position:relative;
-    }
+html,body{
+margin:0;
+background:var(--bg);
+overflow:hidden;
+font-family:Inter, sans-serif;
+}
 
-    .top-nav{
-      position:fixed;
-      top:0;
-      left:0;
-      right:0;
-      z-index:30;
-      padding:22px 38px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:#fff;
-      border-bottom:1px solid var(--border);
-    }
+.top-nav{
+position:fixed;
+top:0;
+left:0;
+right:0;
+padding:22px 38px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#fff;
+border-bottom:1px solid var(--border);
+z-index:50;
+}
 
-    .top-nav a{
-      text-decoration:none;
-      line-height:1;
-    }
+.brand{
+font-family:'Playfair Display',serif;
+font-weight:800;
+font-size:18px;
+color:var(--dark);
+text-decoration:none;
+}
 
-    .brand{
-      font-family:'Playfair Display', serif;
-      font-size:18px;
-      font-weight:800;
-      color:var(--dark);
-      letter-spacing:-0.02em;
-    }
+.brand .swipe{color:var(--pink)}
 
-    .brand .swipe{ color:var(--pink); }
+.privacy{
+color:var(--pink);
+font-weight:800;
+text-decoration:none;
+}
 
-    .privacy{
-      font-size:16px;
-      font-weight:800;
-      color:var(--pink);
-      letter-spacing:-0.01em;
-    }
+.circle{
+position:fixed;
+border-radius:50%;
+background:rgba(240,94,134,0.14);
+pointer-events:none;
+z-index:0;
+}
 
-    .brand:hover,
-    .privacy:hover{
-      opacity:.78;
-    }
+.circle.one{width:560px;height:560px;top:-170px;left:-160px;}
+.circle.two{width:720px;height:720px;bottom:-330px;right:-250px;}
+.circle.three{width:300px;height:300px;top:18%;right:12%;opacity:.06;}
 
-    .circle{
-      position:fixed;
-      border-radius:50%;
-      background:rgba(240,94,134,0.14);
-      pointer-events:none;
-      z-index:0;
-    }
+.wrap{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding-top:100px;
+position:relative;
+z-index:2;
+}
 
-    .circle.one{
-      width:560px;
-      height:560px;
-      top:-170px;
-      left:-160px;
-    }
+.hero{
+position:relative;
+max-width:1200px;
+width:100%;
+}
 
-    .circle.two{
-      width:720px;
-      height:720px;
-      bottom:-330px;
-      right:-250px;
-    }
+h1{
+font-family:'Playfair Display',serif;
+font-size:clamp(90px,10vw,170px);
+margin:0;
+font-weight:800;
+letter-spacing:-0.04em;
+color:var(--dark);
+}
 
-    .circle.three{
-      width:300px;
-      height:300px;
-      top:18%;
-      right:12%;
-      opacity:.06;
-    }
+.pink{color:var(--pink)}
 
-    .wrap{
-      position:relative;
-      z-index:2;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:110px 24px 40px;
-    }
+.tagline{
+margin-top:18px;
+font-size:26px;
+color:var(--muted);
+}
 
-    .hero{
-      position:relative;
-      width:min(1200px, 100%);
-      max-width:1200px;
-      min-height:520px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      isolation:isolate;
-    }
+.button-row{
+margin-top:40px;
+display:flex;
+gap:24px;
+justify-content:center;
+flex-wrap:wrap;
+}
 
-    h1{
-      margin:0;
-      font-family:'Playfair Display', serif;
-      font-size:clamp(90px, 10vw, 178px);
-      line-height:.92;
-      font-weight:800;
-      letter-spacing:-0.05em;
-      color:var(--dark);
-      position:relative;
-      z-index:3;
-    }
+.store-btn{
+display:flex;
+align-items:center;
+gap:12px;
+background:white;
+padding:24px 34px;
+border-radius:24px;
+font-size:20px;
+font-weight:700;
+text-decoration:none;
+color:#111;
+box-shadow:0 12px 28px rgba(0,0,0,.04);
+transition:.2s;
+}
 
-    .pink{
-      color:var(--pink);
-    }
+.store-btn:hover{
+background:var(--pink);
+color:white;
+transform:translateY(-2px);
+box-shadow:0 16px 34px rgba(240,94,134,.24);
+}
 
-    .tagline{
-      margin:18px 0 0;
-      font-size:clamp(24px, 2vw, 34px);
-      line-height:1.3;
-      color:var(--muted);
-      font-weight:500;
-      letter-spacing:-0.02em;
-      position:relative;
-      z-index:3;
-    }
+.floating-tags{
+position:absolute;
+inset:0;
+pointer-events:none;
+}
 
-    .button-row{
-      margin-top:44px;
-      display:flex;
-      gap:24px;
-      justify-content:center;
-      align-items:center;
-      flex-wrap:wrap;
-      position:relative;
-      z-index:3;
-    }
+.floating-tag{
+position:absolute;
+padding:12px 22px;
+border-radius:999px;
+background:white;
+border:2px solid rgba(240,94,134,.2);
+color:#cf5d82;
+font-weight:600;
+box-shadow:0 12px 30px rgba(240,94,134,.12);
+opacity:0;
+transform:translateY(10px) scale(.95);
+transition:.8s ease;
+}
 
-    .store-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:16px;
-      min-width:400px;
-      padding:26px 34px;
-      border-radius:24px;
-      background:#fff;
-      color:#111;
-      text-decoration:none;
-      font-size:20px;
-      font-weight:700;
-      box-shadow:0 12px 28px rgba(0,0,0,.04);
-      transition:background .22s ease,color .22s ease,transform .16s ease,box-shadow .22s ease;
-      position:relative;
-      z-index:3;
-    }
+.floating-tag.show{
+opacity:1;
+transform:translateY(0) scale(1);
+}
 
-    .store-btn svg{
-      width:34px;
-      height:34px;
-      fill:currentColor;
-      flex:0 0 auto;
-    }
+.floating-tag.hide{
+opacity:0;
+transform:translateY(-10px) scale(.95);
+}
 
-    .store-btn:hover{
-      background:var(--pink);
-      color:#fff;
-      transform:translateY(-2px);
-      box-shadow:0 16px 34px rgba(240,94,134,.24);
-    }
-
-    .floating-tags{
-      position:absolute;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-    }
-
-    .floating-tag{
-      position:absolute;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;
-      padding:12px 22px;
-      border-radius:999px;
-      background:var(--tag-bg);
-      border:2px solid var(--tag-border);
-      color:#cf5d82;
-      font-weight:600;
-      font-size:16px;
-      letter-spacing:-0.01em;
-      box-shadow:var(--tag-shadow);
-      opacity:0;
-      transform:translateY(10px) scale(.96);
-      transition:
-        opacity .9s ease,
-        transform .9s ease,
-        filter .9s ease;
-      filter:blur(2px);
-    }
-
-    .floating-tag.show{
-      opacity:1;
-      transform:translateY(0) scale(1);
-      filter:blur(0);
-    }
-
-    .floating-tag.hide{
-      opacity:0;
-      transform:translateY(-8px) scale(.96);
-      filter:blur(2px);
-    }
-
-    @media (max-width: 1100px){
-      .hero{
-        min-height:560px;
-      }
-
-      .store-btn{
-        min-width:330px;
-      }
-    }
-
-    @media (max-width: 768px){
-      html,body{
-        overflow:auto;
-      }
-
-      .top-nav{
-        padding:18px 20px;
-      }
-
-      .brand{font-size:16px}
-      .privacy{font-size:15px}
-
-      .wrap{
-        padding:120px 18px 60px;
-      }
-
-      .hero{
-        min-height:540px;
-      }
-
-      h1{
-        font-size:clamp(62px, 16vw, 108px);
-      }
-
-      .tagline{
-        font-size:clamp(18px, 5vw, 24px);
-        max-width:320px;
-      }
-
-      .button-row{
-        gap:14px;
-        width:100%;
-      }
-
-      .store-btn{
-        width:100%;
-        min-width:0;
-        max-width:380px;
-        padding:20px 22px;
-        font-size:18px;
-      }
-
-      .floating-tag{
-        font-size:14px;
-        padding:10px 18px;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
 
-  <nav class="top-nav" aria-label="Primary navigation">
-    <a class="brand" href="./index.html">Closet<span class="swipe">Swipe</span></a>
-    <a class="privacy" href="./privacy.html">Privacy</a>
-  </nav>
+<nav class="top-nav">
+<a class="brand" href="#">Closet<span class="swipe">Swipe</span></a>
+<a class="privacy" href="#">Privacy</a>
+</nav>
 
-  <div class="circle one"></div>
-  <div class="circle two"></div>
-  <div class="circle three"></div>
+<div class="circle one"></div>
+<div class="circle two"></div>
+<div class="circle three"></div>
 
-  <main class="wrap">
-    <section class="hero" id="hero">
-      <div class="floating-tags" id="floatingTags" aria-hidden="true"></div>
+<main class="wrap">
 
-      <h1>Closet<span class="pink">Swipe</span></h1>
-      <p class="tagline">swipe pre-loved fashion you'll obsess over</p>
+<section class="hero">
 
-      <div class="button-row">
-        <a href="#" class="store-btn" aria-label="Download on the App Store">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16.37 12.27c.03 3.15 2.76 4.2 2.79 4.21-.02.07-.43 1.49-1.42 2.95-.86 1.26-1.75 2.52-3.15 2.55-1.38.03-1.82-.82-3.4-.82-1.58 0-2.07.8-3.37.85-1.35.05-2.38-1.35-3.24-2.6-1.77-2.56-3.12-7.24-1.3-10.4.9-1.57 2.51-2.56 4.26-2.59 1.33-.03 2.58.9 3.39.9.81 0 2.33-1.12 3.93-.96.67.03 2.56.27 3.77 2.05-.1.06-2.25 1.31-2.26 3.86Zm-2.11-8.64c.72-.87 1.21-2.09 1.08-3.3-1.04.04-2.3.69-3.05 1.56-.67.77-1.25 2.01-1.09 3.19 1.16.09 2.35-.59 3.06-1.45Z"/>
-          </svg>
-          <span>Download on App Store</span>
-        </a>
+<div class="floating-tags" id="tags"></div>
 
-        <a href="#" class="store-btn" aria-label="Get it on Google Play">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3.61 2.23 14.8 13.42 3.67 24c-.3-.16-.49-.48-.49-.9V3.13c0-.4.16-.72.43-.9Zm12 12 2.66 2.66c.76.43 1.56.31 2.43-.18l2.15-1.22c1.53-.87 1.53-2.29 0-3.16l-2.17-1.23c-.87-.49-1.67-.61-2.42-.18l-2.65 2.41Zm-.81-.81L3.61 2.23c.09-.01.18 0 .27.05l13.1 7.45-2.18 3.69Zm2.17.81 2.18 3.69-13.07 7.43c-.11.06-.21.08-.31.07l11.2-11.19Z"/>
-          </svg>
-          <span>Get it on Google Play</span>
-        </a>
-      </div>
-    </section>
-  </main>
+<h1>Closet<span class="pink">Swipe</span></h1>
 
-  <script>
-    const tags = [
-      "Y2K",
-      "Streetwear",
-      "Vintage",
-      "Indie Sleaze",
-      "Skater",
-      "Chic/Elegant",
-      "Oversized",
-      "High-waisted",
-      "Baggy",
-      "Minimalist",
-      "Boho/Bohemian",
-      "Preppy",
-      "Grunge",
-      "Cottagecore",
-      "Clean Girl",
-      "Soft Girl",
-      "Designer/Luxury",
-      "Wide leg",
-      "Low-rise",
-      "Retro"
-    ];
+<p class="tagline">swipe pre-loved fashion you'll obsess over</p>
 
-    const container = document.getElementById("floatingTags");
+<div class="button-row">
 
-    // Same idea as before, just pushed further from the title / text / buttons
-    const slotsDesktop = [
-      { x: 6,  y: 10 },
-      { x: 22, y: 12 },
-      { x: 78, y: 12 },
-      { x: 94, y: 10 },
+<a href="#" class="store-btn">Download on App Store</a>
 
-      { x: 6,  y: 34 },
-      { x: 94, y: 34 },
+<a href="#" class="store-btn">Get it on Google Play</a>
 
-      { x: 6,  y: 64 },
-      { x: 94, y: 64 },
+</div>
 
-      { x: 8,  y: 88 },
-      { x: 26, y: 92 },
-      { x: 74, y: 92 },
-      { x: 92, y: 88 }
-    ];
+</section>
 
-    const slotsMobile = [
-      { x: 6,  y: 16 },
-      { x: 84, y: 16 },
+</main>
 
-      { x: 6,  y: 40 },
-      { x: 86, y: 40 },
+<script>
 
-      { x: 6,  y: 86 },
-      { x: 82, y: 86 }
-    ];
+const tagsList = [
+"Y2K","Streetwear","Vintage","Grunge","Oversized","Boho",
+"Minimalist","Designer","Wide Leg","Low Rise","Skater",
+"Clean Girl","Preppy","Baggy","Retro","Cottagecore"
+]
 
-    const usedRecently = new Set();
-    let currentNodes = [];
+/* positions pushed FAR from centre */
 
-    function getSlots() {
-      return window.innerWidth <= 768 ? slotsMobile : slotsDesktop;
-    }
+const slots = [
 
-    function shuffle(array) {
-      return [...array].sort(() => Math.random() - 0.5);
-    }
+{side:"left",x:4,y:12},
+{side:"left",x:6,y:30},
+{side:"left",x:4,y:48},
+{side:"left",x:6,y:66},
+{side:"left",x:4,y:84},
 
-    function pickUniqueTags(count) {
-      const available = tags.filter(tag => !usedRecently.has(tag));
-      const source = available.length >= count ? available : tags;
-      const chosen = shuffle(source).slice(0, count);
+{side:"right",x:94,y:12},
+{side:"right",x:92,y:30},
+{side:"right",x:94,y:48},
+{side:"right",x:92,y:66},
+{side:"right",x:94,y:84}
 
-      chosen.forEach(tag => usedRecently.add(tag));
+]
 
-      if (usedRecently.size > 10) {
-        const firstFew = Array.from(usedRecently).slice(0, 4);
-        usedRecently.clear();
-        firstFew.forEach(tag => usedRecently.add(tag));
-      }
+const container=document.getElementById("tags")
 
-      return chosen;
-    }
+let active=[]
 
-    function createTag(text, slot) {
-      const el = document.createElement("div");
-      el.className = "floating-tag";
-      el.textContent = text;
-      el.style.left = `${slot.x}%`;
-      el.style.top = `${slot.y}%`;
-      el.style.transform += ` rotate(${(Math.random() * 4 - 2).toFixed(2)}deg)`;
-      return el;
-    }
+function random(arr){return arr[Math.floor(Math.random()*arr.length)]}
 
-    function showSet() {
-      const slotPool = shuffle(getSlots()).slice(0, 4);
-      const chosenTags = pickUniqueTags(slotPool.length);
-      const nextNodes = chosenTags.map((tag, i) => createTag(tag, slotPool[i]));
+function spawn(){
 
-      nextNodes.forEach(node => container.appendChild(node));
+if(active.length>=4)return
 
-      requestAnimationFrame(() => {
-        nextNodes.forEach((node, index) => {
-          setTimeout(() => node.classList.add("show"), index * 120);
-        });
-      });
+let free=slots.filter(s=>!active.find(a=>a.slot===s))
 
-      currentNodes = nextNodes;
-    }
+if(!free.length)return
 
-    function hideCurrent() {
-      return new Promise(resolve => {
-        if (!currentNodes.length) {
-          resolve();
-          return;
-        }
+let slot=random(free)
 
-        currentNodes.forEach((node, index) => {
-          setTimeout(() => {
-            node.classList.remove("show");
-            node.classList.add("hide");
-          }, index * 90);
-        });
+let tag=random(tagsList)
 
-        setTimeout(() => {
-          currentNodes.forEach(node => node.remove());
-          currentNodes = [];
-          resolve();
-        }, 1100);
-      });
-    }
+let el=document.createElement("div")
+el.className="floating-tag"
+el.innerText=tag
+el.style.left=slot.x+"%"
+el.style.top=slot.y+"%"
 
-    async function cycleTags() {
-      await hideCurrent();
-      showSet();
-    }
+container.appendChild(el)
 
-    showSet();
-    setInterval(cycleTags, 4200);
+requestAnimationFrame(()=>el.classList.add("show"))
 
-    let resizeTimeout;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(async () => {
-        await hideCurrent();
-        showSet();
-      }, 200);
-    });
-  </script>
+active.push({el,slot})
+
+setTimeout(()=>remove(el),3500+Math.random()*2000)
+
+}
+
+function remove(el){
+
+el.classList.remove("show")
+el.classList.add("hide")
+
+setTimeout(()=>{
+el.remove()
+active=active.filter(t=>t.el!==el)
+},900)
+
+}
+
+setInterval(spawn,900)
+
+spawn()
+setTimeout(spawn,600)
+setTimeout(spawn,1200)
+
+</script>
+
 </body>
 </html>
