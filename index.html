@@ -225,9 +225,9 @@
       opacity:0;
       filter:blur(2px);
       transition:
-        opacity 1.8s ease,
-        transform 1.8s cubic-bezier(.22,1,.36,1),
-        filter 1.8s ease;
+        opacity 1.6s ease,
+        transform 1.6s cubic-bezier(.22,1,.36,1),
+        filter 1.6s ease;
       will-change:transform, opacity, filter;
     }
 
@@ -364,26 +364,30 @@
     const activeZones = new Map();
     const recentTags = [];
 
-    // One fixed outer area per corner only.
-    // Deliberately far away from centre, text and buttons.
-    const slotsDesktop = {
-      tl: { x: 12, y: 16 },
-      tr: { x: 88, y: 16 },
-      bl: { x: 14, y: 82 },
-      br: { x: 86, y: 82 }
+    // Each corner has its own SAFE roaming box.
+    // These are deliberately far from the centre/buttons/text.
+    const desktopZones = {
+      tl: { minX: 8,  maxX: 20, minY: 10, maxY: 24 },
+      tr: { minX: 80, maxX: 92, minY: 10, maxY: 24 },
+      bl: { minX: 8,  maxX: 22, minY: 72, maxY: 88 },
+      br: { minX: 78, maxX: 92, minY: 72, maxY: 88 }
     };
 
-    const slotsMobile = {
-      tl: { x: 18, y: 16 },
-      tr: { x: 82, y: 20 },
-      bl: { x: 18, y: 84 },
-      br: { x: 82, y: 88 }
+    const mobileZones = {
+      tl: { minX: 12, maxX: 26, minY: 12, maxY: 24 },
+      tr: { minX: 74, maxX: 88, minY: 14, maxY: 28 },
+      bl: { minX: 12, maxX: 28, minY: 72, maxY: 88 },
+      br: { minX: 72, maxX: 88, minY: 76, maxY: 90 }
     };
 
     const zoneOrder = ["tl", "tr", "bl", "br"];
 
-    function getSlots() {
-      return window.innerWidth <= 768 ? slotsMobile : slotsDesktop;
+    function getZoneRanges() {
+      return window.innerWidth <= 768 ? mobileZones : desktopZones;
+    }
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
     }
 
     function rememberTag(tag) {
@@ -406,31 +410,40 @@
       return randomFrom(pool);
     }
 
-    function createTagEl(text, zone, slot) {
+    function getRandomPointInZone(zone) {
+      const range = getZoneRanges()[zone];
+      return {
+        x: rand(range.minX, range.maxX),
+        y: rand(range.minY, range.maxY)
+      };
+    }
+
+    function createTagEl(text, zone) {
       const el = document.createElement("div");
       el.className = "floating-tag";
       el.textContent = text;
 
-      const rotate = (Math.random() * 1.4 - 0.7).toFixed(2);
-      const driftX = (Math.random() * 4 - 2).toFixed(1);
-      const driftY = (Math.random() * 4 - 2).toFixed(1);
+      const point = getRandomPointInZone(zone);
+      const rotate = (Math.random() * 1.6 - 0.8).toFixed(2);
+      const driftX = (Math.random() * 6 - 3).toFixed(1);
+      const driftY = (Math.random() * 6 - 3).toFixed(1);
 
-      el.style.left = `${slot.x}%`;
-      el.style.top = `${slot.y}%`;
+      el.style.left = `${point.x}%`;
+      el.style.top = `${point.y}%`;
 
-      let enterX = driftX;
-      let exitX = driftX;
+      let enterX = Number(driftX);
+      let exitX = Number(driftX);
 
       if (zone === "tl" || zone === "bl") {
-        enterX = Number(driftX) - 6;
-        exitX = Number(driftX) - 3;
+        enterX -= 6;
+        exitX -= 2;
       } else {
-        enterX = Number(driftX) + 6;
-        exitX = Number(driftX) + 3;
+        enterX += 6;
+        exitX += 2;
       }
 
       el.dataset.rest = `translate(calc(-50% + ${driftX}px), calc(-50% + ${driftY}px)) rotate(${rotate}deg)`;
-      el.dataset.enter = `translate(calc(-50% + ${enterX}px), calc(-50% + ${Number(driftY) + 4}px)) rotate(${rotate}deg) scale(.98)`;
+      el.dataset.enter = `translate(calc(-50% + ${enterX}px), calc(-50% + ${Number(driftY) + 4}px)) rotate(${rotate}deg) scale(.985)`;
       el.dataset.exit = `translate(calc(-50% + ${exitX}px), calc(-50% + ${Number(driftY) - 2}px)) rotate(${rotate}deg) scale(.985)`;
 
       el.style.transform = el.dataset.enter;
@@ -440,10 +453,8 @@
     function showZone(zone) {
       if (activeZones.has(zone)) return;
 
-      const slots = getSlots();
-      const slot = slots[zone];
       const text = getAvailableTag();
-      const el = createTagEl(text, zone, slot);
+      const el = createTagEl(text, zone);
 
       container.appendChild(el);
       activeZones.set(zone, { el, text });
@@ -455,7 +466,7 @@
 
       rememberTag(text);
 
-      const visibleFor = 5600 + Math.random() * 1800;
+      const visibleFor = 5400 + Math.random() * 1800;
 
       setTimeout(() => {
         hideZone(zone);
@@ -475,23 +486,21 @@
 
       setTimeout(() => {
         el.remove();
-      }, 1800);
+      }, 1600);
     }
 
     function startFloatingTags() {
-      // One per corner, staggered softly
       zoneOrder.forEach((zone, index) => {
-        setTimeout(() => showZone(zone), index * 900);
+        setTimeout(() => showZone(zone), index * 700);
       });
 
-      // Keep exactly one in each corner over time
       setInterval(() => {
         zoneOrder.forEach((zone, index) => {
           if (!activeZones.has(zone)) {
-            setTimeout(() => showZone(zone), index * 180);
+            setTimeout(() => showZone(zone), index * 140);
           }
         });
-      }, 1400);
+      }, 1200);
     }
 
     let resizeTimeout;
@@ -502,9 +511,9 @@
         activeZones.clear();
 
         zoneOrder.forEach((zone, index) => {
-          setTimeout(() => showZone(zone), index * 700);
+          setTimeout(() => showZone(zone), index * 500);
         });
-      }, 300);
+      }, 250);
     });
 
     startFloatingTags();
