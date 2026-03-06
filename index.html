@@ -337,7 +337,7 @@
     </section>
   </main>
 
- <script>
+<script>
   const tags = [
     "Y2K",
     "Streetwear",
@@ -365,32 +365,31 @@
   const activeTags = new Set();
   const recentTags = [];
 
-  // Safe corner zones only, now expressed as percentages of the hero area.
-  // These are intentionally far away from the centre/buttons/text.
+  // Smaller, safer corner zones
   const desktopZones = [
-    { minX: 3,  maxX: 21, minY: 6,  maxY: 20, side: "left"  }, // top-left
-    { minX: 79, maxX: 97, minY: 6,  maxY: 20, side: "right" }, // top-right
-    { minX: 2,  maxX: 20, minY: 82, maxY: 96, side: "left"  }, // bottom-left
-    { minX: 80, maxX: 98, minY: 82, maxY: 96, side: "right" }  // bottom-right
+    { minX: 4,  maxX: 18, minY: 8,  maxY: 20, side: "left"  },  // top-left
+    { minX: 82, maxX: 96, minY: 8,  maxY: 20, side: "right" },  // top-right
+    { minX: 3,  maxX: 18, minY: 84, maxY: 95, side: "left"  },  // bottom-left
+    { minX: 82, maxX: 97, minY: 84, maxY: 95, side: "right" }   // bottom-right
   ];
 
   const mobileZones = [
-    { minX: 6,  maxX: 26, minY: 8,  maxY: 20, side: "left"  },
-    { minX: 74, maxX: 94, minY: 8,  maxY: 22, side: "right" },
-    { minX: 4,  maxX: 24, minY: 84, maxY: 96, side: "left"  },
-    { minX: 76, maxX: 96, minY: 84, maxY: 96, side: "right" }
+    { minX: 6,  maxX: 24, minY: 8,  maxY: 18, side: "left"  },
+    { minX: 76, maxX: 94, minY: 8,  maxY: 20, side: "right" },
+    { minX: 5,  maxX: 24, minY: 86, maxY: 96, side: "left"  },
+    { minX: 76, maxX: 95, minY: 86, maxY: 96, side: "right" }
   ];
 
   function getZones() {
     return window.innerWidth <= 768 ? mobileZones : desktopZones;
   }
 
-  function rand(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
   function randomFrom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
   }
 
   function rememberTag(tag) {
@@ -438,6 +437,26 @@
     return { width: rect.width, height: rect.height };
   }
 
+  function makeRect(centerX, centerY, width, height) {
+    return {
+      left: centerX - width / 2,
+      right: centerX + width / 2,
+      top: centerY - height / 2,
+      bottom: centerY + height / 2,
+      width,
+      height
+    };
+  }
+
+  function rectsOverlap(a, b, gap = 18) {
+    return !(
+      a.right + gap <= b.left ||
+      a.left >= b.right + gap ||
+      a.bottom + gap <= b.top ||
+      a.top >= b.bottom + gap
+    );
+  }
+
   function getZoneBoundsPx(zone, tagWidth, tagHeight) {
     const rect = getContainerRect();
 
@@ -446,8 +465,7 @@
     const zoneTop = percentToPxY(zone.minY, rect.height);
     const zoneBottom = percentToPxY(zone.maxY, rect.height);
 
-    // Padding so pills never clip against edges / circles / viewport
-    const edgePad = window.innerWidth <= 768 ? 10 : 14;
+    const edgePad = window.innerWidth <= 768 ? 8 : 12;
 
     const minCenterX = Math.max(zoneLeft + tagWidth / 2 + edgePad, tagWidth / 2 + edgePad);
     const maxCenterX = Math.min(zoneRight - tagWidth / 2 - edgePad, rect.width - tagWidth / 2 - edgePad);
@@ -455,65 +473,46 @@
     const minCenterY = Math.max(zoneTop + tagHeight / 2 + edgePad, tagHeight / 2 + edgePad);
     const maxCenterY = Math.min(zoneBottom - tagHeight / 2 - edgePad, rect.height - tagHeight / 2 - edgePad);
 
-    return {
-      minX: minCenterX,
-      maxX: maxCenterX,
-      minY: minCenterY,
-      maxY: maxCenterY
-    };
+    return { minCenterX, maxCenterX, minCenterY, maxCenterY };
   }
 
-  function rectsOverlap(a, b, gap = 14) {
-    return !(
-      a.right + gap < b.left ||
-      a.left - gap > b.right ||
-      a.bottom + gap < b.top ||
-      a.top - gap > b.bottom
-    );
+  function zoneCount(zoneIndex) {
+    return [...activeTags].filter(item => item.zoneIndex === zoneIndex).length;
   }
 
-  function makeRect(centerX, centerY, width, height) {
-    return {
-      left: centerX - width / 2,
-      right: centerX + width / 2,
-      top: centerY - height / 2,
-      bottom: centerY + height / 2
-    };
+  function zoneCapacity(zoneIndex) {
+    return 2;
   }
 
-  function fitsWithoutOverlap(centerX, centerY, zoneIndex, width, height) {
-    const nextRect = makeRect(centerX, centerY, width, height);
-
+  function fitsWithoutOverlap(candidateRect, zoneIndex) {
     for (const item of activeTags) {
       if (item.zoneIndex !== zoneIndex) continue;
-      if (rectsOverlap(nextRect, item.rect)) return false;
+      if (rectsOverlap(candidateRect, item.rect)) return false;
     }
-
     return true;
   }
 
   function findPoint(zone, zoneIndex, width, height) {
     const bounds = getZoneBoundsPx(zone, width, height);
 
-    // If a zone is too small for a long tag, skip it gracefully
-    if (bounds.minX >= bounds.maxX || bounds.minY >= bounds.maxY) {
+    if (
+      bounds.minCenterX >= bounds.maxCenterX ||
+      bounds.minCenterY >= bounds.maxCenterY
+    ) {
       return null;
     }
 
-    let fallback = null;
+    for (let i = 0; i < 80; i++) {
+      const x = rand(bounds.minCenterX, bounds.maxCenterX);
+      const y = rand(bounds.minCenterY, bounds.maxCenterY);
+      const rect = makeRect(x, y, width, height);
 
-    for (let i = 0; i < 60; i++) {
-      const x = rand(bounds.minX, bounds.maxX);
-      const y = rand(bounds.minY, bounds.maxY);
-
-      if (fitsWithoutOverlap(x, y, zoneIndex, width, height)) {
-        return { x, y };
+      if (fitsWithoutOverlap(rect, zoneIndex)) {
+        return { x, y, rect };
       }
-
-      if (!fallback) fallback = { x, y };
     }
 
-    return fallback;
+    return null;
   }
 
   function pxToPercent(x, y) {
@@ -526,37 +525,36 @@
 
   function createTag(text, zone, zoneIndex) {
     const size = measureTag(text);
-    const pointPx = findPoint(zone, zoneIndex, size.width, size.height);
+    const point = findPoint(zone, zoneIndex, size.width, size.height);
 
-    if (!pointPx) return null;
+    if (!point) return null;
 
-    const pointPercent = pxToPercent(pointPx.x, pointPx.y);
+    const pos = pxToPercent(point.x, point.y);
 
     const el = document.createElement("div");
     el.className = "floating-tag";
     el.textContent = text;
+    el.style.left = `${pos.x}%`;
+    el.style.top = `${pos.y}%`;
 
     const rotate = (Math.random() * 1.2 - 0.6).toFixed(2);
     const driftX = (Math.random() * 4 - 2).toFixed(1);
     const driftY = (Math.random() * 4 - 2).toFixed(1);
 
-    el.style.left = `${pointPercent.x}%`;
-    el.style.top = `${pointPercent.y}%`;
-
     let enterX = Number(driftX);
     let exitX = Number(driftX);
 
     if (zone.side === "left") {
-      enterX -= 5;
-      exitX -= 2;
+      enterX -= 4;
+      exitX -= 1.5;
     } else {
-      enterX += 5;
-      exitX += 2;
+      enterX += 4;
+      exitX += 1.5;
     }
 
     el.dataset.rest = `translate(calc(-50% + ${driftX}px), calc(-50% + ${driftY}px)) rotate(${rotate}deg)`;
-    el.dataset.enter = `translate(calc(-50% + ${enterX}px), calc(-50% + ${Number(driftY) + 4}px)) rotate(${rotate}deg) scale(.985)`;
-    el.dataset.exit = `translate(calc(-50% + ${exitX}px), calc(-50% + ${Number(driftY) - 2}px)) rotate(${rotate}deg) scale(.985)`;
+    el.dataset.enter = `translate(calc(-50% + ${enterX}px), calc(-50% + ${Number(driftY) + 3}px)) rotate(${rotate}deg) scale(.99)`;
+    el.dataset.exit = `translate(calc(-50% + ${exitX}px), calc(-50% + ${Number(driftY) - 2}px)) rotate(${rotate}deg) scale(.99)`;
 
     el.style.transform = el.dataset.enter;
 
@@ -564,33 +562,41 @@
       el,
       text,
       zoneIndex,
-      rect: makeRect(pointPx.x, pointPx.y, size.width, size.height)
+      rect: point.rect
     };
   }
 
-  function spawnTag() {
+  function getEligibleZones() {
     const zones = getZones();
-    const maxVisible = window.innerWidth <= 768 ? 4 : 7;
+    const eligible = [];
+
+    zones.forEach((zone, index) => {
+      if (zoneCount(index) < zoneCapacity(index)) {
+        eligible.push({ zone, index });
+      }
+    });
+
+    return eligible;
+  }
+
+  function spawnTag() {
+    const maxVisible = window.innerWidth <= 768 ? 4 : 6;
     if (activeTags.size >= maxVisible) return;
 
-    const counts = zones.map((_, i) =>
-      [...activeTags].filter(tag => tag.zoneIndex === i).length
-    );
+    const eligibleZones = getEligibleZones();
+    if (!eligibleZones.length) return;
 
+    const counts = eligibleZones.map(item => zoneCount(item.index));
     const minCount = Math.min(...counts);
-    const candidateZoneIndexes = counts
-      .map((count, i) => ({ count, i }))
-      .filter(item => item.count === minCount)
-      .map(item => item.i);
+
+    const preferred = eligibleZones.filter(item => zoneCount(item.index) === minCount);
+    const shuffled = [...preferred].sort(() => Math.random() - 0.5);
 
     const text = getAvailableTag();
 
-    // Try a few zones in case one is too crowded for this tag length
-    const shuffledZones = [...candidateZoneIndexes].sort(() => Math.random() - 0.5);
-
     let tagObj = null;
-    for (const zoneIndex of shuffledZones) {
-      tagObj = createTag(text, zones[zoneIndex], zoneIndex);
+    for (const item of shuffled) {
+      tagObj = createTag(text, item.zone, item.index);
       if (tagObj) break;
     }
 
@@ -606,7 +612,7 @@
 
     rememberTag(text);
 
-    const visibleFor = 5200 + Math.random() * 4200;
+    const visibleFor = 5200 + Math.random() * 3200;
 
     setTimeout(() => {
       removeTag(tagObj);
@@ -628,7 +634,7 @@
   }
 
   function spontaneousLoop() {
-    const delay = 700 + Math.random() * 1500;
+    const delay = 900 + Math.random() * 1600;
     setTimeout(() => {
       spawnTag();
       spontaneousLoop();
@@ -642,10 +648,9 @@
 
   function startFloatingTags() {
     spawnTag();
-    setTimeout(spawnTag, 500);
-    setTimeout(spawnTag, 1200);
-    setTimeout(spawnTag, 2000);
-    setTimeout(spawnTag, 3000);
+    setTimeout(spawnTag, 700);
+    setTimeout(spawnTag, 1500);
+    setTimeout(spawnTag, 2400);
 
     spontaneousLoop();
   }
@@ -657,9 +662,9 @@
       clearAllTags();
 
       spawnTag();
-      setTimeout(spawnTag, 500);
-      setTimeout(spawnTag, 1200);
-      setTimeout(spawnTag, 2000);
+      setTimeout(spawnTag, 700);
+      setTimeout(spawnTag, 1500);
+      setTimeout(spawnTag, 2400);
     }, 250);
   });
 
