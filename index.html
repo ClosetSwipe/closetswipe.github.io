@@ -1,668 +1,392 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ClosetSwipe</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ClosetSwipe</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <style>
-    :root{
-      --pink:#f05e86;
-      --dark:#1f1f1f;
-      --muted:#7d7d7d;
-      --bg:#fbfbfb;
-      --border:rgba(0,0,0,.08);
-      --tag-border:rgba(240,94,134,.18);
-      --tag-bg:rgba(255,255,255,.96);
-      --tag-shadow:0 12px 30px rgba(240,94,134,.10);
-    }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    *{box-sizing:border-box}
+<style>
 
-    html,body{
-      margin:0;
-      min-height:100%;
-      background:var(--bg);
-      overflow:hidden;
-    }
+:root{
+--pink:#f05e86;
+--dark:#1f1f1f;
+--muted:#7d7d7d;
+--border:rgba(0,0,0,.08);
+}
 
-    body{
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      position:relative;
-    }
+*{box-sizing:border-box}
 
-    .top-nav{
-      position:fixed;
-      top:0;
-      left:0;
-      right:0;
-      z-index:30;
-      padding:22px 38px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:#fff;
-      border-bottom:1px solid var(--border);
-    }
+html,body{
+margin:0;
+height:100%;
+background:#fff;
+overflow:hidden;
+font-family:Inter,sans-serif;
+}
 
-    .top-nav a{
-      text-decoration:none;
-      line-height:1;
-    }
+/* NAV */
 
-    .brand{
-      font-family:'Playfair Display', serif;
-      font-size:18px;
-      font-weight:800;
-      color:var(--dark);
-      letter-spacing:-0.02em;
-    }
+.top-nav{
+position:fixed;
+top:0;
+left:0;
+right:0;
+z-index:50;
+padding:22px 32px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:white;
+border-bottom:1px solid var(--border);
+}
 
-    .brand .swipe{ color:var(--pink); }
+.brand{
+font-family:'Playfair Display',serif;
+font-weight:800;
+font-size:18px;
+color:var(--dark);
+text-decoration:none;
+}
 
-    .privacy{
-      font-size:16px;
-      font-weight:800;
-      color:var(--pink);
-      letter-spacing:-0.01em;
-    }
+.brand .swipe{color:var(--pink)}
 
-    .brand:hover,
-    .privacy:hover{
-      opacity:.78;
-    }
+.privacy{
+font-weight:800;
+color:var(--pink);
+text-decoration:none;
+}
 
-    .circle{
-      position:fixed;
-      border-radius:50%;
-      background:rgba(240,94,134,0.14);
-      pointer-events:none;
-      z-index:0;
-    }
+/* BACKGROUND CIRCLES */
 
-    .circle.one{
-      width:560px;
-      height:560px;
-      top:-170px;
-      left:-160px;
-    }
+.circle{
+position:fixed;
+border-radius:50%;
+background:rgba(240,94,134,0.14);
+pointer-events:none;
+}
 
-    .circle.two{
-      width:720px;
-      height:720px;
-      bottom:-330px;
-      right:-250px;
-    }
+.circle.one{
+width:560px;
+height:560px;
+top:-180px;
+left:-160px;
+}
 
-    .circle.three{
-      width:300px;
-      height:300px;
-      top:18%;
-      right:12%;
-      opacity:.06;
-    }
+.circle.two{
+width:720px;
+height:720px;
+bottom:-320px;
+right:-260px;
+}
 
-    .wrap{
-      position:relative;
-      z-index:2;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:110px 24px 40px;
-    }
+/* CENTER CONTENT */
 
-    .hero{
-      position:relative;
-      width:min(1280px, 100%);
-      max-width:1280px;
-      min-height:560px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      isolation:isolate;
-    }
+.wrap{
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding-top:60px;
+position:relative;
+}
 
-    h1{
-      margin:0;
-      font-family:'Playfair Display', serif;
-      font-size:clamp(90px, 10vw, 178px);
-      line-height:.92;
-      font-weight:800;
-      letter-spacing:-0.05em;
-      color:var(--dark);
-      position:relative;
-      z-index:4;
-    }
+.hero{
+position:relative;
+width:1200px;
+}
 
-    .pink{ color:var(--pink); }
+h1{
+font-family:'Playfair Display',serif;
+font-weight:800;
+font-size:150px;
+letter-spacing:-0.04em;
+margin:0;
+color:var(--dark);
+}
 
-    .tagline{
-      margin:18px 0 0;
-      font-size:clamp(24px, 2vw, 34px);
-      line-height:1.3;
-      color:var(--muted);
-      font-weight:500;
-      letter-spacing:-0.02em;
-      position:relative;
-      z-index:4;
-    }
+.pink{color:var(--pink)}
 
-    .button-row{
-      margin-top:44px;
-      display:flex;
-      gap:24px;
-      justify-content:center;
-      align-items:center;
-      flex-wrap:wrap;
-      position:relative;
-      z-index:4;
-    }
+.tagline{
+margin-top:12px;
+font-size:26px;
+color:var(--muted);
+}
 
-    .store-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:16px;
-      min-width:400px;
-      padding:26px 34px;
-      border-radius:24px;
-      background:#fff;
-      color:#111;
-      text-decoration:none;
-      font-size:20px;
-      font-weight:700;
-      box-shadow:0 12px 28px rgba(0,0,0,.04);
-      transition:background .22s ease,color .22s ease,transform .16s ease,box-shadow .22s ease;
-      position:relative;
-      z-index:4;
-    }
+.button-row{
+margin-top:40px;
+display:flex;
+gap:24px;
+justify-content:center;
+}
 
-    .store-btn svg{
-      width:34px;
-      height:34px;
-      fill:currentColor;
-      flex:0 0 auto;
-    }
+.store-btn{
+background:white;
+padding:26px 40px;
+border-radius:22px;
+font-weight:700;
+font-size:20px;
+box-shadow:0 12px 28px rgba(0,0,0,.05);
+display:flex;
+align-items:center;
+gap:12px;
+text-decoration:none;
+color:#111;
+transition:.2s;
+}
 
-    .store-btn:hover{
-      background:var(--pink);
-      color:#fff;
-      transform:translateY(-2px);
-      box-shadow:0 16px 34px rgba(240,94,134,.24);
-    }
+.store-btn:hover{
+background:var(--pink);
+color:white;
+transform:translateY(-2px);
+box-shadow:0 18px 36px rgba(240,94,134,.25);
+}
 
-    .floating-tags{
-      position:absolute;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-      overflow:hidden;
-    }
+/* TAGS */
 
-    .floating-tag{
-      position:absolute;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;
-      padding:12px 22px;
-      border-radius:999px;
-      background:var(--tag-bg);
-      border:2px solid var(--tag-border);
-      color:#cf5d82;
-      font-weight:600;
-      font-size:16px;
-      letter-spacing:-0.01em;
-      box-shadow:var(--tag-shadow);
-      opacity:0;
-      filter:blur(2px);
-      will-change:transform, opacity, filter;
-      transition:
-        opacity 1.4s ease,
-        transform 1.4s cubic-bezier(.22,1,.36,1),
-        filter 1.4s ease;
-    }
+.floating-tags{
+position:absolute;
+inset:0;
+pointer-events:none;
+}
 
-    .floating-tag.show{
-      opacity:1;
-      filter:blur(0);
-    }
+.floating-tag{
+position:absolute;
+padding:12px 22px;
+border-radius:999px;
+background:white;
+border:2px solid rgba(240,94,134,.2);
+color:#cf5d82;
+font-weight:600;
+box-shadow:0 12px 30px rgba(240,94,134,.12);
+opacity:0;
+transform:translate(-50%,-50%) scale(.96);
+transition:
+left 3s cubic-bezier(.22,1,.36,1),
+top 3s cubic-bezier(.22,1,.36,1),
+opacity 1.4s ease,
+transform 1.4s ease;
+}
 
-    .floating-tag.hide{
-      opacity:0;
-      filter:blur(2px);
-    }
+.floating-tag.show{
+opacity:1;
+transform:translate(-50%,-50%) scale(1);
+}
 
-    @media (max-width: 1100px){
-      .hero{ min-height:600px; }
-      .store-btn{ min-width:330px; }
-    }
+.floating-tag.hide{
+opacity:0;
+transform:translate(-50%,calc(-50% - 6px)) scale(.96);
+}
 
-    @media (max-width: 768px){
-      html,body{ overflow:auto; }
-
-      .top-nav{ padding:18px 20px; }
-      .brand{font-size:16px}
-      .privacy{font-size:15px}
-
-      .wrap{ padding:120px 18px 60px; }
-      .hero{ min-height:680px; }
-
-      h1{ font-size:clamp(62px, 16vw, 108px); }
-
-      .tagline{
-        font-size:clamp(18px, 5vw, 24px);
-        max-width:320px;
-      }
-
-      .button-row{
-        gap:14px;
-        width:100%;
-      }
-
-      .store-btn{
-        width:100%;
-        min-width:0;
-        max-width:380px;
-        padding:20px 22px;
-        font-size:18px;
-      }
-
-      .floating-tag{
-        font-size:14px;
-        padding:10px 18px;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
 
-  <nav class="top-nav" aria-label="Primary navigation">
-    <a class="brand" href="./index.html">Closet<span class="swipe">Swipe</span></a>
-    <a class="privacy" href="./privacy.html">Privacy</a>
-  </nav>
+<nav class="top-nav">
+<a class="brand" href="#">Closet<span class="swipe">Swipe</span></a>
+<a class="privacy" href="#">Privacy</a>
+</nav>
 
-  <div class="circle one"></div>
-  <div class="circle two"></div>
-  <div class="circle three"></div>
+<div class="circle one"></div>
+<div class="circle two"></div>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="floating-tags" id="floatingTags" aria-hidden="true"></div>
+<main class="wrap">
 
-      <h1>Closet<span class="pink">Swipe</span></h1>
-      <p class="tagline">swipe pre-loved fashion you'll obsess over</p>
+<section class="hero">
 
-      <div class="button-row">
-        <a href="#" class="store-btn" aria-label="Download on the App Store">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16.37 12.27c.03 3.15 2.76 4.2 2.79 4.21-.02.07-.43 1.49-1.42 2.95-.86 1.26-1.75 2.52-3.15 2.55-1.38.03-1.82-.82-3.4-.82-1.58 0-2.07.8-3.37.85-1.35.05-2.38-1.35-3.24-2.6-1.77-2.56-3.12-7.24-1.3-10.4.9-1.57 2.51-2.56 4.26-2.59 1.33-.03 2.58.9 3.39.9.81 0 2.33-1.12 3.93-.96.67.03 2.56.27 3.77 2.05-.1.06-2.25 1.31-2.26 3.86Zm-2.11-8.64c.72-.87 1.21-2.09 1.08-3.3-1.04.04-2.3.69-3.05 1.56-.67.77-1.25 2.01-1.09 3.19 1.16.09 2.35-.59 3.06-1.45Z"/>
-          </svg>
-          <span>Download on App Store</span>
-        </a>
+<div id="floatingTags" class="floating-tags"></div>
 
-        <a href="#" class="store-btn" aria-label="Get it on Google Play">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3.61 2.23 14.8 13.42 3.67 24c-.3-.16-.49-.48-.49-.9V3.13c0-.4.16-.72.43-.9Zm12 12 2.66 2.66c.76.43 1.56.31 2.43-.18l2.15-1.22c1.53-.87 1.53-2.29 0-3.16l-2.17-1.23c-.87-.49-1.67-.61-2.42-.18l-2.65 2.41Zm-.81-.81L3.61 2.23c.09-.01.18 0 .27.05l13.1 7.45-2.18 3.69Zm2.17.81 2.18 3.69-13.07 7.43c-.11.06-.21.08-.31.07l11.2-11.19Z"/>
-          </svg>
-          <span>Get it on Google Play</span>
-        </a>
-      </div>
-    </section>
-  </main>
+<h1>Closet<span class="pink">Swipe</span></h1>
+<p class="tagline">swipe pre-loved fashion you'll obsess over</p>
+
+<div class="button-row">
+
+<a class="store-btn"> Download on App Store</a>
+
+<a class="store-btn">▶ Get it on Google Play</a>
+
+</div>
+
+</section>
+
+</main>
 
 <script>
-  const tags = [
-    "Y2K","Streetwear","Vintage","Indie Sleaze","Skater","Chic/Elegant",
-    "Oversized","High-waisted","Baggy","Minimalist","Boho/Bohemian",
-    "Preppy","Grunge","Cottagecore","Clean Girl","Soft Girl",
-    "Designer/Luxury","Wide leg","Low-rise","Retro"
-  ];
-
-  const container = document.getElementById("floatingTags");
-  const activeTags = new Set();
-  const recentTags = [];
-
-  const desktopZones = [
-    { minX: 4,  maxX: 22, minY: 8,  maxY: 22, side: "left"  },
-    { minX: 78, maxX: 96, minY: 8,  maxY: 22, side: "right" },
-    { minX: 4,  maxX: 22, minY: 80, maxY: 94, side: "left"  },
-    { minX: 78, maxX: 96, minY: 80, maxY: 94, side: "right" }
-  ];
-
-  const mobileZones = [
-    { minX: 8,  maxX: 28, minY: 8,  maxY: 20, side: "left"  },
-    { minX: 72, maxX: 92, minY: 8,  maxY: 22, side: "right" },
-    { minX: 8,  maxX: 28, minY: 82, maxY: 94, side: "left"  },
-    { minX: 72, maxX: 92, minY: 82, maxY: 94, side: "right" }
-  ];
-
-  function getZones() {
-    return window.innerWidth <= 768 ? mobileZones : desktopZones;
-  }
-
-  function randomFrom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-
-  function rand(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  function rememberTag(tag) {
-    recentTags.push(tag);
-    if (recentTags.length > 12) recentTags.shift();
-  }
-
-  function getAvailableTag() {
-    const inUse = new Set([...activeTags].map(item => item.text));
-    const recent = new Set(recentTags);
-
-    let pool = tags.filter(tag => !inUse.has(tag) && !recent.has(tag));
-    if (!pool.length) pool = tags.filter(tag => !inUse.has(tag));
-    if (!pool.length) pool = tags;
-
-    return randomFrom(pool);
-  }
-
-  function measureTag(text) {
-    const el = document.createElement("div");
-    el.className = "floating-tag";
-    el.textContent = text;
-    el.style.visibility = "hidden";
-    el.style.opacity = "0";
-    el.style.left = "-9999px";
-    el.style.top = "-9999px";
-    el.style.transform = "translate(-50%, -50%)";
-    container.appendChild(el);
-    const rect = el.getBoundingClientRect();
-    el.remove();
-    return { width: rect.width, height: rect.height };
-  }
-
-  function makeRect(x, y, width, height) {
-    return {
-      left: x - width / 2,
-      right: x + width / 2,
-      top: y - height / 2,
-      bottom: y + height / 2,
-      width,
-      height,
-      cx: x,
-      cy: y
-    };
-  }
-
-  function rectsOverlap(a, b, gap = 18) {
-    return !(
-      a.right + gap <= b.left ||
-      a.left >= b.right + gap ||
-      a.bottom + gap <= b.top ||
-      a.top >= b.bottom + gap
-    );
-  }
-
-  function getContainerRect() {
-    return container.getBoundingClientRect();
-  }
-
-  function zoneCount(zoneIndex) {
-    return [...activeTags].filter(item => item.zoneIndex === zoneIndex).length;
-  }
-
-  function zoneCapacity() {
-    return 2;
-  }
-
-  function getBoundsPx(zone, width, height) {
-    const rect = getContainerRect();
-    const pad = window.innerWidth <= 768 ? 8 : 12;
-
-    const left = rect.width * (zone.minX / 100);
-    const right = rect.width * (zone.maxX / 100);
-    const top = rect.height * (zone.minY / 100);
-    const bottom = rect.height * (zone.maxY / 100);
-
-    return {
-      minX: left + width / 2 + pad,
-      maxX: right - width / 2 - pad,
-      minY: top + height / 2 + pad,
-      maxY: bottom - height / 2 - pad
-    };
-  }
-
-  function fitsRect(candidateRect, zoneIndex, ignoreItem = null) {
-    for (const item of activeTags) {
-      if (item === ignoreItem) continue;
-      if (item.zoneIndex !== zoneIndex) continue;
-      if (rectsOverlap(candidateRect, item.rect)) return false;
-    }
-    return true;
-  }
-
-  function findPoint(zone, zoneIndex, width, height, ignoreItem = null) {
-    const bounds = getBoundsPx(zone, width, height);
-
-    if (bounds.minX >= bounds.maxX || bounds.minY >= bounds.maxY) return null;
-
-    for (let i = 0; i < 60; i++) {
-      const x = rand(bounds.minX, bounds.maxX);
-      const y = rand(bounds.minY, bounds.maxY);
-      const rect = makeRect(x, y, width, height);
-
-      if (fitsRect(rect, zoneIndex, ignoreItem)) {
-        return { x, y, rect };
-      }
-    }
-
-    return null;
-  }
-
-  function pxToPercent(x, y) {
-    const rect = getContainerRect();
-    return {
-      x: (x / rect.width) * 100,
-      y: (y / rect.height) * 100
-    };
-  }
-
-  function updateTagTransform(tagObj, mode = "rest") {
-    const { el, driftX, driftY, rotate, zoneSide, floatX, floatY } = tagObj;
-
-    let baseX = driftX;
-    let baseY = driftY;
-
-    if (mode === "enter") {
-      baseX = zoneSide === "left" ? driftX - 4 : driftX + 4;
-      baseY = driftY + 3;
-    }
-
-    if (mode === "exit") {
-      baseX = zoneSide === "left" ? driftX - 1.5 : driftX + 1.5;
-      baseY = driftY - 2;
-    }
-
-    const scale = mode === "rest" ? 1 : 0.99;
-
-    el.style.transform =
-      `translate(calc(-50% + ${baseX + floatX}px), calc(-50% + ${baseY + floatY}px)) rotate(${rotate}deg) scale(${scale})`;
-  }
-
-  function createTag(text, zone, zoneIndex) {
-    const size = measureTag(text);
-    const point = findPoint(zone, zoneIndex, size.width, size.height);
-    if (!point) return null;
-
-    const rect = getContainerRect();
-    const leftPercent = (point.x / rect.width) * 100;
-    const topPercent = (point.y / rect.height) * 100;
-
-    const el = document.createElement("div");
-    el.className = "floating-tag";
-    el.textContent = text;
-    el.style.left = `${leftPercent}%`;
-    el.style.top = `${topPercent}%`;
-
-    const tagObj = {
-      el,
-      text,
-      zoneIndex,
-      zone,
-      zoneSide: zone.side,
-      rect: point.rect,
-      width: size.width,
-      height: size.height,
-      x: point.x,
-      y: point.y,
-      driftX: rand(-2, 2),
-      driftY: rand(-2, 2),
-      rotate: rand(-0.6, 0.6).toFixed(2),
-      floatX: 0,
-      floatY: 0,
-      moveTimer: null,
-      removeTimer: null
-    };
-
-    updateTagTransform(tagObj, "enter");
-    return tagObj;
-  }
-
-  function tryMoveTag(tagObj) {
-    if (!activeTags.has(tagObj)) return;
-
-    const moved = findPoint(tagObj.zone, tagObj.zoneIndex, tagObj.width, tagObj.height, tagObj);
-    if (!moved) return;
-
-    const pct = pxToPercent(moved.x, moved.y);
-
-    tagObj.x = moved.x;
-    tagObj.y = moved.y;
-    tagObj.rect = moved.rect;
-
-    tagObj.floatX = rand(-6, 6);
-    tagObj.floatY = rand(-6, 6);
-
-    tagObj.el.style.left = `${pct.x}%`;
-    tagObj.el.style.top = `${pct.y}%`;
-    updateTagTransform(tagObj, "rest");
-  }
-
-  function scheduleMovement(tagObj) {
-    const loop = () => {
-      if (!activeTags.has(tagObj)) return;
-
-      tryMoveTag(tagObj);
-
-      const nextDelay = 2200 + Math.random() * 2200;
-      tagObj.moveTimer = setTimeout(loop, nextDelay);
-    };
-
-    tagObj.moveTimer = setTimeout(loop, 1800 + Math.random() * 1600);
-  }
-
-  function spawnTag() {
-    const maxVisible = window.innerWidth <= 768 ? 4 : 6;
-    if (activeTags.size >= maxVisible) return;
-
-    const zones = getZones();
-    const eligible = zones
-      .map((zone, index) => ({ zone, index }))
-      .filter(item => zoneCount(item.index) < zoneCapacity());
-
-    if (!eligible.length) return;
-
-    const counts = eligible.map(item => zoneCount(item.index));
-    const minCount = Math.min(...counts);
-    const candidates = eligible.filter(item => zoneCount(item.index) === minCount);
-
-    const text = getAvailableTag();
-
-    let tagObj = null;
-    for (const item of [...candidates].sort(() => Math.random() - 0.5)) {
-      tagObj = createTag(text, item.zone, item.index);
-      if (tagObj) break;
-    }
-
-    if (!tagObj) return;
-
-    container.appendChild(tagObj.el);
-    activeTags.add(tagObj);
-
-    requestAnimationFrame(() => {
-      tagObj.el.classList.add("show");
-      tagObj.floatX = rand(-4, 4);
-      tagObj.floatY = rand(-4, 4);
-      updateTagTransform(tagObj, "rest");
-    });
-
-    rememberTag(text);
-    scheduleMovement(tagObj);
-
-    const visibleFor = 6500 + Math.random() * 3000;
-    tagObj.removeTimer = setTimeout(() => removeTag(tagObj), visibleFor);
-  }
-
-  function removeTag(tagObj) {
-    if (!activeTags.has(tagObj)) return;
-
-    activeTags.delete(tagObj);
-
-    if (tagObj.moveTimer) clearTimeout(tagObj.moveTimer);
-    if (tagObj.removeTimer) clearTimeout(tagObj.removeTimer);
-
-    tagObj.el.classList.remove("show");
-    tagObj.el.classList.add("hide");
-    tagObj.floatX = 0;
-    tagObj.floatY = 0;
-    updateTagTransform(tagObj, "exit");
-
-    setTimeout(() => {
-      tagObj.el.remove();
-    }, 1400);
-  }
-
-  function spontaneousLoop() {
-    const delay = 900 + Math.random() * 1400;
-    setTimeout(() => {
-      spawnTag();
-      spontaneousLoop();
-    }, delay);
-  }
-
-  function clearAllTags() {
-    activeTags.forEach(tagObj => {
-      if (tagObj.moveTimer) clearTimeout(tagObj.moveTimer);
-      if (tagObj.removeTimer) clearTimeout(tagObj.removeTimer);
-      tagObj.el.remove();
-    });
-    activeTags.clear();
-  }
-
-  function startFloatingTags() {
-    spawnTag();
-    setTimeout(spawnTag, 500);
-    setTimeout(spawnTag, 1100);
-    setTimeout(spawnTag, 1800);
-    spontaneousLoop();
-  }
-
-  let resizeTimeout;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      clearAllTags();
-      startFloatingTags();
-    }, 250);
-  });
-
-  startFloatingTags();
+
+/* TAG DATA */
+
+const tags=[
+"Y2K","Streetwear","Vintage","Grunge","Minimalist","Oversized",
+"Clean Girl","Soft Girl","Cottagecore","Designer/Luxury",
+"Low-rise","Wide leg","Retro","Preppy","Boho","Skater"
+]
+
+const container=document.getElementById("floatingTags")
+const active=[]
+
+/* SAFE CORNER ZONES */
+
+const zones=[
+{minX:4,maxX:22,minY:8,maxY:22},
+{minX:78,maxX:96,minY:8,maxY:22},
+{minX:4,maxX:22,minY:80,maxY:94},
+{minX:78,maxX:96,minY:80,maxY:94}
+]
+
+/* UTILS */
+
+function rand(min,max){return Math.random()*(max-min)+min}
+
+function random(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+/* COLLISION */
+
+function overlaps(a,b){
+return !(
+a.right+18<=b.left||
+a.left>=b.right+18||
+a.bottom+18<=b.top||
+a.top>=b.bottom+18
+)
+}
+
+/* SPAWN */
+
+function spawn(){
+
+if(active.length>=6)return
+
+let zone=random(zones)
+
+let text=random(tags)
+
+let el=document.createElement("div")
+el.className="floating-tag"
+el.innerText=text
+
+container.appendChild(el)
+
+let rect=el.getBoundingClientRect()
+
+let tries=0
+let placed=false
+
+while(!placed&&tries<40){
+
+let x=rand(zone.minX,zone.maxX)
+let y=rand(zone.minY,zone.maxY)
+
+el.style.left=x+"%"
+el.style.top=y+"%"
+
+let r=el.getBoundingClientRect()
+
+let newRect={
+left:r.left,
+right:r.right,
+top:r.top,
+bottom:r.bottom
+}
+
+let collide=false
+
+for(let t of active){
+if(overlaps(newRect,t.rect)){
+collide=true
+break
+}
+}
+
+if(!collide){
+
+placed=true
+
+active.push({
+el,
+rect:newRect,
+zone
+})
+
+}
+
+tries++
+}
+
+requestAnimationFrame(()=>el.classList.add("show"))
+
+setTimeout(()=>remove(el),6500+Math.random()*3000)
+
+scheduleMove(el)
+
+}
+
+/* MOVE */
+
+function scheduleMove(el){
+
+function move(){
+
+let item=active.find(t=>t.el===el)
+if(!item)return
+
+let zone=item.zone
+
+let x=rand(zone.minX,zone.maxX)
+let y=rand(zone.minY,zone.maxY)
+
+el.style.left=x+"%"
+el.style.top=y+"%"
+
+setTimeout(move,3500+Math.random()*2500)
+
+}
+
+setTimeout(move,3000)
+
+}
+
+/* REMOVE */
+
+function remove(el){
+
+let item=active.find(t=>t.el===el)
+
+if(!item)return
+
+el.classList.remove("show")
+el.classList.add("hide")
+
+setTimeout(()=>{
+el.remove()
+let i=active.indexOf(item)
+if(i>-1)active.splice(i,1)
+},1400)
+
+}
+
+/* LOOP */
+
+function loop(){
+
+spawn()
+
+setTimeout(loop,900+Math.random()*1400)
+
+}
+
+spawn()
+setTimeout(spawn,600)
+setTimeout(spawn,1200)
+
+loop()
+
 </script>
+
 </body>
 </html>
