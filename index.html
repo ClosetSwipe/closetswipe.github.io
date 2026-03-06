@@ -1,407 +1,454 @@
 <!doctype html>
 <html lang="en">
 <head>
-
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ClosetSwipe</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
---pink:#f05e86;
---dark:#1f1f1f;
---muted:#7d7d7d;
---border:rgba(0,0,0,.08);
---tag-border:rgba(240,94,134,.2);
---tag-bg:rgba(255,255,255,.96);
---tag-shadow:0 12px 30px rgba(240,94,134,.12);
+  --pink:#f05e86;
+  --dark:#1f1f1f;
+  --muted:#7d7d7d;
+  --border:rgba(0,0,0,.08);
+  --tag-border:rgba(240,94,134,.2);
+  --tag-bg:rgba(255,255,255,.96);
+  --tag-shadow:0 12px 30px rgba(240,94,134,.12);
 }
 
 *{box-sizing:border-box}
 
 html,body{
-margin:0;
-height:100%;
-background:#fff;
-overflow:hidden;
-font-family:Inter,sans-serif;
+  margin:0;
+  height:100%;
+  background:#fff;
+  overflow:hidden;
+  font-family:Inter,sans-serif;
 }
 
-/* NAV */
-
 .top-nav{
-position:fixed;
-top:0;
-left:0;
-right:0;
-z-index:50;
-padding:22px 32px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:#fff;
-border-bottom:1px solid var(--border);
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:50;
+  padding:22px 32px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+  border-bottom:1px solid var(--border);
 }
 
 .brand{
-font-family:'Playfair Display',serif;
-font-weight:800;
-font-size:18px;
-color:var(--dark);
-text-decoration:none;
+  font-family:'Playfair Display',serif;
+  font-weight:800;
+  font-size:18px;
+  color:var(--dark);
+  text-decoration:none;
 }
-
 .brand .swipe{color:var(--pink)}
 
 .privacy{
-font-weight:800;
-color:var(--pink);
-text-decoration:none;
+  font-weight:800;
+  color:var(--pink);
+  text-decoration:none;
 }
-
-/* BACKGROUND */
 
 .circle{
-position:fixed;
-border-radius:50%;
-background:rgba(240,94,134,0.14);
-pointer-events:none;
+  position:fixed;
+  border-radius:50%;
+  background:rgba(240,94,134,0.14);
+  pointer-events:none;
 }
-
 .circle.one{
-width:560px;
-height:560px;
-top:-180px;
-left:-160px;
+  width:560px;
+  height:560px;
+  top:-180px;
+  left:-160px;
 }
-
 .circle.two{
-width:720px;
-height:720px;
-bottom:-320px;
-right:-260px;
+  width:720px;
+  height:720px;
+  bottom:-320px;
+  right:-260px;
 }
-
-/* HERO */
 
 .wrap{
-height:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding-top:60px;
-position:relative;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding-top:60px;
+  position:relative;
 }
 
 .hero{
-position:relative;
-width:1200px;
-max-width:95%;
-min-height:560px;
+  position:relative;
+  width:1200px;
+  max-width:95%;
+  min-height:560px;
 }
 
 h1{
-font-family:'Playfair Display',serif;
-font-weight:800;
-font-size:clamp(90px,10vw,180px);
-letter-spacing:-.05em;
-margin:0;
-color:var(--dark);
-position:relative;
-z-index:3;
+  font-family:'Playfair Display',serif;
+  font-weight:800;
+  font-size:clamp(90px,10vw,180px);
+  letter-spacing:-.05em;
+  margin:0;
+  color:var(--dark);
+  position:relative;
+  z-index:3;
 }
 
 .pink{color:var(--pink)}
 
 .tagline{
-margin-top:12px;
-font-size:26px;
-color:var(--muted);
-position:relative;
-z-index:3;
+  margin-top:12px;
+  font-size:26px;
+  color:var(--muted);
+  position:relative;
+  z-index:3;
 }
 
 .button-row{
-margin-top:40px;
-display:flex;
-gap:24px;
-justify-content:center;
-flex-wrap:wrap;
-position:relative;
-z-index:3;
+  margin-top:40px;
+  display:flex;
+  gap:24px;
+  justify-content:center;
+  flex-wrap:wrap;
+  position:relative;
+  z-index:3;
 }
 
 .store-btn{
-background:white;
-padding:26px 40px;
-border-radius:22px;
-font-weight:700;
-font-size:20px;
-box-shadow:0 12px 28px rgba(0,0,0,.05);
-display:flex;
-align-items:center;
-gap:14px;
-text-decoration:none;
-color:#111;
-transition:.2s;
+  background:white;
+  padding:26px 40px;
+  border-radius:22px;
+  font-weight:700;
+  font-size:20px;
+  box-shadow:0 12px 28px rgba(0,0,0,.05);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#111;
+  transition:.2s;
 }
 
 .store-btn svg{
-width:28px;
-height:28px;
-fill:currentColor;
+  width:28px;
+  height:28px;
+  fill:currentColor;
+  flex:0 0 auto;
 }
 
 .store-btn:hover{
-background:var(--pink);
-color:white;
-transform:translateY(-2px);
-box-shadow:0 18px 36px rgba(240,94,134,.25);
+  background:var(--pink);
+  color:white;
+  transform:translateY(-2px);
+  box-shadow:0 18px 36px rgba(240,94,134,.25);
 }
 
-/* TAGS */
-
 .floating-tags{
-position:absolute;
-inset:0;
-pointer-events:none;
-z-index:1;
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
 }
 
 .floating-tag{
-position:absolute;
-padding:12px 22px;
-border-radius:999px;
-background:var(--tag-bg);
-border:2px solid var(--tag-border);
-color:#cf5d82;
-font-weight:600;
-box-shadow:var(--tag-shadow);
-opacity:0;
-filter:blur(3px);
-transform:translate(-50%,-50%) scale(.96);
-
-transition:
-left 2.6s cubic-bezier(.22,1,.36,1),
-top 2.6s cubic-bezier(.22,1,.36,1),
-opacity 1.2s ease,
-filter 1.2s ease,
-transform 1.2s ease;
+  position:absolute;
+  padding:12px 22px;
+  border-radius:999px;
+  background:var(--tag-bg);
+  border:2px solid var(--tag-border);
+  color:#cf5d82;
+  font-weight:600;
+  box-shadow:var(--tag-shadow);
+  opacity:0;
+  filter:blur(3px);
+  transform:translate(-50%,-50%) scale(.96);
+  transition:
+    left 2.4s cubic-bezier(.22,1,.36,1),
+    top 2.4s cubic-bezier(.22,1,.36,1),
+    opacity 1.2s ease,
+    filter 1.2s ease,
+    transform 1.2s ease;
 }
 
 .floating-tag.show{
-opacity:1;
-filter:blur(0);
-transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+  filter:blur(0);
+  transform:translate(-50%,-50%) scale(1);
 }
 
 .floating-tag.hide{
-opacity:0;
-filter:blur(3px);
-transform:translate(-50%,calc(-50% - 4px)) scale(.97);
+  opacity:0;
+  filter:blur(3px);
+  transform:translate(-50%,calc(-50% - 4px)) scale(.97);
 }
 
+@media (max-width:768px){
+  html,body{overflow:auto}
+  .top-nav{padding:18px 20px}
+  .brand{font-size:16px}
+  .privacy{font-size:15px}
+  .hero{min-height:680px}
+  .tagline{font-size:20px}
+  .button-row{gap:14px}
+  .store-btn{
+    width:100%;
+    max-width:380px;
+    justify-content:center;
+    font-size:18px;
+    padding:20px 22px;
+  }
+  .floating-tag{
+    font-size:14px;
+    padding:10px 18px;
+  }
+}
 </style>
 </head>
 
 <body>
-
 <nav class="top-nav">
-<a class="brand" href="#">Closet<span class="swipe">Swipe</span></a>
-<a class="privacy" href="#">Privacy</a>
+  <a class="brand" href="#">Closet<span class="swipe">Swipe</span></a>
+  <a class="privacy" href="#">Privacy</a>
 </nav>
 
 <div class="circle one"></div>
 <div class="circle two"></div>
 
 <main class="wrap">
+  <section class="hero">
+    <div id="floatingTags" class="floating-tags"></div>
 
-<section class="hero">
+    <h1>Closet<span class="pink">Swipe</span></h1>
+    <p class="tagline">swipe pre-loved fashion you'll obsess over</p>
 
-<div id="floatingTags" class="floating-tags"></div>
+    <div class="button-row">
+      <a class="store-btn" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16.37 12.27c.03 3.15 2.76 4.2 2.79 4.21-.02.07-.43 1.49-1.42 2.95-.86 1.26-1.75 2.52-3.15 2.55-1.38.03-1.82-.82-3.4-.82-1.58 0-2.07.8-3.37.85-1.35.05-2.38-1.35-3.24-2.6-1.77-2.56-3.12-7.24-1.3-10.4.9-1.57 2.51-2.56 4.26-2.59 1.33-.03 2.58.9 3.39.9.81 0 2.33-1.12 3.93-.96.67.03 2.56.27 3.77 2.05-.1.06-2.25 1.31-2.26 3.86zm-2.11-8.64c.72-.87 1.21-2.09 1.08-3.3-1.04.04-2.3.69-3.05 1.56-.67.77-1.25 2.01-1.09 3.19 1.16.09 2.35-.59 3.06-1.45z"/>
+        </svg>
+        <span>Download on App Store</span>
+      </a>
 
-<h1>Closet<span class="pink">Swipe</span></h1>
-
-<p class="tagline">
-swipe pre-loved fashion you'll obsess over
-</p>
-
-<div class="button-row">
-
-<a href="#" class="store-btn">
-
-<svg viewBox="0 0 24 24">
-<path d="M16.37 12.27c.03 3.15 2.76 4.2 2.79 4.21-.02.07-.43 1.49-1.42 2.95-.86 1.26-1.75 2.52-3.15 2.55-1.38.03-1.82-.82-3.4-.82-1.58 0-2.07.8-3.37.85-1.35.05-2.38-1.35-3.24-2.6-1.77-2.56-3.12-7.24-1.3-10.4.9-1.57 2.51-2.56 4.26-2.59 1.33-.03 2.58.9 3.39.9.81 0 2.33-1.12 3.93-.96.67.03 2.56.27 3.77 2.05-.1.06-2.25 1.31-2.26 3.86zm-2.11-8.64c.72-.87 1.21-2.09 1.08-3.3-1.04.04-2.3.69-3.05 1.56-.67.77-1.25 2.01-1.09 3.19 1.16.09 2.35-.59 3.06-1.45z"/>
-</svg>
-
-Download on App Store
-
-</a>
-
-<a href="#" class="store-btn">
-
-<svg viewBox="0 0 24 24">
-<path d="M3.61 2.23 14.8 13.42 3.67 24c-.3-.16-.49-.48-.49-.9V3.13c0-.4.16-.72.43-.9Zm12 12 2.66 2.66c.76.43 1.56.31 2.43-.18l2.15-1.22c1.53-.87 1.53-2.29 0-3.16l-2.17-1.23c-.87-.49-1.67-.61-2.42-.18l-2.65 2.41Zm-.81-.81L3.61 2.23c.09-.01.18 0 .27.05l13.1 7.45-2.18 3.69zm2.17.81 2.18 3.69-13.07 7.43c-.11.06-.21.08-.31.07l11.2-11.19z"/>
-</svg>
-
-Get it on Google Play
-
-</a>
-
-</div>
-
-</section>
-
+      <a class="store-btn" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.61 2.23 14.8 13.42 3.67 24c-.3-.16-.49-.48-.49-.9V3.13c0-.4.16-.72.43-.9zm12 12 2.66 2.66c.76.43 1.56.31 2.43-.18l2.15-1.22c1.53-.87 1.53-2.29 0-3.16l-2.17-1.23c-.87-.49-1.67-.61-2.42-.18l-2.65 2.41zm-.81-.81L3.61 2.23c.09-.01.18 0 .27.05l13.1 7.45-2.18 3.69zm2.17.81 2.18 3.69-13.07 7.43c-.11.06-.21.08-.31.07l11.2-11.19z"/>
+        </svg>
+        <span>Get it on Google Play</span>
+      </a>
+    </div>
+  </section>
 </main>
 
 <script>
+const tags = [
+  "Y2K","Streetwear","Vintage","Grunge","Minimalist","Oversized",
+  "Clean Girl","Soft Girl","Cottagecore","Designer/Luxury",
+  "Low-rise","Wide leg","Retro","Preppy","Boho","Skater"
+];
 
-/* TAG SYSTEM */
+const container = document.getElementById("floatingTags");
+const active = [];
 
-const tags=[
-"Y2K","Streetwear","Vintage","Grunge","Minimalist","Oversized",
-"Clean Girl","Soft Girl","Cottagecore","Designer/Luxury",
-"Low-rise","Wide leg","Retro","Preppy","Boho","Skater"
-]
+const zones = [
+  { minX:4,  maxX:22, minY:8,  maxY:22 },
+  { minX:78, maxX:96, minY:8,  maxY:22 },
+  { minX:4,  maxX:22, minY:80, maxY:94 },
+  { minX:78, maxX:96, minY:80, maxY:94 }
+];
 
-const zones=[
-{minX:4,maxX:22,minY:8,maxY:22},
-{minX:78,maxX:96,minY:8,maxY:22},
-{minX:4,maxX:22,minY:80,maxY:94},
-{minX:78,maxX:96,minY:80,maxY:94}
-]
+function rand(min,max){ return Math.random()*(max-min)+min; }
+function random(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-const container=document.getElementById("floatingTags")
-const active=[]
-
-function rand(min,max){return Math.random()*(max-min)+min}
-function random(arr){return arr[Math.floor(Math.random()*arr.length)]}
-
-function overlaps(a,b){
-return !(a.right<b.left||a.left>b.right||a.bottom<b.top||a.top>b.bottom)
+function overlaps(a,b,gap=18){
+  return !(
+    a.right + gap <= b.left ||
+    a.left >= b.right + gap ||
+    a.bottom + gap <= b.top ||
+    a.top >= b.bottom + gap
+  );
 }
 
 function rect(x,y,w,h){
-return{left:x-w/2,right:x+w/2,top:y-h/2,bottom:y+h/2}
+  return {
+    left:x-w/2,
+    right:x+w/2,
+    top:y-h/2,
+    bottom:y+h/2
+  };
 }
 
 function measure(text){
-const el=document.createElement("div")
-el.className="floating-tag"
-el.innerText=text
-el.style.visibility="hidden"
-container.appendChild(el)
-const r=el.getBoundingClientRect()
-el.remove()
-return{w:r.width,h:r.height}
+  const el = document.createElement("div");
+  el.className = "floating-tag";
+  el.textContent = text;
+  el.style.visibility = "hidden";
+  el.style.left = "-9999px";
+  el.style.top = "-9999px";
+  container.appendChild(el);
+  const r = el.getBoundingClientRect();
+  el.remove();
+  return { w:r.width, h:r.height };
 }
 
-function findPos(zone,size){
-
-const c=container.getBoundingClientRect()
-
-for(let i=0;i<40;i++){
-
-const x=c.width*(rand(zone.minX,zone.maxX)/100)
-const y=c.height*(rand(zone.minY,zone.maxY)/100)
-
-const r=rect(x,y,size.w,size.h)
-
-let bad=false
-
-for(const t of active){
-if(overlaps(r,t.rect)){bad=true;break}
+function containerRect(){
+  return container.getBoundingClientRect();
 }
 
-if(!bad)return{x,y,rect:r}
+function percentToPxX(p, w){ return w * (p/100); }
+function percentToPxY(p, h){ return h * (p/100); }
 
+function findAnchor(zone, size){
+  const c = containerRect();
+  const pad = 12;
+
+  const minX = percentToPxX(zone.minX, c.width) + size.w/2 + pad;
+  const maxX = percentToPxX(zone.maxX, c.width) - size.w/2 - pad;
+  const minY = percentToPxY(zone.minY, c.height) + size.h/2 + pad;
+  const maxY = percentToPxY(zone.maxY, c.height) - size.h/2 - pad;
+
+  if (minX >= maxX || minY >= maxY) return null;
+
+  for(let i=0;i<60;i++){
+    const x = rand(minX,maxX);
+    const y = rand(minY,maxY);
+    const r = rect(x,y,size.w,size.h);
+
+    let bad = false;
+    for(const t of active){
+      if(overlaps(r,t.anchorRect,22)){ bad = true; break; }
+    }
+
+    if(!bad){
+      return { x,y,anchorRect:r };
+    }
+  }
+
+  return null;
 }
 
-return null
+function pxToPercent(x,y){
+  const c = containerRect();
+  return {
+    x:(x/c.width)*100,
+    y:(y/c.height)*100
+  };
 }
 
-function spawn(){
-
-if(active.length>6)return
-
-const text=random(tags)
-const zone=random(zones)
-
-const size=measure(text)
-const pos=findPos(zone,size)
-
-if(!pos)return
-
-const el=document.createElement("div")
-el.className="floating-tag"
-el.innerText=text
-
-const c=container.getBoundingClientRect()
-
-el.style.left=(pos.x/c.width*100)+"%"
-el.style.top=(pos.y/c.height*100)+"%"
-
-container.appendChild(el)
-
-requestAnimationFrame(()=>el.classList.add("show"))
-
-const tag={el,rect:pos.rect,zone,size}
-
-active.push(tag)
-
-setTimeout(()=>move(tag),2500+Math.random()*2000)
-setTimeout(()=>remove(tag),6500+Math.random()*2000)
-
+function placeAtOrbitPosition(tag){
+  const x = tag.anchorX + Math.cos(tag.angle) * tag.radiusX;
+  const y = tag.anchorY + Math.sin(tag.angle) * tag.radiusY;
+  const p = pxToPercent(x,y);
+  tag.el.style.left = p.x + "%";
+  tag.el.style.top = p.y + "%";
 }
 
-function move(tag){
+function createTag(){
+  if(active.length >= 6) return null;
 
-const pos=findPos(tag.zone,tag.size)
-if(!pos)return
+  const text = random(tags);
+  const zone = random(zones);
+  const size = measure(text);
+  const anchor = findAnchor(zone, size);
+  if(!anchor) return null;
 
-const c=container.getBoundingClientRect()
+  const el = document.createElement("div");
+  el.className = "floating-tag";
+  el.textContent = text;
 
-tag.el.style.left=(pos.x/c.width*100)+"%"
-tag.el.style.top=(pos.y/c.height*100)+"%"
+  const tag = {
+    el,
+    text,
+    zone,
+    size,
+    anchorX: anchor.x,
+    anchorY: anchor.y,
+    anchorRect: anchor.anchorRect,
+    angle: rand(0, Math.PI * 2),
+    radiusX: rand(4, 10),
+    radiusY: rand(3, 8),
+    speed: rand(0.015, 0.028),
+    driftDir: Math.random() > 0.5 ? 1 : -1,
+    visible: true,
+    moveTick: null,
+    removeTick: null
+  };
 
-tag.rect=pos.rect
+  container.appendChild(el);
+  placeAtOrbitPosition(tag);
 
-setTimeout(()=>move(tag),3000+Math.random()*3000)
+  requestAnimationFrame(() => {
+    el.classList.add("show");
+  });
 
+  active.push(tag);
+  scheduleOrbit(tag);
+  scheduleRemove(tag);
+
+  return tag;
 }
 
-function remove(tag){
+function scheduleOrbit(tag){
+  function tick(){
+    if(!tag.visible) return;
+    tag.angle += tag.speed * tag.driftDir;
+    placeAtOrbitPosition(tag);
+    tag.moveTick = setTimeout(tick, 80);
+  }
+  tag.moveTick = setTimeout(tick, 120);
+}
 
-tag.el.classList.remove("show")
-tag.el.classList.add("hide")
+function scheduleRemove(tag){
+  const lifetime = 6500 + Math.random() * 2500;
+  tag.removeTick = setTimeout(() => removeTag(tag), lifetime);
+}
 
-setTimeout(()=>{
-tag.el.remove()
-const i=active.indexOf(tag)
-if(i>-1)active.splice(i,1)
-},1200)
+function removeTag(tag){
+  if(!tag.visible) return;
+  tag.visible = false;
 
+  if(tag.moveTick) clearTimeout(tag.moveTick);
+  if(tag.removeTick) clearTimeout(tag.removeTick);
+
+  tag.el.classList.remove("show");
+  tag.el.classList.add("hide");
+
+  setTimeout(() => {
+    tag.el.remove();
+    const i = active.indexOf(tag);
+    if(i > -1) active.splice(i,1);
+  }, 1200);
 }
 
 function loop(){
-spawn()
-setTimeout(loop,900+Math.random()*1200)
+  if(active.length < 6){
+    createTag();
+  }
+  setTimeout(loop, 900 + Math.random() * 1200);
 }
 
-spawn()
-setTimeout(spawn,600)
-setTimeout(spawn,1200)
+createTag();
+setTimeout(createTag, 500);
+setTimeout(createTag, 1100);
+loop();
 
-loop()
-
+window.addEventListener("resize", () => {
+  active.slice().forEach(removeTag);
+  setTimeout(() => {
+    createTag();
+    setTimeout(createTag, 500);
+    setTimeout(createTag, 1100);
+  }, 200);
+});
 </script>
-
 </body>
 </html>
