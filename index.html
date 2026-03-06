@@ -365,12 +365,11 @@
     const activeTags = new Set();
     const recentTags = [];
 
-    // Bottom zones moved much lower and further outward
     const desktopZones = [
-      { minX: 4,  maxX: 18, minY: 8,  maxY: 22, side: "left"  },  // top-left
-      { minX: 82, maxX: 96, minY: 8,  maxY: 22, side: "right" },  // top-right
-      { minX: 2,  maxX: 16, minY: 84, maxY: 96, side: "left"  },  // bottom-left
-      { minX: 84, maxX: 98, minY: 84, maxY: 96, side: "right" }   // bottom-right
+      { minX: 4,  maxX: 18, minY: 8,  maxY: 22, side: "left"  },
+      { minX: 82, maxX: 96, minY: 8,  maxY: 22, side: "right" },
+      { minX: 2,  maxX: 16, minY: 84, maxY: 96, side: "left"  },
+      { minX: 84, maxX: 98, minY: 84, maxY: 96, side: "right" }
     ];
 
     const mobileZones = [
@@ -408,30 +407,214 @@
       return randomFrom(pool);
     }
 
-    function intersectsExisting(x, y, zoneIndex) {
-      const minDistance = window.innerWidth <= 768 ? 18 : 14;
+    function getTagRect(centerX, centerY, width, height, padding = 18) {
+      return {
+        left: centerX - width / 2 - padding,
+        right: centerX + width / 2 + padding,
+        top: centerY - height / 2 - padding,
+        bottom: centerY + height / 2 + padding
+      };
+    }
+
+    function rectsOverlap(a, b) {
+      return !(
+        a.right < b.left ||
+        a.left > b.right ||
+        a.bottom < b.top ||
+        a.top > b.bottom
+      );
+    }
+
+    function toContainerPx(xPercent, yPercent) {
+      const rect = container.getBoundingClientRect();
+      return {
+        x: (xPercent / 100) * rect.width,
+        y: (yPercent / 100) * rect.height
+      };
+    }
+
+    function makeMeasureTag(text) {
+      const el = document.createElement("div");
+      el.className = "floating-tag";
+      el.textContent = text;
+      el.style.visibility = "hidden";
+      el.style.opacity = "0";
+      el.style.left = "-9999px";
+      el.style.top = "-9999px";
+      el.style.transform = "translate(-50%, -50%)";
+      container.appendChild(el);
+
+      const rect = el.getBoundingClientRect();
+      el.remove();
+
+      return {
+        width: rect.width,
+        height: rect.height
+      };
+    }
+
+    function fitsWithoutOverlap(xPercent, yPercent, zoneIndex, width, height) {
+      const point = toContainerPx(xPercent, yPercent);
+      const nextRect = getTagRect(point.x, point.y, width, height);
 
       for (const item of activeTags) {
         if (item.zoneIndex !== zoneIndex) continue;
-
-        const dx = item.x - x;
-        const dy = item.y - y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < minDistance) return true;
+        if (rectsOverlap(nextRect, item.rect)) return false;
       }
 
-      return false;
+      return true;
     }
 
-    function getPoint(zone, zoneIndex) {
-      let tries = 0;
-      let point = null;
+    function getPoint(zone, zoneIndex, width, height) {
+      let best = null;
 
-      while (tries < 24) {
+      for (let i = 0; i < 40; i++) {
         const x = rand(zone.minX, zone.maxX);
         const y = rand(zone.minY, zone.maxY);
 
+        if (fitsWithoutOverlap(x, y, zoneIndex, width, height)) {
+          return { x, y };
+        }
+
+        if (!best) best = { x, y };
+      }
+
+      return best || {
+        x: rand(zone.minX, zone.maxX),
+        y: rand(zone.minY, zone.maxY)
+      };
+    }
+
+    function createTag(text, zone, zoneIndex) {
+      const size = makeMeasureTag(text);
+      const point = getPoint(zone, zoneIndex, size.width, size.height);
+
+      const el = document.createElement("div");
+      el.className = "floating-tag";
+      el.textContent = text;
+
+      const rotate = (Math.random() * 1.8 - 0.9).toFixed(2);
+      const driftX = (Math.random() * 6 - 3).toFixed(1);
+      const driftY = (Math.random() * 6 - 3).toFixed(1);
+
+      el.style.left = `${point.x}%`;
+      el.style.top = `${point.y}%`;
+
+      let enterX = Number(driftX);
+      let exitX = Number(driftX);
+
+      if (zone.side === "left") {
+        enterX -= 7;
+        exitX -= 2;
+      } else {
+        enterX += 7;
+        exitX += 2;
+      }
+
+      el.dataset.rest = `translate(calc(-50% + ${driftX}px), calc(-50% + ${driftY}px)) rotate(${rotate}deg)`;
+      el.dataset.enter = `translate(calc(-50% + ${enterX}px), calc(-50% + ${Number(driftY) + 6}px)) rotate(${rotate}deg) scale(.985)`;
+      el.dataset.exit = `translate(calc(-50% + ${exitX}px), calc(-50% + ${Number(driftY) - 3}px)) rotate(${rotate}deg) scale(.985)`;
+
+      el.style.transform = el.dataset.enter;
+
+      const px = toContainerPx(point.x, point.y);
+      const rect = getTagRect(px.x, px.y, size.width, size.height);
+
+      return {
+        el,
+        text,
+        zoneIndex,
+        rect
+      };
+    }
+
+    function spawnTag() {
+      const zones = getZones();
+      const maxVisible = window.innerWidth <= 768 ? 4 : 7;
+      if (activeTags.size >= maxVisible) return;
+
+      const counts = zones.map((_, i) =>
+        [...activeTags].filter(tag => tag.zoneIndex === i).length
+      );
+
+      const minCount = Math.min(...counts);
+      const candidateZoneIndexes = counts
+        .map((count, i) => ({ count, i }))
+        .filter(item => item.count === minCount)
+        .map(item => item.i);
+
+      const zoneIndex = randomFrom(candidateZoneIndexes);
+      const zone = zones[zoneIndex];
+      const text = getAvailableTag();
+      const tagObj = createTag(text, zone, zoneIndex);
+
+      container.appendChild(tagObj.el);
+      activeTags.add(tagObj);
+
+      requestAnimationFrame(() => {
+        tagObj.el.classList.add("show");
+        tagObj.el.style.transform = tagObj.el.dataset.rest;
+      });
+
+      rememberTag(text);
+
+      const visibleFor = 5200 + Math.random() * 4200;
+
+      setTimeout(() => {
+        removeTag(tagObj);
+      }, visibleFor);
+    }
+
+    function removeTag(tagObj) {
+      if (!activeTags.has(tagObj)) return;
+
+      activeTags.delete(tagObj);
+
+      tagObj.el.classList.remove("show");
+      tagObj.el.classList.add("hide");
+      tagObj.el.style.transform = tagObj.el.dataset.exit;
+
+      setTimeout(() => {
+        tagObj.el.remove();
+      }, 1800);
+    }
+
+    function spontaneousLoop() {
+      const delay = 700 + Math.random() * 1500;
+      setTimeout(() => {
+        spawnTag();
+        spontaneousLoop();
+      }, delay);
+    }
+
+    function startFloatingTags() {
+      spawnTag();
+      setTimeout(spawnTag, 500);
+      setTimeout(spawnTag, 1200);
+      setTimeout(spawnTag, 2000);
+      setTimeout(spawnTag, 3000);
+
+      spontaneousLoop();
+    }
+
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        activeTags.forEach(tagObj => tagObj.el.remove());
+        activeTags.clear();
+
+        spawnTag();
+        setTimeout(spawnTag, 500);
+        setTimeout(spawnTag, 1200);
+        setTimeout(spawnTag, 2000);
+      }, 250);
+    });
+
+    startFloatingTags();
+  </script>
+</body>
+</html>
         if (!intersectsExisting(x, y, zoneIndex)) {
           point = { x, y };
           break;
