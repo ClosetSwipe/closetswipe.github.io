@@ -17,7 +17,7 @@
       --bg:#fbfbfb;
       --border:rgba(0,0,0,.08);
       --tag-border:rgba(240,94,134,.18);
-      --tag-bg:rgba(255,255,255,.92);
+      --tag-bg:rgba(255,255,255,.95);
       --tag-shadow:0 12px 30px rgba(240,94,134,.10);
     }
 
@@ -119,9 +119,9 @@
 
     .hero{
       position:relative;
-      width:min(1200px, 100%);
-      max-width:1200px;
-      min-height:520px;
+      width:min(1320px, 100%);
+      max-width:1320px;
+      min-height:560px;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -138,7 +138,7 @@
       letter-spacing:-0.05em;
       color:var(--dark);
       position:relative;
-      z-index:3;
+      z-index:4;
     }
 
     .pink{
@@ -153,7 +153,7 @@
       font-weight:500;
       letter-spacing:-0.02em;
       position:relative;
-      z-index:3;
+      z-index:4;
     }
 
     .button-row{
@@ -164,7 +164,7 @@
       align-items:center;
       flex-wrap:wrap;
       position:relative;
-      z-index:3;
+      z-index:4;
     }
 
     .store-btn{
@@ -183,7 +183,7 @@
       box-shadow:0 12px 28px rgba(0,0,0,.04);
       transition:background .22s ease,color .22s ease,transform .16s ease,box-shadow .22s ease;
       position:relative;
-      z-index:3;
+      z-index:4;
     }
 
     .store-btn svg{
@@ -223,29 +223,27 @@
       letter-spacing:-0.01em;
       box-shadow:var(--tag-shadow);
       opacity:0;
-      transform:translateY(10px) scale(.96);
+      filter:blur(2px);
+      will-change:transform, opacity, filter;
       transition:
         opacity .9s ease,
         transform .9s ease,
         filter .9s ease;
-      filter:blur(2px);
     }
 
     .floating-tag.show{
       opacity:1;
-      transform:translateY(0) scale(1);
       filter:blur(0);
     }
 
     .floating-tag.hide{
       opacity:0;
-      transform:translateY(-8px) scale(.96);
       filter:blur(2px);
     }
 
     @media (max-width: 1100px){
       .hero{
-        min-height:560px;
+        min-height:620px;
       }
 
       .store-btn{
@@ -270,7 +268,7 @@
       }
 
       .hero{
-        min-height:540px;
+        min-height:680px;
       }
 
       h1{
@@ -363,120 +361,174 @@
     ];
 
     const container = document.getElementById("floatingTags");
+    const activeTags = new Map();
+    const recentTags = [];
 
-    // Up to 4 at a time, positioned neatly around the hero content.
-    // Avoids the direct center so title/text/buttons stay clear.
+    // Spread further away from title / text / buttons.
+    // Center band intentionally left clear.
     const slotsDesktop = [
-      { x: 16, y: 20 },
-      { x: 77, y: 22 },
-      { x: 10, y: 48 },
-      { x: 82, y: 46 },
-      { x: 24, y: 66 },
-      { x: 70, y: 68 },
-      { x: 14, y: 82 },
-      { x: 80, y: 82 }
+      { x: 8,  y: 12 },
+      { x: 22, y: 18 },
+      { x: 78, y: 14 },
+      { x: 88, y: 26 },
+
+      { x: 6,  y: 40 },
+      { x: 20, y: 52 },
+      { x: 78, y: 50 },
+      { x: 90, y: 38 },
+
+      { x: 10, y: 84 },
+      { x: 26, y: 78 },
+      { x: 74, y: 80 },
+      { x: 88, y: 86 }
     ];
 
     const slotsMobile = [
-      { x: 12, y: 24 },
-      { x: 72, y: 28 },
-      { x: 8, y: 72 },
-      { x: 70, y: 76 },
-      { x: 18, y: 86 },
-      { x: 60, y: 16 }
+      { x: 10, y: 18 },
+      { x: 66, y: 18 },
+      { x: 4,  y: 38 },
+      { x: 72, y: 40 },
+      { x: 8,  y: 86 },
+      { x: 60, y: 86 }
     ];
-
-    const usedRecently = new Set();
-    let currentNodes = [];
 
     function getSlots() {
       return window.innerWidth <= 768 ? slotsMobile : slotsDesktop;
     }
 
-    function shuffle(array) {
-      return [...array].sort(() => Math.random() - 0.5);
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
     }
 
-    function pickUniqueTags(count) {
-      const available = tags.filter(tag => !usedRecently.has(tag));
-      const source = available.length >= count ? available : tags;
-      const chosen = shuffle(source).slice(0, count);
-
-      chosen.forEach(tag => usedRecently.add(tag));
-
-      if (usedRecently.size > 10) {
-        const firstFew = Array.from(usedRecently).slice(0, 4);
-        usedRecently.clear();
-        firstFew.forEach(tag => usedRecently.add(tag));
-      }
-
-      return chosen;
+    function rememberTag(tag) {
+      recentTags.push(tag);
+      if (recentTags.length > 8) recentTags.shift();
     }
 
-    function createTag(text, slot) {
+    function getAvailableTag() {
+      const inUse = new Set([...activeTags.values()].map(item => item.text));
+      const recent = new Set(recentTags);
+
+      let pool = tags.filter(tag => !inUse.has(tag) && !recent.has(tag));
+      if (!pool.length) pool = tags.filter(tag => !inUse.has(tag));
+      if (!pool.length) pool = tags;
+
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function getAvailableSlot() {
+      const slots = getSlots();
+      const used = new Set([...activeTags.keys()]);
+      const free = slots.filter((_, index) => !used.has(index));
+      if (!free.length) return null;
+
+      const slot = free[Math.floor(Math.random() * free.length)];
+      const slotIndex = slots.findIndex(
+        s => s.x === slot.x && s.y === slot.y
+      );
+
+      return { slot, slotIndex };
+    }
+
+    function createTagEl(text, slot) {
       const el = document.createElement("div");
       el.className = "floating-tag";
       el.textContent = text;
+
+      const rotation = (Math.random() * 4 - 2).toFixed(2);
+      const offsetX = (Math.random() * 10 - 5).toFixed(1);
+      const offsetY = (Math.random() * 10 - 5).toFixed(1);
+
       el.style.left = `${slot.x}%`;
       el.style.top = `${slot.y}%`;
-      el.style.transform += ` rotate(${(Math.random() * 4 - 2).toFixed(2)}deg)`;
+      el.dataset.baseTransform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) rotate(${rotation}deg)`;
+
+      el.style.transform = `${el.dataset.baseTransform} scale(.96)`;
       return el;
     }
 
-    function showSet() {
-      const slotPool = shuffle(getSlots()).slice(0, 4);
-      const chosenTags = pickUniqueTags(slotPool.length);
-      const nextNodes = chosenTags.map((tag, i) => createTag(tag, slotPool[i]));
+    function showTag() {
+      if (activeTags.size >= 4) return;
 
-      nextNodes.forEach(node => container.appendChild(node));
+      const slotData = getAvailableSlot();
+      if (!slotData) return;
+
+      const text = getAvailableTag();
+      const el = createTagEl(text, slotData.slot);
+
+      container.appendChild(el);
+
+      activeTags.set(slotData.slotIndex, { el, text });
 
       requestAnimationFrame(() => {
-        nextNodes.forEach((node, index) => {
-          setTimeout(() => node.classList.add("show"), index * 120);
-        });
+        el.classList.add("show");
+        el.style.transform = `${el.dataset.baseTransform} scale(1)`;
       });
 
-      currentNodes = nextNodes;
+      const visibleFor = 2600 + Math.random() * 2200;
+
+      setTimeout(() => {
+        hideTag(slotData.slotIndex);
+      }, visibleFor);
+
+      rememberTag(text);
     }
 
-    function hideCurrent() {
-      return new Promise(resolve => {
-        if (!currentNodes.length) {
-          resolve();
-          return;
+    function hideTag(slotIndex) {
+      const entry = activeTags.get(slotIndex);
+      if (!entry) return;
+
+      const { el } = entry;
+      activeTags.delete(slotIndex);
+
+      el.classList.remove("show");
+      el.classList.add("hide");
+      el.style.transform = `${el.dataset.baseTransform} translateY(-8px) scale(.96)`;
+
+      setTimeout(() => {
+        el.remove();
+      }, 900);
+    }
+
+    function startFloatingTags() {
+      // Initial staggered entrance
+      showTag();
+      setTimeout(showTag, 500);
+      setTimeout(showTag, 1100);
+
+      // Independent arrivals
+      setInterval(() => {
+        if (activeTags.size < 4) {
+          showTag();
         }
+      }, 900);
 
-        currentNodes.forEach((node, index) => {
-          setTimeout(() => {
-            node.classList.remove("show");
-            node.classList.add("hide");
-          }, index * 90);
-        });
-
-        setTimeout(() => {
-          currentNodes.forEach(node => node.remove());
-          currentNodes = [];
-          resolve();
-        }, 1100);
-      });
+      // Occasional extra stagger so timing feels more organic
+      setInterval(() => {
+        if (activeTags.size < 4 && Math.random() > 0.45) {
+          setTimeout(showTag, Math.random() * 600);
+        }
+      }, 1800);
     }
-
-    async function cycleTags() {
-      await hideCurrent();
-      showSet();
-    }
-
-    showSet();
-    setInterval(cycleTags, 4200);
 
     let resizeTimeout;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(async () => {
-        await hideCurrent();
-        showSet();
-      }, 200);
+      resizeTimeout = setTimeout(() => {
+        activeTags.forEach(({ el }) => el.remove());
+        activeTags.clear();
+
+        const delay1 = 100;
+        const delay2 = 550;
+        const delay3 = 1000;
+
+        setTimeout(showTag, delay1);
+        setTimeout(showTag, delay2);
+        setTimeout(showTag, delay3);
+      }, 220);
     });
+
+    startFloatingTags();
   </script>
 </body>
 </html>
