@@ -318,274 +318,351 @@
     </section>
   </main>
 
-  <script>
-    const tags = [
-      "Y2K","Streetwear","Vintage","Indie Sleaze","Skater","Chic/Elegant",
-      "Oversized","High-waisted","Baggy","Minimalist","Boho/Bohemian",
-      "Preppy","Grunge","Cottagecore","Clean Girl","Soft Girl",
-      "Designer/Luxury","Wide leg","Low-rise","Retro"
-    ];
+<script>
+  const tags = [
+    "Y2K","Streetwear","Vintage","Indie Sleaze","Skater","Chic/Elegant",
+    "Oversized","High-waisted","Baggy","Minimalist","Boho/Bohemian",
+    "Preppy","Grunge","Cottagecore","Clean Girl","Soft Girl",
+    "Designer/Luxury","Wide leg","Low-rise","Retro"
+  ];
 
-    const container = document.getElementById("floatingTags");
-    const activeTags = new Set();
-    const recentTags = [];
+  const container = document.getElementById("floatingTags");
+  const activeTags = new Set();
+  const recentTags = [];
 
-    const desktopZones = [
-      { minX: 4,  maxX: 22, minY: 8,  maxY: 22, side: "left"  },
-      { minX: 78, maxX: 96, minY: 8,  maxY: 22, side: "right" },
-      { minX: 4,  maxX: 22, minY: 80, maxY: 94, side: "left"  },
-      { minX: 78, maxX: 96, minY: 80, maxY: 94, side: "right" }
-    ];
+  const desktopZones = [
+    { minX: 4,  maxX: 22, minY: 8,  maxY: 22, side: "left"  },
+    { minX: 78, maxX: 96, minY: 8,  maxY: 22, side: "right" },
+    { minX: 4,  maxX: 22, minY: 80, maxY: 94, side: "left"  },
+    { minX: 78, maxX: 96, minY: 80, maxY: 94, side: "right" }
+  ];
 
-    const mobileZones = [
-      { minX: 8,  maxX: 28, minY: 8,  maxY: 20, side: "left"  },
-      { minX: 72, maxX: 92, minY: 8,  maxY: 22, side: "right" },
-      { minX: 8,  maxX: 28, minY: 82, maxY: 94, side: "left"  },
-      { minX: 72, maxX: 92, minY: 82, maxY: 94, side: "right" }
-    ];
+  const mobileZones = [
+    { minX: 8,  maxX: 28, minY: 8,  maxY: 20, side: "left"  },
+    { minX: 72, maxX: 92, minY: 8,  maxY: 22, side: "right" },
+    { minX: 8,  maxX: 28, minY: 82, maxY: 94, side: "left"  },
+    { minX: 72, maxX: 92, minY: 82, maxY: 94, side: "right" }
+  ];
 
-    function getZones() {
-      return window.innerWidth <= 768 ? mobileZones : desktopZones;
+  function getZones() {
+    return window.innerWidth <= 768 ? mobileZones : desktopZones;
+  }
+
+  function randomFrom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function rememberTag(tag) {
+    recentTags.push(tag);
+    if (recentTags.length > 12) recentTags.shift();
+  }
+
+  function getAvailableTag() {
+    const inUse = new Set([...activeTags].map(item => item.text));
+    const recent = new Set(recentTags);
+
+    let pool = tags.filter(tag => !inUse.has(tag) && !recent.has(tag));
+    if (!pool.length) pool = tags.filter(tag => !inUse.has(tag));
+    if (!pool.length) pool = tags;
+
+    return randomFrom(pool);
+  }
+
+  function measureTag(text) {
+    const el = document.createElement("div");
+    el.className = "floating-tag";
+    el.textContent = text;
+    el.style.visibility = "hidden";
+    el.style.opacity = "0";
+    el.style.left = "-9999px";
+    el.style.top = "-9999px";
+    el.style.transform = "translate(-50%, -50%)";
+    container.appendChild(el);
+    const rect = el.getBoundingClientRect();
+    el.remove();
+    return { width: rect.width, height: rect.height };
+  }
+
+  function makeRect(x, y, width, height) {
+    return {
+      left: x - width / 2,
+      right: x + width / 2,
+      top: y - height / 2,
+      bottom: y + height / 2,
+      width,
+      height,
+      cx: x,
+      cy: y
+    };
+  }
+
+  function rectsOverlap(a, b, gap = 18) {
+    return !(
+      a.right + gap <= b.left ||
+      a.left >= b.right + gap ||
+      a.bottom + gap <= b.top ||
+      a.top >= b.bottom + gap
+    );
+  }
+
+  function getContainerRect() {
+    return container.getBoundingClientRect();
+  }
+
+  function zoneCount(zoneIndex) {
+    return [...activeTags].filter(item => item.zoneIndex === zoneIndex).length;
+  }
+
+  function zoneCapacity() {
+    return 2;
+  }
+
+  function getBoundsPx(zone, width, height) {
+    const rect = getContainerRect();
+    const pad = window.innerWidth <= 768 ? 8 : 12;
+
+    const left = rect.width * (zone.minX / 100);
+    const right = rect.width * (zone.maxX / 100);
+    const top = rect.height * (zone.minY / 100);
+    const bottom = rect.height * (zone.maxY / 100);
+
+    return {
+      minX: left + width / 2 + pad,
+      maxX: right - width / 2 - pad,
+      minY: top + height / 2 + pad,
+      maxY: bottom - height / 2 - pad
+    };
+  }
+
+  function fitsRect(candidateRect, zoneIndex, ignoreItem = null) {
+    for (const item of activeTags) {
+      if (item === ignoreItem) continue;
+      if (item.zoneIndex !== zoneIndex) continue;
+      if (rectsOverlap(candidateRect, item.rect)) return false;
     }
+    return true;
+  }
 
-    function randomFrom(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
+  function findPoint(zone, zoneIndex, width, height, ignoreItem = null) {
+    const bounds = getBoundsPx(zone, width, height);
 
-    function rand(min, max) {
-      return Math.random() * (max - min) + min;
-    }
+    if (bounds.minX >= bounds.maxX || bounds.minY >= bounds.maxY) return null;
 
-    function rememberTag(tag) {
-      recentTags.push(tag);
-      if (recentTags.length > 12) recentTags.shift();
-    }
+    for (let i = 0; i < 60; i++) {
+      const x = rand(bounds.minX, bounds.maxX);
+      const y = rand(bounds.minY, bounds.maxY);
+      const rect = makeRect(x, y, width, height);
 
-    function getAvailableTag() {
-      const inUse = new Set([...activeTags].map(item => item.text));
-      const recent = new Set(recentTags);
-
-      let pool = tags.filter(tag => !inUse.has(tag) && !recent.has(tag));
-      if (!pool.length) pool = tags.filter(tag => !inUse.has(tag));
-      if (!pool.length) pool = tags;
-
-      return randomFrom(pool);
-    }
-
-    function measureTag(text) {
-      const el = document.createElement("div");
-      el.className = "floating-tag";
-      el.textContent = text;
-      el.style.visibility = "hidden";
-      el.style.opacity = "0";
-      el.style.left = "-9999px";
-      el.style.top = "-9999px";
-      el.style.transform = "translate(-50%, -50%)";
-      container.appendChild(el);
-      const rect = el.getBoundingClientRect();
-      el.remove();
-      return { width: rect.width, height: rect.height };
-    }
-
-    function makeRect(x, y, width, height) {
-      return {
-        left: x - width / 2,
-        right: x + width / 2,
-        top: y - height / 2,
-        bottom: y + height / 2
-      };
-    }
-
-    function rectsOverlap(a, b, gap = 16) {
-      return !(
-        a.right + gap <= b.left ||
-        a.left >= b.right + gap ||
-        a.bottom + gap <= b.top ||
-        a.top >= b.bottom + gap
-      );
-    }
-
-    function getContainerRect() {
-      return container.getBoundingClientRect();
-    }
-
-    function zoneCount(zoneIndex) {
-      return [...activeTags].filter(item => item.zoneIndex === zoneIndex).length;
-    }
-
-    function zoneCapacity() {
-      return 2;
-    }
-
-    function getBoundsPx(zone, width, height) {
-      const rect = getContainerRect();
-      const pad = window.innerWidth <= 768 ? 8 : 12;
-
-      const left = rect.width * (zone.minX / 100);
-      const right = rect.width * (zone.maxX / 100);
-      const top = rect.height * (zone.minY / 100);
-      const bottom = rect.height * (zone.maxY / 100);
-
-      return {
-        minX: left + width / 2 + pad,
-        maxX: right - width / 2 - pad,
-        minY: top + height / 2 + pad,
-        maxY: bottom - height / 2 - pad
-      };
-    }
-
-    function findPoint(zone, zoneIndex, width, height) {
-      const bounds = getBoundsPx(zone, width, height);
-
-      if (bounds.minX >= bounds.maxX || bounds.minY >= bounds.maxY) return null;
-
-      for (let i = 0; i < 50; i++) {
-        const x = rand(bounds.minX, bounds.maxX);
-        const y = rand(bounds.minY, bounds.maxY);
-        const rect = makeRect(x, y, width, height);
-
-        let overlaps = false;
-        for (const item of activeTags) {
-          if (item.zoneIndex !== zoneIndex) continue;
-          if (rectsOverlap(rect, item.rect)) {
-            overlaps = true;
-            break;
-          }
-        }
-
-        if (!overlaps) return { x, y, rect };
+      if (fitsRect(rect, zoneIndex, ignoreItem)) {
+        return { x, y, rect };
       }
-
-      return null;
     }
 
-    function createTag(text, zone, zoneIndex) {
-      const size = measureTag(text);
-      const point = findPoint(zone, zoneIndex, size.width, size.height);
-      if (!point) return null;
+    return null;
+  }
 
-      const rect = getContainerRect();
-      const leftPercent = (point.x / rect.width) * 100;
-      const topPercent = (point.y / rect.height) * 100;
+  function pxToPercent(x, y) {
+    const rect = getContainerRect();
+    return {
+      x: (x / rect.width) * 100,
+      y: (y / rect.height) * 100
+    };
+  }
 
-      const el = document.createElement("div");
-      el.className = "floating-tag";
-      el.textContent = text;
-      el.style.left = `${leftPercent}%`;
-      el.style.top = `${topPercent}%`;
+  function updateTagTransform(tagObj, mode = "rest") {
+    const { el, driftX, driftY, rotate, zoneSide, floatX, floatY } = tagObj;
 
-      const rotate = (Math.random() * 1.2 - 0.6).toFixed(2);
-      const driftX = (Math.random() * 4 - 2).toFixed(1);
-      const driftY = (Math.random() * 4 - 2).toFixed(1);
+    let baseX = driftX;
+    let baseY = driftY;
 
-      let enterX = Number(driftX);
-      let exitX = Number(driftX);
-
-      if (zone.side === "left") {
-        enterX -= 4;
-        exitX -= 1.5;
-      } else {
-        enterX += 4;
-        exitX += 1.5;
-      }
-
-      el.dataset.rest = `translate(calc(-50% + ${driftX}px), calc(-50% + ${driftY}px)) rotate(${rotate}deg)`;
-      el.dataset.enter = `translate(calc(-50% + ${enterX}px), calc(-50% + ${Number(driftY) + 3}px)) rotate(${rotate}deg) scale(.99)`;
-      el.dataset.exit = `translate(calc(-50% + ${exitX}px), calc(-50% + ${Number(driftY) - 2}px)) rotate(${rotate}deg) scale(.99)`;
-
-      el.style.transform = el.dataset.enter;
-
-      return {
-        el,
-        text,
-        zoneIndex,
-        rect: point.rect
-      };
+    if (mode === "enter") {
+      baseX = zoneSide === "left" ? driftX - 4 : driftX + 4;
+      baseY = driftY + 3;
     }
 
-    function spawnTag() {
-      const maxVisible = window.innerWidth <= 768 ? 4 : 6;
-      if (activeTags.size >= maxVisible) return;
-
-      const zones = getZones();
-      const eligible = zones
-        .map((zone, index) => ({ zone, index }))
-        .filter(item => zoneCount(item.index) < zoneCapacity());
-
-      if (!eligible.length) return;
-
-      const counts = eligible.map(item => zoneCount(item.index));
-      const minCount = Math.min(...counts);
-      const candidates = eligible.filter(item => zoneCount(item.index) === minCount);
-
-      const text = getAvailableTag();
-
-      let tagObj = null;
-      for (const item of [...candidates].sort(() => Math.random() - 0.5)) {
-        tagObj = createTag(text, item.zone, item.index);
-        if (tagObj) break;
-      }
-
-      if (!tagObj) return;
-
-      container.appendChild(tagObj.el);
-      activeTags.add(tagObj);
-
-      requestAnimationFrame(() => {
-        tagObj.el.classList.add("show");
-        tagObj.el.style.transform = tagObj.el.dataset.rest;
-      });
-
-      rememberTag(text);
-
-      const visibleFor = 5200 + Math.random() * 3200;
-      setTimeout(() => removeTag(tagObj), visibleFor);
+    if (mode === "exit") {
+      baseX = zoneSide === "left" ? driftX - 1.5 : driftX + 1.5;
+      baseY = driftY - 2;
     }
 
-    function removeTag(tagObj) {
+    const scale = mode === "rest" ? 1 : 0.99;
+
+    el.style.transform =
+      `translate(calc(-50% + ${baseX + floatX}px), calc(-50% + ${baseY + floatY}px)) rotate(${rotate}deg) scale(${scale})`;
+  }
+
+  function createTag(text, zone, zoneIndex) {
+    const size = measureTag(text);
+    const point = findPoint(zone, zoneIndex, size.width, size.height);
+    if (!point) return null;
+
+    const rect = getContainerRect();
+    const leftPercent = (point.x / rect.width) * 100;
+    const topPercent = (point.y / rect.height) * 100;
+
+    const el = document.createElement("div");
+    el.className = "floating-tag";
+    el.textContent = text;
+    el.style.left = `${leftPercent}%`;
+    el.style.top = `${topPercent}%`;
+
+    const tagObj = {
+      el,
+      text,
+      zoneIndex,
+      zone,
+      zoneSide: zone.side,
+      rect: point.rect,
+      width: size.width,
+      height: size.height,
+      x: point.x,
+      y: point.y,
+      driftX: rand(-2, 2),
+      driftY: rand(-2, 2),
+      rotate: rand(-0.6, 0.6).toFixed(2),
+      floatX: 0,
+      floatY: 0,
+      moveTimer: null,
+      removeTimer: null
+    };
+
+    updateTagTransform(tagObj, "enter");
+    return tagObj;
+  }
+
+  function tryMoveTag(tagObj) {
+    if (!activeTags.has(tagObj)) return;
+
+    const moved = findPoint(tagObj.zone, tagObj.zoneIndex, tagObj.width, tagObj.height, tagObj);
+    if (!moved) return;
+
+    const pct = pxToPercent(moved.x, moved.y);
+
+    tagObj.x = moved.x;
+    tagObj.y = moved.y;
+    tagObj.rect = moved.rect;
+
+    tagObj.floatX = rand(-6, 6);
+    tagObj.floatY = rand(-6, 6);
+
+    tagObj.el.style.left = `${pct.x}%`;
+    tagObj.el.style.top = `${pct.y}%`;
+    updateTagTransform(tagObj, "rest");
+  }
+
+  function scheduleMovement(tagObj) {
+    const loop = () => {
       if (!activeTags.has(tagObj)) return;
-      activeTags.delete(tagObj);
 
-      tagObj.el.classList.remove("show");
-      tagObj.el.classList.add("hide");
-      tagObj.el.style.transform = tagObj.el.dataset.exit;
+      tryMoveTag(tagObj);
 
-      setTimeout(() => {
-        tagObj.el.remove();
-      }, 1400);
+      const nextDelay = 2200 + Math.random() * 2200;
+      tagObj.moveTimer = setTimeout(loop, nextDelay);
+    };
+
+    tagObj.moveTimer = setTimeout(loop, 1800 + Math.random() * 1600);
+  }
+
+  function spawnTag() {
+    const maxVisible = window.innerWidth <= 768 ? 4 : 6;
+    if (activeTags.size >= maxVisible) return;
+
+    const zones = getZones();
+    const eligible = zones
+      .map((zone, index) => ({ zone, index }))
+      .filter(item => zoneCount(item.index) < zoneCapacity());
+
+    if (!eligible.length) return;
+
+    const counts = eligible.map(item => zoneCount(item.index));
+    const minCount = Math.min(...counts);
+    const candidates = eligible.filter(item => zoneCount(item.index) === minCount);
+
+    const text = getAvailableTag();
+
+    let tagObj = null;
+    for (const item of [...candidates].sort(() => Math.random() - 0.5)) {
+      tagObj = createTag(text, item.zone, item.index);
+      if (tagObj) break;
     }
 
-    function spontaneousLoop() {
-      const delay = 900 + Math.random() * 1400;
-      setTimeout(() => {
-        spawnTag();
-        spontaneousLoop();
-      }, delay);
-    }
+    if (!tagObj) return;
 
-    function clearAllTags() {
-      activeTags.forEach(tagObj => tagObj.el.remove());
-      activeTags.clear();
-    }
+    container.appendChild(tagObj.el);
+    activeTags.add(tagObj);
 
-    function startFloatingTags() {
-      spawnTag();
-      setTimeout(spawnTag, 500);
-      setTimeout(spawnTag, 1100);
-      setTimeout(spawnTag, 1800);
-      spontaneousLoop();
-    }
-
-    let resizeTimeout;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        clearAllTags();
-        startFloatingTags();
-      }, 250);
+    requestAnimationFrame(() => {
+      tagObj.el.classList.add("show");
+      tagObj.floatX = rand(-4, 4);
+      tagObj.floatY = rand(-4, 4);
+      updateTagTransform(tagObj, "rest");
     });
 
-    startFloatingTags();
-  </script>
+    rememberTag(text);
+    scheduleMovement(tagObj);
+
+    const visibleFor = 6500 + Math.random() * 3000;
+    tagObj.removeTimer = setTimeout(() => removeTag(tagObj), visibleFor);
+  }
+
+  function removeTag(tagObj) {
+    if (!activeTags.has(tagObj)) return;
+
+    activeTags.delete(tagObj);
+
+    if (tagObj.moveTimer) clearTimeout(tagObj.moveTimer);
+    if (tagObj.removeTimer) clearTimeout(tagObj.removeTimer);
+
+    tagObj.el.classList.remove("show");
+    tagObj.el.classList.add("hide");
+    tagObj.floatX = 0;
+    tagObj.floatY = 0;
+    updateTagTransform(tagObj, "exit");
+
+    setTimeout(() => {
+      tagObj.el.remove();
+    }, 1400);
+  }
+
+  function spontaneousLoop() {
+    const delay = 900 + Math.random() * 1400;
+    setTimeout(() => {
+      spawnTag();
+      spontaneousLoop();
+    }, delay);
+  }
+
+  function clearAllTags() {
+    activeTags.forEach(tagObj => {
+      if (tagObj.moveTimer) clearTimeout(tagObj.moveTimer);
+      if (tagObj.removeTimer) clearTimeout(tagObj.removeTimer);
+      tagObj.el.remove();
+    });
+    activeTags.clear();
+  }
+
+  function startFloatingTags() {
+    spawnTag();
+    setTimeout(spawnTag, 500);
+    setTimeout(spawnTag, 1100);
+    setTimeout(spawnTag, 1800);
+    spontaneousLoop();
+  }
+
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      clearAllTags();
+      startFloatingTags();
+    }, 250);
+  });
+
+  startFloatingTags();
+</script>
 </body>
 </html>
