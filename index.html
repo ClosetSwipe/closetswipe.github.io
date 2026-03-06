@@ -7,386 +7,430 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
---pink:#f05e86;
---dark:#1f1f1f;
---muted:#7d7d7d;
---border:rgba(0,0,0,.08);
+  --pink:#f05e86;
+  --dark:#1f1f1f;
+  --muted:#7d7d7d;
+  --border:rgba(0,0,0,.08);
+  --tag-border:rgba(240,94,134,.2);
+  --tag-bg:rgba(255,255,255,.96);
+  --tag-shadow:0 12px 30px rgba(240,94,134,.12);
 }
 
 *{box-sizing:border-box}
 
 html,body{
-margin:0;
-height:100%;
-background:#fff;
-overflow:hidden;
-font-family:Inter,sans-serif;
+  margin:0;
+  height:100%;
+  background:#fff;
+  overflow:hidden;
+  font-family:Inter,sans-serif;
 }
 
-/* NAV */
-
 .top-nav{
-position:fixed;
-top:0;
-left:0;
-right:0;
-z-index:50;
-padding:22px 32px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:white;
-border-bottom:1px solid var(--border);
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:50;
+  padding:22px 32px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+  border-bottom:1px solid var(--border);
 }
 
 .brand{
-font-family:'Playfair Display',serif;
-font-weight:800;
-font-size:18px;
-color:var(--dark);
-text-decoration:none;
+  font-family:'Playfair Display',serif;
+  font-weight:800;
+  font-size:18px;
+  color:var(--dark);
+  text-decoration:none;
 }
-
 .brand .swipe{color:var(--pink)}
 
 .privacy{
-font-weight:800;
-color:var(--pink);
-text-decoration:none;
+  font-weight:800;
+  color:var(--pink);
+  text-decoration:none;
 }
-
-/* BACKGROUND CIRCLES */
 
 .circle{
-position:fixed;
-border-radius:50%;
-background:rgba(240,94,134,0.14);
-pointer-events:none;
+  position:fixed;
+  border-radius:50%;
+  background:rgba(240,94,134,0.14);
+  pointer-events:none;
 }
-
 .circle.one{
-width:560px;
-height:560px;
-top:-180px;
-left:-160px;
+  width:560px;
+  height:560px;
+  top:-180px;
+  left:-160px;
 }
-
 .circle.two{
-width:720px;
-height:720px;
-bottom:-320px;
-right:-260px;
+  width:720px;
+  height:720px;
+  bottom:-320px;
+  right:-260px;
 }
-
-/* CENTER CONTENT */
 
 .wrap{
-height:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding-top:60px;
-position:relative;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding-top:60px;
+  position:relative;
 }
 
 .hero{
-position:relative;
-width:1200px;
+  position:relative;
+  width:1200px;
+  max-width:95%;
+  min-height:560px;
 }
 
 h1{
-font-family:'Playfair Display',serif;
-font-weight:800;
-font-size:150px;
-letter-spacing:-0.04em;
-margin:0;
-color:var(--dark);
+  font-family:'Playfair Display',serif;
+  font-weight:800;
+  font-size:clamp(90px,10vw,180px);
+  letter-spacing:-.05em;
+  margin:0;
+  color:var(--dark);
+  position:relative;
+  z-index:3;
 }
 
 .pink{color:var(--pink)}
 
 .tagline{
-margin-top:12px;
-font-size:26px;
-color:var(--muted);
+  margin-top:12px;
+  font-size:26px;
+  color:var(--muted);
+  position:relative;
+  z-index:3;
 }
 
 .button-row{
-margin-top:40px;
-display:flex;
-gap:24px;
-justify-content:center;
+  margin-top:40px;
+  display:flex;
+  gap:24px;
+  justify-content:center;
+  flex-wrap:wrap;
+  position:relative;
+  z-index:3;
 }
 
 .store-btn{
-background:white;
-padding:26px 40px;
-border-radius:22px;
-font-weight:700;
-font-size:20px;
-box-shadow:0 12px 28px rgba(0,0,0,.05);
-display:flex;
-align-items:center;
-gap:12px;
-text-decoration:none;
-color:#111;
-transition:.2s;
+  background:white;
+  padding:26px 40px;
+  border-radius:22px;
+  font-weight:700;
+  font-size:20px;
+  box-shadow:0 12px 28px rgba(0,0,0,.05);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#111;
+  transition:.2s;
 }
 
 .store-btn:hover{
-background:var(--pink);
-color:white;
-transform:translateY(-2px);
-box-shadow:0 18px 36px rgba(240,94,134,.25);
+  background:var(--pink);
+  color:white;
+  transform:translateY(-2px);
+  box-shadow:0 18px 36px rgba(240,94,134,.25);
 }
 
-/* TAGS */
-
 .floating-tags{
-position:absolute;
-inset:0;
-pointer-events:none;
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
 }
 
 .floating-tag{
-position:absolute;
-padding:12px 22px;
-border-radius:999px;
-background:white;
-border:2px solid rgba(240,94,134,.2);
-color:#cf5d82;
-font-weight:600;
-box-shadow:0 12px 30px rgba(240,94,134,.12);
-opacity:0;
-transform:translate(-50%,-50%) scale(.96);
-transition:
-left 3s cubic-bezier(.22,1,.36,1),
-top 3s cubic-bezier(.22,1,.36,1),
-opacity 1.4s ease,
-transform 1.4s ease;
+  position:absolute;
+  padding:12px 22px;
+  border-radius:999px;
+  background:var(--tag-bg);
+  border:2px solid var(--tag-border);
+  color:#cf5d82;
+  font-weight:600;
+  box-shadow:var(--tag-shadow);
+  opacity:0;
+  filter:blur(3px);
+  transform:translate(-50%,-50%) scale(.96);
+  transition:
+    left 2.4s cubic-bezier(.22,1,.36,1),
+    top 2.4s cubic-bezier(.22,1,.36,1),
+    opacity 1.2s ease,
+    filter 1.2s ease,
+    transform 1.2s ease;
 }
 
 .floating-tag.show{
-opacity:1;
-transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+  filter:blur(0);
+  transform:translate(-50%,-50%) scale(1);
 }
 
 .floating-tag.hide{
-opacity:0;
-transform:translate(-50%,calc(-50% - 6px)) scale(.96);
+  opacity:0;
+  filter:blur(3px);
+  transform:translate(-50%,calc(-50% - 4px)) scale(.97);
 }
 
+@media (max-width:768px){
+  html,body{overflow:auto}
+  .top-nav{padding:18px 20px}
+  .brand{font-size:16px}
+  .privacy{font-size:15px}
+  .hero{min-height:680px}
+  .tagline{font-size:20px}
+  .button-row{gap:14px}
+  .store-btn{
+    width:100%;
+    max-width:380px;
+    justify-content:center;
+    font-size:18px;
+    padding:20px 22px;
+  }
+  .floating-tag{
+    font-size:14px;
+    padding:10px 18px;
+  }
+}
 </style>
 </head>
 
 <body>
-
 <nav class="top-nav">
-<a class="brand" href="#">Closet<span class="swipe">Swipe</span></a>
-<a class="privacy" href="#">Privacy</a>
+  <a class="brand" href="#">Closet<span class="swipe">Swipe</span></a>
+  <a class="privacy" href="#">Privacy</a>
 </nav>
 
 <div class="circle one"></div>
 <div class="circle two"></div>
 
 <main class="wrap">
+  <section class="hero">
+    <div id="floatingTags" class="floating-tags"></div>
 
-<section class="hero">
+    <h1>Closet<span class="pink">Swipe</span></h1>
+    <p class="tagline">swipe pre-loved fashion you'll obsess over</p>
 
-<div id="floatingTags" class="floating-tags"></div>
-
-<h1>Closet<span class="pink">Swipe</span></h1>
-<p class="tagline">swipe pre-loved fashion you'll obsess over</p>
-
-<div class="button-row">
-
-<a class="store-btn"> Download on App Store</a>
-
-<a class="store-btn">▶ Get it on Google Play</a>
-
-</div>
-
-</section>
-
+    <div class="button-row">
+      <a class="store-btn" href="#"> Download on App Store</a>
+      <a class="store-btn" href="#">▶ Get it on Google Play</a>
+    </div>
+  </section>
 </main>
 
 <script>
+const tags = [
+  "Y2K","Streetwear","Vintage","Grunge","Minimalist","Oversized",
+  "Clean Girl","Soft Girl","Cottagecore","Designer/Luxury",
+  "Low-rise","Wide leg","Retro","Preppy","Boho","Skater"
+];
 
-/* TAG DATA */
+const container = document.getElementById("floatingTags");
+const active = [];
 
-const tags=[
-"Y2K","Streetwear","Vintage","Grunge","Minimalist","Oversized",
-"Clean Girl","Soft Girl","Cottagecore","Designer/Luxury",
-"Low-rise","Wide leg","Retro","Preppy","Boho","Skater"
-]
+const zones = [
+  { minX:4,  maxX:22, minY:8,  maxY:22 }, // top left
+  { minX:78, maxX:96, minY:8,  maxY:22 }, // top right
+  { minX:4,  maxX:22, minY:80, maxY:94 }, // bottom left
+  { minX:78, maxX:96, minY:80, maxY:94 }  // bottom right
+];
 
-const container=document.getElementById("floatingTags")
-const active=[]
+function rand(min,max){ return Math.random()*(max-min)+min; }
+function random(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-/* SAFE CORNER ZONES */
-
-const zones=[
-{minX:4,maxX:22,minY:8,maxY:22},
-{minX:78,maxX:96,minY:8,maxY:22},
-{minX:4,maxX:22,minY:80,maxY:94},
-{minX:78,maxX:96,minY:80,maxY:94}
-]
-
-/* UTILS */
-
-function rand(min,max){return Math.random()*(max-min)+min}
-
-function random(arr){return arr[Math.floor(Math.random()*arr.length)]}
-
-/* COLLISION */
-
-function overlaps(a,b){
-return !(
-a.right+18<=b.left||
-a.left>=b.right+18||
-a.bottom+18<=b.top||
-a.top>=b.bottom+18
-)
+function overlaps(a,b,gap=18){
+  return !(
+    a.right + gap <= b.left ||
+    a.left >= b.right + gap ||
+    a.bottom + gap <= b.top ||
+    a.top >= b.bottom + gap
+  );
 }
 
-/* SPAWN */
-
-function spawn(){
-
-if(active.length>=6)return
-
-let zone=random(zones)
-
-let text=random(tags)
-
-let el=document.createElement("div")
-el.className="floating-tag"
-el.innerText=text
-
-container.appendChild(el)
-
-let rect=el.getBoundingClientRect()
-
-let tries=0
-let placed=false
-
-while(!placed&&tries<40){
-
-let x=rand(zone.minX,zone.maxX)
-let y=rand(zone.minY,zone.maxY)
-
-el.style.left=x+"%"
-el.style.top=y+"%"
-
-let r=el.getBoundingClientRect()
-
-let newRect={
-left:r.left,
-right:r.right,
-top:r.top,
-bottom:r.bottom
+function rect(x,y,w,h){
+  return {
+    left:x-w/2,
+    right:x+w/2,
+    top:y-h/2,
+    bottom:y+h/2
+  };
 }
 
-let collide=false
-
-for(let t of active){
-if(overlaps(newRect,t.rect)){
-collide=true
-break
-}
-}
-
-if(!collide){
-
-placed=true
-
-active.push({
-el,
-rect:newRect,
-zone
-})
-
+function measure(text){
+  const el = document.createElement("div");
+  el.className = "floating-tag";
+  el.textContent = text;
+  el.style.visibility = "hidden";
+  el.style.left = "-9999px";
+  el.style.top = "-9999px";
+  container.appendChild(el);
+  const r = el.getBoundingClientRect();
+  el.remove();
+  return { w:r.width, h:r.height };
 }
 
-tries++
+function containerRect(){
+  return container.getBoundingClientRect();
 }
 
-requestAnimationFrame(()=>el.classList.add("show"))
+function percentToPxX(p, w){ return w * (p/100); }
+function percentToPxY(p, h){ return h * (p/100); }
 
-setTimeout(()=>remove(el),6500+Math.random()*3000)
+function findAnchor(zone, size){
+  const c = containerRect();
+  const pad = 12;
 
-scheduleMove(el)
+  const minX = percentToPxX(zone.minX, c.width) + size.w/2 + pad;
+  const maxX = percentToPxX(zone.maxX, c.width) - size.w/2 - pad;
+  const minY = percentToPxY(zone.minY, c.height) + size.h/2 + pad;
+  const maxY = percentToPxY(zone.maxY, c.height) - size.h/2 - pad;
 
+  if (minX >= maxX || minY >= maxY) return null;
+
+  for(let i=0;i<60;i++){
+    const x = rand(minX,maxX);
+    const y = rand(minY,maxY);
+    const r = rect(x,y,size.w,size.h);
+
+    let bad = false;
+    for(const t of active){
+      if(overlaps(r,t.anchorRect,22)){ bad = true; break; }
+    }
+
+    if(!bad){
+      return { x,y,anchorRect:r };
+    }
+  }
+
+  return null;
 }
 
-/* MOVE */
-
-function scheduleMove(el){
-
-function move(){
-
-let item=active.find(t=>t.el===el)
-if(!item)return
-
-let zone=item.zone
-
-let x=rand(zone.minX,zone.maxX)
-let y=rand(zone.minY,zone.maxY)
-
-el.style.left=x+"%"
-el.style.top=y+"%"
-
-setTimeout(move,3500+Math.random()*2500)
-
+function pxToPercent(x,y){
+  const c = containerRect();
+  return {
+    x:(x/c.width)*100,
+    y:(y/c.height)*100
+  };
 }
 
-setTimeout(move,3000)
-
+function placeAtOrbitPosition(tag){
+  const x = tag.anchorX + Math.cos(tag.angle) * tag.radiusX;
+  const y = tag.anchorY + Math.sin(tag.angle) * tag.radiusY;
+  const p = pxToPercent(x,y);
+  tag.el.style.left = p.x + "%";
+  tag.el.style.top = p.y + "%";
 }
 
-/* REMOVE */
+function createTag(){
+  if(active.length >= 6) return null;
 
-function remove(el){
+  const text = random(tags);
+  const zone = random(zones);
+  const size = measure(text);
+  const anchor = findAnchor(zone, size);
+  if(!anchor) return null;
 
-let item=active.find(t=>t.el===el)
+  const el = document.createElement("div");
+  el.className = "floating-tag";
+  el.textContent = text;
 
-if(!item)return
+  const tag = {
+    el,
+    text,
+    zone,
+    size,
+    anchorX: anchor.x,
+    anchorY: anchor.y,
+    anchorRect: anchor.anchorRect,
+    angle: rand(0, Math.PI * 2),
+    radiusX: rand(4, 10),
+    radiusY: rand(3, 8),
+    speed: rand(0.015, 0.028),
+    driftDir: Math.random() > 0.5 ? 1 : -1,
+    visible: true,
+    moveTick: null,
+    removeTick: null
+  };
 
-el.classList.remove("show")
-el.classList.add("hide")
+  container.appendChild(el);
+  placeAtOrbitPosition(tag);
 
-setTimeout(()=>{
-el.remove()
-let i=active.indexOf(item)
-if(i>-1)active.splice(i,1)
-},1400)
+  requestAnimationFrame(() => {
+    el.classList.add("show");
+  });
 
+  active.push(tag);
+  scheduleOrbit(tag);
+  scheduleRemove(tag);
+
+  return tag;
 }
 
-/* LOOP */
+function scheduleOrbit(tag){
+  function tick(){
+    if(!tag.visible) return;
+    tag.angle += tag.speed * tag.driftDir;
+    placeAtOrbitPosition(tag);
+    tag.moveTick = setTimeout(tick, 80);
+  }
+  tag.moveTick = setTimeout(tick, 120);
+}
+
+function scheduleRemove(tag){
+  const lifetime = 6500 + Math.random() * 2500;
+  tag.removeTick = setTimeout(() => removeTag(tag), lifetime);
+}
+
+function removeTag(tag){
+  if(!tag.visible) return;
+  tag.visible = false;
+
+  if(tag.moveTick) clearTimeout(tag.moveTick);
+  if(tag.removeTick) clearTimeout(tag.removeTick);
+
+  tag.el.classList.remove("show");
+  tag.el.classList.add("hide");
+
+  setTimeout(() => {
+    tag.el.remove();
+    const i = active.indexOf(tag);
+    if(i > -1) active.splice(i,1);
+  }, 1200);
+}
 
 function loop(){
-
-spawn()
-
-setTimeout(loop,900+Math.random()*1400)
-
+  if(active.length < 6){
+    createTag();
+  }
+  setTimeout(loop, 900 + Math.random() * 1200);
 }
 
-spawn()
-setTimeout(spawn,600)
-setTimeout(spawn,1200)
+createTag();
+setTimeout(createTag, 500);
+setTimeout(createTag, 1100);
+loop();
 
-loop()
-
+window.addEventListener("resize", () => {
+  active.slice().forEach(removeTag);
+  setTimeout(() => {
+    createTag();
+    setTimeout(createTag, 500);
+    setTimeout(createTag, 1100);
+  }, 200);
+});
 </script>
-
 </body>
 </html>
