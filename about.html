@@ -1,253 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About – ClosetSwipe</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About – ClosetSwipe</title>
 
-<style>
-body{
-margin:0;
-font-family:Inter,sans-serif;
-background:#fff7fa;
-color:#222;
-}
-
-/* NAVIGATION */
-.nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:22px 40px;
-background:white;
-border-bottom:1px solid #f1dbe3;
-}
-
-.logo{
-font-family:"Playfair Display",serif;
-font-size:28px;
-text-decoration:none;
-color:black;
-}
-
-.logo span{color:#f05e86}
-
-.nav-links{
-display:flex;
-gap:24px;
-}
-
-.nav-links a{
-text-decoration:none;
-color:#333;
-font-weight:500;
-}
-
-/* HERO */
-.hero{
-max-width:1200px;
-margin:auto;
-padding:80px 40px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:60px;
-align-items:center;
-}
-
-.hero h1{
-font-family:"Playfair Display";
-font-size:48px;
-margin-bottom:20px;
-}
-
-.hero p{
-color:#666;
-line-height:1.6;
-}
-
-/* PHONE */
-.phone{
-width:320px;
-margin:auto;
-border-radius:40px;
-padding:12px;
-background:#111;
-box-shadow:0 30px 60px rgba(0,0,0,.25);
-}
-
-.phone-screen{
-border-radius:30px;
-overflow:hidden;
-background:white;
-}
-
-.phone-screen img{
-width:100%;
-display:block;
-}
-
-/* DISCOVERY */
-.section{
-max-width:1100px;
-margin:auto;
-padding:80px 40px;
-text-align:center;
-}
-
-.section h2{
-font-family:"Playfair Display";
-font-size:38px;
-margin-bottom:10px;
-}
-
-.section p{
-color:#666;
-max-width:650px;
-margin:auto;
-}
-
-/* IMAGE GRID */
-.grid{
-margin-top:50px;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:20px;
-}
-
-.grid img{
-width:100%;
-border-radius:16px;
-object-fit:cover;
-height:180px;
-}
-
-/* COMMUNITY */
-.community{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:40px;
-align-items:center;
-max-width:1100px;
-margin:auto;
-padding:80px 40px;
-}
-
-.community h2{
-font-family:"Playfair Display";
-font-size:36px;
-}
-
-.community p{
-color:#666;
-}
-
-.community-images{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:14px;
-}
-
-.community-images img{
-width:100%;
-border-radius:14px;
-height:140px;
-object-fit:cover;
-}
-
-@media(max-width:900px){
-.hero{grid-template-columns:1fr}
-.community{grid-template-columns:1fr}
-.grid{grid-template-columns:1fr}
-}
-
-</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
+  <nav class="navbar">
+    <a href="index.html" class="logo">Closet<span>Swipe</span></a>
 
-<!-- NAVIGATION (same style as index) -->
-<nav class="nav">
+    <div class="nav-links">
+      <a href="about.html" class="active">About</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </nav>
 
-<a href="index.html" class="logo">Closet<span>Swipe</span></a>
+  <main class="site-shell">
+    <section class="section hero">
+      <div class="hero-copy">
+        <span class="eyebrow">About ClosetSwipe</span>
+        <h1>Buy and sell fashion in seconds.</h1>
+        <p>ClosetSwipe is the easiest way to discover second-hand fashion you’ll actually love.</p>
+        <p>Swipe through thousands of pieces, save what you like, and build your dream closet with a cleaner, faster way to shop resale.</p>
 
-<div class="nav-links">
-<a href="about.html">About</a>
-<a href="privacy.html">Privacy</a>
-</div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="index.html">Back to home</a>
+          <a class="btn btn-secondary" href="privacy.html">Read privacy</a>
+        </div>
+      </div>
 
-</nav>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="phone-peek">
+          <img src="Screenshot 2026-01-25 093315.png" alt="ClosetSwipe preview" />
+        </div>
 
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="Screenshot 2026-01-25 093315.png" alt="ClosetSwipe app screen" />
+          </div>
+        </div>
+      </div>
+    </section>
 
-<!-- HERO -->
-<section class="hero">
+    <section class="section features">
+      <h2>Fashion discovery reimagined</h2>
+      <p class="features-sub">
+        Traditional resale apps make you search endlessly.<br />
+        ClosetSwipe flips the experience.
+      </p>
 
-<div>
-<h1>Buy and sell fashion in seconds.</h1>
-<p>
-ClosetSwipe is the easiest way to discover second-hand fashion you'll actually love.
-Swipe through thousands of pieces, save what you like, and build your dream closet.
-</p>
-</div>
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">➜</div>
+          <p>Swipe to discover</p>
+        </div>
 
-<div class="phone">
-<div class="phone-screen">
-<img src="/mnt/data/Screenshot 2026-01-25 093315.png" alt="ClosetSwipe App">
-</div>
-</div>
+        <div class="feature">
+          <div class="feature-icon">👜</div>
+          <p>Save to your closet</p>
+        </div>
 
-</section>
+        <div class="feature">
+          <div class="feature-icon">🏷</div>
+          <p>Smart style tags</p>
+        </div>
 
+        <div class="feature">
+          <div class="feature-icon">❤</div>
+          <p>AI Recommendations</p>
+        </div>
+      </div>
+    </section>
 
-<!-- DISCOVERY -->
-<section class="section">
-<h2>Fashion discovery reimagined</h2>
-<p>
-Traditional resale apps make you search endlessly. ClosetSwipe flips the experience with swipe-based discovery designed to find pieces faster.
-</p>
+    <section class="section">
+      <div class="split">
+        <div class="card image-panel">
+          <img src="Screenshot 2026-03-07 081139.png" alt="ClosetSwipe clothing rail" />
+        </div>
 
-<div class="grid">
+        <div class="card text-panel">
+          <h2>Giving fashion a second life</h2>
+          <p>ClosetSwipe connects buyers and sellers to give fashion a second life, making style more affordable, more exciting, and easier to access.</p>
+          <p style="margin-top: 16px;">Whether someone is looking for vintage finds, designer gems, or everyday staples, the experience should feel fresh, premium, and genuinely fun to use.</p>
+        </div>
+      </div>
+    </section>
 
-<img src="https://images.unsplash.com/photo-1520975922323-1d9f0e1d04b6">
-<img src="https://images.unsplash.com/photo-1520975922323-1d9f0e1d04b6">
-<img src="https://images.unsplash.com/photo-1520975922323-1d9f0e1d04b6">
+    <section class="section">
+      <div class="section-heading">
+        <h2>How it works</h2>
+        <p>A simple flow that makes resale feel quicker, cleaner, and more enjoyable from the first swipe.</p>
+      </div>
 
-<img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d">
-<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
-<img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f">
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-icon">↗</div>
+          <div class="step-number">1. Swipe</div>
+          <p>Discover items tailored to your style and skip what you do not want.</p>
+        </article>
 
-</div>
-</section>
+        <article class="step-card">
+          <div class="step-icon">♡</div>
+          <div class="step-number">2. Save</div>
+          <p>Add favourites to your closet so the best pieces stay easy to find.</p>
+        </article>
 
+        <article class="step-card">
+          <div class="step-icon">⇄</div>
+          <div class="step-number">3. Buy or Sell</div>
+          <p>Shop great deals or list what you no longer wear in a cleaner marketplace.</p>
+        </article>
+      </div>
+    </section>
 
-<!-- COMMUNITY -->
-<section class="community">
+    <section class="section">
+      <div class="community-grid">
+        <div class="community-copy">
+          <h2>Join the fashion community</h2>
+          <p>ClosetSwipe is built for fashion lovers. From vintage collectors to everyday style hunters, the community is centred around finding great pieces and sharing better style.</p>
+          <p style="margin-top: 16px;">The goal is to make second-hand fashion feel more premium, more addictive to browse, and far easier to fall in love with.</p>
+        </div>
 
-<div>
-<h2>Join the fashion community</h2>
-<p>
-ClosetSwipe is built for fashion lovers. From vintage collectors to everyday style hunters, our community is built around discovering great fashion and sharing it with others.
-</p>
-</div>
-
-<div class="community-images">
-
-<img src="https://images.unsplash.com/photo-1520975661595-6453be3f7070">
-<img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c">
-<img src="https://images.unsplash.com/photo-1495121605193-b116b5b09a75">
-
-<img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c">
-<img src="https://images.unsplash.com/photo-1520975661595-6453be3f7070">
-<img src="https://images.unsplash.com/photo-1495121605193-b116b5b09a75">
-
-</div>
-
-</section>
-
-</body>
-</html>
+        <div class="mosaic">
+          <img src="Screenshot 2026-03-07 081205.png" alt="ClosetSwipe community styles" />
+          <img src="Screenshot 2026-03-07 081205.png" alt="ClosetSwipe fashion tiles" />
+          <img src="Screenshot 2026-03-07 081205.png" alt="ClosetSwipe outfit collage" />
+          <img src="Screenshot 2026-03-07 081205.png" alt="ClosetSwipe resale styles" />
+          <img src="Screenshot 2026-03-07 081205.png" alt="ClosetSwipe product collection" />
+          <img src="Screenshot 2026-03-07 081205.png" alt="ClosetSwipe fashion showcase" />
+        </div>
+      </div>
+    </section>
   </main>
 </body>
 </html>
