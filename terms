@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms & Conditions – ClosetSwipe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root{
+      --pink:#f05e86;
+      --text:#1f1f1f;
+      --muted:#666;
+      --border:rgba(0,0,0,.08);
+      --bg:#fff;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:#fff;
+      color:var(--text);
+      font-family:Inter,sans-serif;
+    }
+
+    /* NAV */
+
+    .top-nav{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:50;
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      padding:22px 32px;
+
+      background:#fff;
+      border-bottom:1px solid var(--border);
+    }
+
+    .brand{
+      font-family:'Playfair Display',serif;
+      font-size:22px;
+      font-weight:800;
+      text-decoration:none;
+      color:#111;
+      letter-spacing:-0.04em;
+    }
+
+    .brand .swipe{
+      color:var(--pink);
+    }
+
+    .nav-links{
+      display:flex;
+      gap:28px;
+      align-items:center;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:var(--pink);
+      font-weight:700;
+      font-size:16px;
+      transition:opacity .2s ease;
+    }
+
+    .nav-links a:hover{
+      opacity:.7;
+    }
+
+    /* BACKGROUND CIRCLES */
+
+    .circle{
+      position:fixed;
+      border-radius:50%;
+      background:rgba(240,94,134,.12);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .circle.one{
+      width:420px;
+      height:420px;
+      top:-160px;
+      left:-140px;
+    }
+
+    .circle.two{
+      width:520px;
+      height:520px;
+      bottom:-220px;
+      right:-180px;
+    }
+
+    /* PAGE */
+
+    .wrap{
+      position:relative;
+      z-index:1;
+
+      max-width:980px;
+      margin:0 auto;
+
+      padding:140px 24px 80px;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(240,94,134,.1);
+
+      color:var(--pink);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+
+      margin-bottom:18px;
+    }
+
+    h1{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(42px,5vw,72px);
+      line-height:1;
+      letter-spacing:-0.05em;
+      margin:0 0 24px;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:40px;
+
+      box-shadow:0 12px 30px rgba(0,0,0,.04);
+    }
+
+    h2{
+      font-size:24px;
+      margin:34px 0 14px;
+      letter-spacing:-0.03em;
+    }
+
+    h2:first-child{
+      margin-top:0;
+    }
+
+    p,
+    li{
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.8;
+    }
+
+    ul{
+      padding-left:20px;
+    }
+
+    a.inline{
+      color:var(--pink);
+      text-decoration:none;
+      font-weight:700;
+    }
+
+    a.inline:hover{
+      opacity:.75;
+    }
+
+    @media(max-width:768px){
+
+      .top-nav{
+        padding:18px 20px;
+      }
+
+      .nav-links{
+        gap:18px;
+      }
+
+      .nav-links a{
+        font-size:15px;
+      }
+
+      .card{
+        padding:28px 22px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+
+  <nav class="top-nav">
+
+    <a class="brand" href="index.html">
+      Closet<span class="swipe">Swipe</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+
+  </nav>
+
+  <!-- BACKGROUND -->
+
+  <div class="circle one"></div>
+  <div class="circle two"></div>
+
+  <!-- CONTENT -->
+
+  <main class="wrap">
+
+    <div class="pill">Terms & Conditions</div>
+
+    <h1>ClosetSwipe Terms & Conditions</h1>
+
+    <section class="card">
+
+      <h2>1. Acceptance of Terms</h2>
+
+      <p>
+        By accessing or using ClosetSwipe, you agree to comply with and be bound by these Terms & Conditions. If you do not agree, please do not use the platform.
+      </p>
+
+      <h2>2. Use of the Platform</h2>
+
+      <p>
+        ClosetSwipe provides a platform for users to buy, sell, and discover fashion items. Users are responsible for ensuring any listings, content, or activity comply with applicable laws and regulations.
+      </p>
+
+      <h2>3. User Accounts</h2>
+
+      <ul>
+        <li>You are responsible for maintaining the security of your account.</li>
+        <li>You must provide accurate and truthful information.</li>
+        <li>We reserve the right to suspend or terminate accounts that violate our policies.</li>
+      </ul>
+
+      <h2>4. Buying & Selling</h2>
+
+      <ul>
+        <li>Sellers are responsible for accurately describing items.</li>
+        <li>Buyers are responsible for reviewing listings before purchasing.</li>
+        <li>ClosetSwipe is not responsible for disputes between users.</li>
+      </ul>
+
+      <h2>5. Prohibited Content</h2>
+
+      <p>
+        Users may not upload or sell counterfeit items, illegal goods, offensive content, or anything that infringes intellectual property rights.
+      </p>
+
+      <h2>6. Payments & Transactions</h2>
+
+      <p>
+        Payments may be processed through third-party providers. ClosetSwipe is not responsible for third-party payment system failures or delays.
+      </p>
+
+      <h2>7. Limitation of Liability</h2>
+
+      <p>
+        ClosetSwipe is provided “as is” without warranties of any kind. We are not liable for losses, damages, or disputes arising from use of the platform.
+      </p>
+
+      <h2>8. Changes to Terms</h2>
+
+      <p>
+        We may update these Terms & Conditions at any time. Continued use of ClosetSwipe after changes are posted constitutes acceptance of the revised terms.
+      </p>
+
+      <h2>9. Contact</h2>
+
+      <p>
+        For questions regarding these Terms & Conditions, contact:
+      </p>
+
+      <p>
+        <a class="inline" href="mailto:support@closetswipe.co.uk">
+          support@closetswipe.co.uk
+        </a>
+      </p>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
